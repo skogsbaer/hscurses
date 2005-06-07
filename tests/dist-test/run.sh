@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 MAKE=make
 GHC62=/usr/local/ghc6.2/bin/ghc
