@@ -1427,7 +1427,7 @@ fi
 #
 # Look for a ghc-pkg that matches our ghc version.
 #
-ghc_pkg_guess=`dirname $WithGhc`/ghc-pkg
+ghc_pkg_guess=`dirname $WithGhc`/ghc-pkg-`$WithGhc --numeric-version`
 if "$ghc_pkg_guess" -l > /dev/null 2>&1; then
       matching_ghc_pkg=$ghc_pkg_guess
 else
