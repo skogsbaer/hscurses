@@ -1,5 +1,6 @@
 #!/bin/sh
 
+MAKE=make
 GHC62=/usr/local/ghc6.2/bin/ghc
 GHC64=/usr/bin/ghc
 
@@ -24,7 +25,7 @@ function run() {
     echo
 
     cd $TOPDIR
-    make distclean && autoreconf &&./configure --with-hc=$hc && make
+    $MAKE distclean && autoreconf &&./configure --with-hc=$hc && $MAKE
     if [ $? -ne 0 ] ; then
         echo "Test failed"
         exit 1
