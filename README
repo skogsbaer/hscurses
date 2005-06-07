@@ -13,9 +13,8 @@ Copyright:
    Don Stewart <http://www.cse.unsw.edu.au/~dons>, 2004.
    Stefan Wehr <http://www.stefanwehr.de>, 2004-2005.
 
-The HSCurses library has been reported to work on Linux x86 using GHC
-6.2 and 6.4; support for NHC98 is planned as soon as Cabal supports
-it.
+The HSCurses library has been reported to work on Linux x86 and OpenBSD
+using GHC 6.2 and 6.4.
 
 
 Building and installing the HSCurses library:
