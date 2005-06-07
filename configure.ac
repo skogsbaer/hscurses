@@ -61,8 +61,11 @@ else
 fi
 AC_SUBST(GhcPkgCmd)
 
-if test `$GhcPkgCmd --version | sed 's/GHC package manager version //'` '<' "6.4";
-then
+# check if ghc-pkg has version >= or < 6.4
+ghcPkgVersion=`$GhcPkgCmd --version | sed 's/GHC package manager version //'`
+echo -e "$ghcPkgVersion\n6.3" | sort -c > /dev/null 2>&1
+sorted=$?
+if test $sorted -eq 0; then
   cp ./hscurses.conf.m4.in.before64 ./hscurses.conf.m4.in
 else
   cp ./hscurses.conf.m4.in.64 ./hscurses.conf.m4.in
