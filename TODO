@@ -1,0 +1,9 @@
+* Keys:
+  - ENTER returns (KeyChar '\r'), but what is KeyEnter good for?  (**)
+  - TAB returns (KeyChar '\t')
+
+* Widgets:
+  - export list for module (**)
+  - autowrap for text widget (low priority)
+  - border widget (**)
+  - selection widget

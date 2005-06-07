@@ -1,0 +1,55 @@
+#
+# System-specific settings
+#
+
+PREFIX=         @prefix@
+BINDIR=         @prefix@/bin
+LIBDIR=         @prefix@/lib/$(PKG)
+DATADIR=        @prefix@/share/doc/$(PKG)
+INCDIR=         @prefix@/include/$(PKG)
+IFACEDIR=       $(LIBDIR)/imports
+
+GHC=            @WithGhc@
+GCC=            @GccCmd@
+INCFLAGS=       -Icbits -I.
+HC_OPTS=        @GhcCodegen@ -funbox-strict-fields
+
+GHC_PKG=        @GhcPkgCmd@
+HSC2HS=         @Hsc2hsCmd@
+
+HADDOCK=        @HaddockCmd@
+HADDOCK_OPTS=   -h
+
+AR=             ar
+AR_OPTS=        cr
+
+LD=             @LdCmd@
+LD_X=           @LdCmd@ @LdXFlag@
+
+RANLIB=         @RANLIB@
+STRIP=          @STRIP@
+
+INSTALL=        sh $(TOPDIR)/install-sh -c
+INSTALL_PROGRAM=$(INSTALL) -m 755
+INSTALL_DATA=   $(INSTALL) -m 644
+INSTALL_DIR=    mkdir -p
+
+CP=             cp
+RM=             rm -f
+
+#
+# Extra paths to find things
+#
+LD_OPTS=        @LDFLAGS@
+INC_OPTS=       @CPPFLAGS@
+C_OPTS=         @CFLAGS@
+LIBS=           @LIBS@
+
+#
+# Special libs needed in package.conf files
+#
+CURSES=         @CURSES@
+ICONV=          @ICONV@
+
+# extra symbols
+SYMS=           @SYMS@

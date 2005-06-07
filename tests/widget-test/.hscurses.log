@@ -1,0 +1,424 @@
+[2005-03-22 14:20:54:71628] Terminal does not support enough colors. Number of  colors requested: 2. Number of colors supported: 0
+[2005-03-22 14:20:54:71692] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 0)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 0))]
+[2005-03-22 14:20:54:72257] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 0), dstyle_focus = CursesStyle (Attr 262144) (Pair 0), dstyle_active = CursesStyle (Attr 262144) (Pair 0)}
+[2005-03-22 14:21:31:29400] Terminal does not support enough colors. Number of  colors requested: 2. Number of colors supported: 0
+[2005-03-22 14:21:31:29970] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 0)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 0))]
+[2005-03-22 14:21:31:35672] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 0), dstyle_focus = CursesStyle (Attr 262144) (Pair 0), dstyle_active = CursesStyle (Attr 262144) (Pair 0)}
+[2005-03-22 14:26:12:17777] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]
+[2005-03-22 14:26:12:17861] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:26:14:24012] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:26:15:53176] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:26:16:90282] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:02:28188] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]
+[2005-03-22 14:27:02:28270] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:03:34474] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:03:57093] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:03:76260] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:03:94106] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:04:59748] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:04:74861] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:04:89754] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:05:48871] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:05:21356] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:05:37076] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:05:54893] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:05:70040] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:05:93179] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:06:82662] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:06:23649] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:06:54906] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:06:75634] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:06:91049] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:07:11776] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:07:26880] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:27:07:43589] Drawing normal with style: DStyle {dstyle_normal = CursesStyle (Attr 0) (Pair 2), dstyle_focus = CursesStyle (Attr 262144) (Pair 2), dstyle_active = CursesStyle (Attr 262144) (Pair 2)}
+[2005-03-22 14:30:02:55972] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]
+[2005-03-22 14:36:21:59644] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Blink] CyanF WhiteB,CursesStyle (Attr 2621440) (Pair 3)),(ColorlessStyle [Blink],ColorlessCursesStyle (Attr 524288))]
+[2005-03-22 14:36:21:59849] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:36:21:59879] result of findNextActiveCell: 0
+[2005-03-22 14:36:23:13136] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:23:13167] result of findNextActiveCell: 0
+[2005-03-22 14:36:23:58404] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:23:58432] result of findNextActiveCell: 0
+[2005-03-22 14:36:23:88220] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:23:88252] result of findNextActiveCell: 0
+[2005-03-22 14:36:24:26456] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:24:26494] result of findNextActiveCell: 0
+[2005-03-22 14:36:24:87682] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:24:87710] result of findNextActiveCell: 0
+[2005-03-22 14:36:25:10559] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:25:10586] result of findNextActiveCell: 0
+[2005-03-22 14:36:25:36395] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:25:36420] result of findNextActiveCell: 0
+[2005-03-22 14:36:25:66202] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:25:66230] result of findNextActiveCell: 0
+[2005-03-22 14:36:25:92795] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:25:92824] result of findNextActiveCell: 0
+[2005-03-22 14:36:26:22056] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirLeft
+[2005-03-22 14:36:26:50781] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirLeft
+[2005-03-22 14:36:26:76858] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:26:76885] result of findNextActiveCell: 0
+[2005-03-22 14:36:27:11152] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirUp
+[2005-03-22 14:36:27:96866] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:36:27:96896] result of findNextActiveCell: 0
+[2005-03-22 14:36:43:30870] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]
+[2005-03-22 14:36:47:54181] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Blink] CyanF WhiteB,CursesStyle (Attr 2621440) (Pair 3)),(ColorlessStyle [Blink],ColorlessCursesStyle (Attr 524288))]
+[2005-03-22 14:36:47:54375] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:36:47:54404] result of findNextActiveCell: 0
+[2005-03-22 14:36:50:16777] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:36:50:16809] result of findNextActiveCell: 0
+[2005-03-22 14:36:50:55022] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:36:50:55116] result of findNextActiveCell: 0
+[2005-03-22 14:36:50:83995] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirDown
+[2005-03-22 14:36:50:84021] result of findNextActiveCell: 0
+[2005-03-22 14:36:51:45718] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:51:45747] result of findNextActiveCell: 0
+[2005-03-22 14:36:53:22054] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirLeft
+[2005-03-22 14:36:53:34444] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:53:34470] result of findNextActiveCell: 0
+[2005-03-22 14:36:53:59755] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:53:59782] result of findNextActiveCell: 0
+[2005-03-22 14:36:53:84300] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:53:84331] result of findNextActiveCell: 0
+[2005-03-22 14:36:55:30472] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirDown
+[2005-03-22 14:36:55:30513] result of findNextActiveCell: 0
+[2005-03-22 14:36:55:53361] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:55:53390] result of findNextActiveCell: 0
+[2005-03-22 14:36:55:88104] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:36:55:88130] result of findNextActiveCell: 0
+[2005-03-22 14:36:57:45505] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirRight
+[2005-03-22 14:36:57:45534] result of findNextActiveCell: 0
+[2005-03-22 14:36:57:80294] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirRight
+[2005-03-22 14:36:57:80322] result of findNextActiveCell: 0
+[2005-03-22 14:36:58:79771] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirRight
+[2005-03-22 14:36:58:80065] result of findNextActiveCell: 0
+[2005-03-22 14:36:58:36682] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirLeft
+[2005-03-22 14:36:58:65401] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirLeft
+[2005-03-22 14:36:58:96200] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirLeft
+[2005-03-22 14:37:11:32411] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirDown
+[2005-03-22 14:37:11:32442] result of findNextActiveCell: 0
+[2005-03-22 14:37:12:86350] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirRight
+[2005-03-22 14:37:12:86378] result of findNextActiveCell: 0
+[2005-03-22 14:37:13:51001] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:37:13:51030] result of findNextActiveCell: 0
+[2005-03-22 14:37:14:18016] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:37:14:18057] result of findNextActiveCell: 0
+[2005-03-22 14:37:15:33243] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirDown
+[2005-03-22 14:37:15:33272] result of findNextActiveCell: 0
+[2005-03-22 14:37:15:84666] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirUp
+[2005-03-22 14:40:39:93515] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Blink] CyanF WhiteB,CursesStyle (Attr 2621440) (Pair 3)),(ColorlessStyle [Blink],ColorlessCursesStyle (Attr 524288))]
+[2005-03-22 14:40:39:93711] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:40:39:93739] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:40:40:70092] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:40:40:70122] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:42:40:67200] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Blink] CyanF WhiteB,CursesStyle (Attr 2621440) (Pair 3)),(ColorlessStyle [Blink],ColorlessCursesStyle (Attr 524288))]
+[2005-03-22 14:42:40:67413] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:42:40:67445] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:42:41:51460] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:42:41:51492] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:42:42:43975] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-22 14:42:42:44284] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:42:42:51057] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirDown
+[2005-03-22 14:42:42:51158] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:42:42:81855] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirDown
+[2005-03-22 14:42:42:81879] result of findNextActiveCell: Just (4,0)
+[2005-03-22 14:42:43:55511] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirDown
+[2005-03-22 14:42:43:55753] result of findNextActiveCell: Nothing
+[2005-03-22 14:42:43:52229] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirRight
+[2005-03-22 14:42:43:52255] result of findNextActiveCell: Just (4,2)
+[2005-03-22 14:42:44:30645] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirUp
+[2005-03-22 14:42:44:31078] result of findNextActiveCell: Just (3,2)
+[2005-03-22 14:42:44:25177] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirUp
+[2005-03-22 14:42:44:25203] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:47:51:57841] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Blink] CyanF WhiteB,CursesStyle (Attr 2621440) (Pair 3)),(ColorlessStyle [Blink],ColorlessCursesStyle (Attr 524288))]
+[2005-03-22 14:47:51:58047] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:47:51:58077] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:47:52:34536] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:47:52:34564] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:47:55:59065] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:47:55:59095] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:47:59:97844] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-22 14:47:59:97875] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:48:13:85136] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:48:13:85420] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:48:14:45630] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirDown
+[2005-03-22 14:48:14:45657] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:48:15:16786] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirDown
+[2005-03-22 14:48:15:16812] result of findNextActiveCell: Just (3,2)
+[2005-03-22 14:48:15:91134] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirDown
+[2005-03-22 14:48:15:91160] result of findNextActiveCell: Just (4,2)
+[2005-03-22 14:48:16:51239] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirLeft
+[2005-03-22 14:48:16:51274] result of findNextActiveCell: Just (4,0)
+[2005-03-22 14:48:16:72322] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirLeft
+[2005-03-22 14:48:16:72350] result of findNextActiveCell: Nothing
+[2005-03-22 14:48:17:20893] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirUp
+[2005-03-22 14:48:17:21149] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:48:17:44524] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-22 14:48:17:44550] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:48:18:45805] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:48:18:45833] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:48:34:57708] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirDown
+[2005-03-22 14:48:34:57999] result of findNextActiveCell: Just (3,2)
+[2005-03-22 14:48:35:25529] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirDown
+[2005-03-22 14:48:35:25571] result of findNextActiveCell: Just (4,2)
+[2005-03-22 14:48:36:41830] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirLeft
+[2005-03-22 14:48:36:41857] result of findNextActiveCell: Just (4,0)
+[2005-03-22 14:48:36:94278] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirDown
+[2005-03-22 14:48:36:94304] result of findNextActiveCell: Nothing
+[2005-03-22 14:48:37:23526] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirUp
+[2005-03-22 14:48:37:23552] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:48:37:42458] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-22 14:48:37:42485] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:48:37:74093] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirUp
+[2005-03-22 14:48:37:74121] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:48:38:52697] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirUp
+[2005-03-22 14:48:38:52724] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:48:44:59846] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:48:44:59873] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:48:44:86747] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-22 14:48:44:86775] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:48:45:62453] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirDown
+[2005-03-22 14:48:45:62480] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:48:46:54256] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirDown
+[2005-03-22 14:48:46:54283] result of findNextActiveCell: Just (4,0)
+[2005-03-22 14:48:52:76042] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirUp
+[2005-03-22 14:48:52:76069] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:48:53:15518] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-22 14:48:53:15544] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:48:59:48509] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:48:59:48536] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:48:59:73978] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirRight
+[2005-03-22 14:48:59:74003] result of findNextActiveCell: Nothing
+[2005-03-22 14:49:01:40111] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirLeft
+[2005-03-22 14:49:01:40138] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:49:01:80442] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:49:01:80472] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:51:38:47824] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Blink] CyanF WhiteB,CursesStyle (Attr 2621440) (Pair 3)),(ColorlessStyle [Blink],ColorlessCursesStyle (Attr 524288))]
+[2005-03-22 14:51:38:48029] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:51:38:48058] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:51:39:50055] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:51:39:50349] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:51:39:92326] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-22 14:51:39:92359] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:51:41:43217] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:51:41:43316] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:52:22:75668] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Blink] CyanF WhiteB,CursesStyle (Attr 2621440) (Pair 3)),(ColorlessStyle [Blink],ColorlessCursesStyle (Attr 524288))]
+[2005-03-22 14:52:22:75865] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:52:22:75895] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:52:23:39015] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:52:23:39046] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:52:24:10978] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:52:24:11007] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:52:25:42066] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirDown
+[2005-03-22 14:52:25:42095] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:52:47:64690] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirDown
+[2005-03-22 14:52:47:64720] result of findNextActiveCell: Just (3,2)
+[2005-03-22 14:52:48:59332] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirDown
+[2005-03-22 14:52:48:59358] result of findNextActiveCell: Just (4,2)
+[2005-03-22 14:52:49:22117] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirLeft
+[2005-03-22 14:52:49:22160] result of findNextActiveCell: Just (4,0)
+[2005-03-22 14:52:49:57160] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirUp
+[2005-03-22 14:52:49:57186] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:52:49:86648] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-22 14:52:49:86672] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:52:51:95088] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirUp
+[2005-03-22 14:52:51:95116] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:52:55:54247] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:52:55:54274] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:53:01:66104] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirUp
+[2005-03-22 14:53:01:66131] result of findNextActiveCell: Just (0,2)
+[2005-03-22 14:53:02:52370] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,2), dir=DirLeft
+[2005-03-22 14:53:02:52400] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:53:02:87919] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:53:02:87944] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:53:03:22972] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-22 14:53:03:22999] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:53:03:96547] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirUp
+[2005-03-22 14:53:03:96575] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:53:04:82015] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-22 14:53:04:82042] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:53:05:55298] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirDown
+[2005-03-22 14:53:05:55325] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:53:05:95591] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-22 14:53:05:95626] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:53:06:22438] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirUp
+[2005-03-22 14:53:06:22463] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:53:06:75717] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirUp
+[2005-03-22 14:53:06:75745] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:53:08:48280] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:53:08:48309] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:53:10:74061] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirUp
+[2005-03-22 14:53:10:74088] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:53:11:21245] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:53:11:21272] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:53:45:92500] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Bold] CyanF WhiteB,CursesStyle (Attr 2097152) (Pair 3)),(ColorlessStyle [Dim],ColorlessCursesStyle (Attr 1048576))]
+[2005-03-22 14:53:45:29000] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:53:45:32370] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:53:45:73640] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:53:45:73674] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:53:46:61189] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:53:46:61217] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:53:54:38071] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-22 14:53:54:38105] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:54:09:43056] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [] CyanF WhiteB,CursesStyle (Attr 2097152) (Pair 3)),(ColorlessStyle [Dim],ColorlessCursesStyle (Attr 1048576))]
+[2005-03-22 14:54:09:43262] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:54:09:43294] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:54:10:12637] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:54:10:12669] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:54:10:70635] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:54:10:70666] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:54:12:86238] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-22 14:54:12:86270] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:54:24:64014] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Reverse] CyanF WhiteB,CursesStyle (Attr 2359296) (Pair 3)),(ColorlessStyle [Dim],ColorlessCursesStyle (Attr 1048576))]
+[2005-03-22 14:54:24:66076] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:54:24:66364] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:54:24:60889] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:54:24:60917] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:54:25:83297] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:54:25:83601] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:54:26:80580] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-22 14:54:26:80879] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:54:27:93038] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:54:27:93067] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:54:29:47129] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-22 14:54:29:47157] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:54:44:63213] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-03-22 14:54:44:65277] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:54:44:65584] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:54:44:60869] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:54:44:60898] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:54:45:56353] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 14:54:45:56720] result of findNextActiveCell: Just (1,2)
+[2005-03-22 14:54:46:52261] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirDown
+[2005-03-22 14:54:46:52290] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:54:48:21540] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirLeft
+[2005-03-22 14:54:48:21567] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:54:49:38678] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:54:49:38706] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:55:04:78192] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirDown
+[2005-03-22 14:55:04:78219] result of findNextActiveCell: Just (3,2)
+[2005-03-22 14:55:05:39886] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirDown
+[2005-03-22 14:55:05:39912] result of findNextActiveCell: Just (4,2)
+[2005-03-22 14:55:06:31967] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirLeft
+[2005-03-22 14:55:06:31992] result of findNextActiveCell: Just (4,0)
+[2005-03-22 14:55:07:27194] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirRight
+[2005-03-22 14:55:07:27221] result of findNextActiveCell: Just (4,2)
+[2005-03-22 14:55:07:96548] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirUp
+[2005-03-22 14:55:07:96576] result of findNextActiveCell: Just (3,2)
+[2005-03-22 14:55:08:26817] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirLeft
+[2005-03-22 14:55:08:26842] result of findNextActiveCell: Just (3,0)
+[2005-03-22 14:55:51:36583] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-22 14:55:51:36866] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:55:51:39753] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:55:51:39778] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:56:50:42850] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirLeft
+[2005-03-22 14:56:50:42878] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:57:16:97919] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-03-22 14:57:16:99871] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:57:16:10015] result of findNextActiveCell: Just (0,0)
+[2005-03-22 14:57:16:61490] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 14:57:16:61518] result of findNextActiveCell: Just (1,0)
+[2005-03-22 14:57:17:20450] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-22 14:57:17:20752] result of findNextActiveCell: Just (2,0)
+[2005-03-22 14:57:17:80083] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-22 14:57:17:80184] result of findNextActiveCell: Just (2,2)
+[2005-03-22 14:57:56:90020] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-03-22 14:57:56:92157] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 14:57:56:92468] result of findNextActiveCell: Just (0,0)
+[2005-03-22 15:03:37:85401] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]
+[2005-03-22 15:04:02:80352] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style CyanF PurpleB,CursesStyle (Attr 2097152) (Pair 2))]
+[2005-03-22 15:10:43:85764] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-03-22 15:10:43:85970] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-22 15:10:43:85999] result of findNextActiveCell: Just (0,0)
+[2005-03-22 15:10:44:88739] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-22 15:10:44:88768] result of findNextActiveCell: Just (1,0)
+[2005-03-22 15:10:45:46437] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-22 15:10:45:46467] result of findNextActiveCell: Just (2,0)
+[2005-03-22 15:10:46:10169] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirUp
+[2005-03-22 15:10:46:11238] result of findNextActiveCell: Just (1,0)
+[2005-03-22 15:10:46:33526] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 15:10:46:33552] result of findNextActiveCell: Just (1,2)
+[2005-03-22 15:10:48:77145] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-22 15:10:48:77172] result of findNextActiveCell: Just (1,0)
+[2005-03-22 15:10:49:71879] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-22 15:10:49:71905] result of findNextActiveCell: Just (1,2)
+[2005-03-22 15:10:50:11945] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirDown
+[2005-03-22 15:10:50:11972] result of findNextActiveCell: Just (2,2)
+[2005-03-23 15:29:32:38512] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-03-23 15:29:32:42782] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-23 15:29:32:42806] result of findNextActiveCell: Just (0,0)
+[2005-03-23 15:29:33:29952] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-23 15:29:33:29980] result of findNextActiveCell: Just (1,0)
+[2005-03-23 15:29:34:23199] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-23 15:29:34:23229] result of findNextActiveCell: Just (1,2)
+[2005-03-23 15:29:36:22359] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-23 15:29:36:22388] result of findNextActiveCell: Just (1,0)
+[2005-03-23 15:29:37:22423] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-23 15:29:37:22449] result of findNextActiveCell: Just (1,2)
+[2005-03-23 15:29:38:29539] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirLeft
+[2005-03-23 15:29:38:29567] result of findNextActiveCell: Just (1,0)
+[2005-03-23 15:29:38:60578] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-23 15:29:38:60603] result of findNextActiveCell: Just (2,0)
+[2005-03-23 15:29:39:18925] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-23 15:29:39:18951] result of findNextActiveCell: Just (2,2)
+[2005-03-23 15:29:56:84860] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-03-23 15:29:56:85035] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-23 15:29:56:85056] result of findNextActiveCell: Just (0,0)
+[2005-03-23 15:29:57:81574] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-23 15:29:57:81601] result of findNextActiveCell: Just (1,0)
+[2005-03-23 15:29:58:18383] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-03-23 15:29:58:18412] result of findNextActiveCell: Just (2,0)
+[2005-03-23 15:29:58:43800] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-23 15:29:58:43892] result of findNextActiveCell: Just (2,2)
+[2005-03-23 15:30:10:67313] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style CyanF PurpleB,CursesStyle (Attr 2097152) (Pair 2))]
+[2005-03-30 08:12:47:86815] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-03-30 08:12:47:91115] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-03-30 08:12:47:91147] result of findNextActiveCell: Just (0,0)
+[2005-03-30 08:12:48:81678] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-03-30 08:12:48:81708] result of findNextActiveCell: Just (1,0)
+[2005-03-30 08:12:49:27658] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirRight
+[2005-03-30 08:12:49:27686] result of findNextActiveCell: Just (1,2)
+[2005-03-30 08:12:50:22130] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,2), dir=DirDown
+[2005-03-30 08:12:50:22158] result of findNextActiveCell: Just (2,2)
+[2005-03-30 08:12:53:17954] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirDown
+[2005-03-30 08:12:53:17979] result of findNextActiveCell: Just (3,2)
+[2005-03-30 08:12:53:54756] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirLeft
+[2005-03-30 08:12:53:54780] result of findNextActiveCell: Just (3,0)
+[2005-03-30 08:12:54:22960] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-30 08:12:54:23001] result of findNextActiveCell: Just (2,0)
+[2005-03-30 08:12:54:53744] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirDown
+[2005-03-30 08:12:54:53768] result of findNextActiveCell: Just (3,0)
+[2005-03-30 08:12:55:15554] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirUp
+[2005-03-30 08:12:55:17491] result of findNextActiveCell: Just (2,0)
+[2005-03-30 08:12:55:45527] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirRight
+[2005-03-30 08:12:55:45551] result of findNextActiveCell: Just (2,2)
+[2005-03-30 08:12:56:13623] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,2), dir=DirDown
+[2005-03-30 08:12:56:13651] result of findNextActiveCell: Just (3,2)
+[2005-03-30 08:12:56:41184] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirDown
+[2005-03-30 08:12:56:41209] result of findNextActiveCell: Just (4,2)
+[2005-03-30 08:12:57:14607] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirDown
+[2005-03-30 08:12:57:14632] result of findNextActiveCell: Nothing
+[2005-03-30 08:12:59:36301] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,2), dir=DirLeft
+[2005-03-30 08:12:59:36704] result of findNextActiveCell: Just (4,0)
+[2005-03-30 08:12:59:86129] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(4,0), dir=DirUp
+[2005-03-30 08:12:59:86156] result of findNextActiveCell: Just (3,0)
+[2005-03-30 08:13:00:71119] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirRight
+[2005-03-30 08:13:00:71145] result of findNextActiveCell: Just (3,2)
+[2005-03-30 08:13:01:15080] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirUp
+[2005-03-30 08:13:01:15107] result of findNextActiveCell: Just (2,2)
+[2005-05-16 11:28:34:54138] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]
+[2005-05-16 11:28:50:74756] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style CyanF PurpleB,CursesStyle (Attr 2097152) (Pair 2))]
+[2005-05-16 11:29:01:78516] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-05-16 11:29:01:78607] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,-1), dir=DirRight
+[2005-05-16 11:29:01:78615] result of findNextActiveCell: Just (0,0)
+[2005-05-16 11:29:02:51597] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(0,0), dir=DirDown
+[2005-05-16 11:29:02:51607] result of findNextActiveCell: Just (1,0)
+[2005-05-16 11:29:02:86789] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(1,0), dir=DirDown
+[2005-05-16 11:29:02:86799] result of findNextActiveCell: Just (2,0)
+[2005-05-16 11:29:03:12385] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(2,0), dir=DirDown
+[2005-05-16 11:29:03:12422] result of findNextActiveCell: Just (3,0)
+[2005-05-16 11:29:03:73179] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,0), dir=DirRight
+[2005-05-16 11:29:03:73187] result of findNextActiveCell: Just (3,2)
+[2005-05-16 11:29:04:20369] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirUp
+[2005-05-16 11:29:04:20378] result of findNextActiveCell: Just (2,2)
+[2005-06-05 10:38:56:38703] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]

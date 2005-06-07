@@ -1,0 +1,11 @@
+John Meacham (john at repetae dot net) started the binding for his
+chat client Ginsu (http://repetae.net/john/computer/ginsu/).
+
+Tuomo Valkonen (tuomov at iki.fi) integrated to code into Riot
+(http://modeemi.fi/~tuomov/riot/), with minor modifications.
+
+Don Stewart (http://www.cse.unsw.edu.au/~dons) improved the code for
+the Yi editor (http://www.cse.unsw.edu.au/~dons/yi.html).
+
+Stefan Wehr (http://www.stefanwehr.de) turned the binding into a
+standalone library. He also added some basic widgets.

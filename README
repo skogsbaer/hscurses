@@ -1,0 +1,48 @@
+               hscurses -- A Haskell Binding to NCurses
+               =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
+
+hscurses is a Haskell binding to the NCurses library, a library of
+functions that manage an application's display on character-cell
+terminals. Additionally, it contains some basic widgets such as
+a text input widget and a table widget.
+
+Copyright:
+
+   John Meacham <john at repetae dot net>, 2002-2004.
+   Tuomo Valkonen <tuomov at iki.fi>, 2004.
+   Don Stewart <http://www.cse.unsw.edu.au/~dons>, 2004.
+   Stefan Wehr <http://www.stefanwehr.de>, 2004-2005.
+
+The HSCurses library has been reported to work on Linux x86 using GHC
+6.2 and 6.4; support for NHC98 is planned as soon as Cabal supports
+it.
+
+
+Building and installing the HSCurses library:
+---------------------------------------------
+
+Requirements:
+
+- GNU make
+- GNU m4
+- GHC >= 6.2
+
+Build and installation steps:
+
+  ./configure
+  make
+  make install      # probably as root
+  make register     # probably as root
+
+In order to generate the API documentation, you need haddock
+(http://www.haskell.org/haddock). The command is then:
+
+  make doc          # result goes to ./html
+
+
+Using the HSCurses library:
+---------------------------
+
+Just add the flag `-package hscurses' to the compiler flags. At the
+moment, user documentation is only available through Haddock API
+documentation.
