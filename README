@@ -17,7 +17,7 @@ The HSCurses library has been reported to work on Linux x86 and OpenBSD
 using GHC 6.2 and 6.4.
 
 
-Building and installing the HSCurses library:
+Building and installing the hscurses library:
 ---------------------------------------------
 
 Requirements:
@@ -39,7 +39,7 @@ In order to generate the API documentation, you need haddock
   make doc          # result goes to ./html
 
 
-Using the HSCurses library:
+Using the hscurses library:
 ---------------------------
 
 Just add the flag `-package hscurses' to the compiler flags. At the
