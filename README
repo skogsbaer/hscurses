@@ -22,7 +22,7 @@ Requirements:
 
 Build and installation steps:
 
-  ./configure
+  sh configure
   make
   make install      # probably as root
   make register     # probably as root
