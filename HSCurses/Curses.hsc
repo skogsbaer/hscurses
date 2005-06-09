@@ -786,28 +786,8 @@ wAddStr win str = do
 --
 wAddStr :: Window -> [Char] -> IO ()
 wAddStr _   [] = return ()
-wAddStr win s  = throwIfErr_ "waddnstr" $
+wAddStr win s  = throwIfErr_ ("waddnstr: <" ++ s ++ ">") $
     withLCStringLen (s) (\(ws,len) -> waddnstr win ws (fi len))
-
-{-
-wAddStr :: Window -> String -> IO ()
-wAddStr win str = do
-    let convStr f = case f [] of
-            [] -> return ()
-            s  -> case normalise s of
-                    s' -> throwIfErr_ "waddnstr" $ 
-                        withLCStringLen s' (\(ws,len) -> 
-                            waddnstr win ws (fi len))   -- write to screen
-
-    let loop []     acc = convStr acc
-        loop (c:cs) acc = 
-            recognize c 
-                (loop cs $ acc . (c:))
-                (\c' -> do convStr acc                 -- draw accumulated chars
-                           throwIfErr "waddch" $ waddch win c' -- draw this char
-                           loop cs id )
-    loop str id 
--}
 
 foreign import ccall threadsafe
     waddnstr :: Window -> CString -> CInt -> IO CInt
@@ -823,29 +803,6 @@ foreign import ccall threadsafe
 
 #endif
 
-{-
-
-wAddStr :: Window -> String -> IO ()
-wAddStr w str =  withLCStringLen (normalise str) (\(ws,len) -> throwIfErr_ ("waddnstr: " ++ show len ++ " " ++ show str) $ waddnstr w ws (fi len))
-foreign import ccall unsafe waddch :: Window -> (#type chtype) -> IO CInt
-
-wAddStr :: Window -> String -> IO ()
-wAddStr win str = do
-    let
-        convStr f = case f [] of
-            [] -> return ()
-            s  -> throwIfErr_ "waddnstr" $
-                withLCString  (normalise s) (\(ws,len) ->  (waddnstr win ws (fi len)))
-        loop []        acc = convStr acc
-        loop (ch:str') acc = recognize
-            ch
-            (loop str' (acc . (ch:)))
-            (\ch' -> do
-                convStr acc
-                throwIfErr "waddch" $ waddch win ch'
-                loop str' id)
-    loop str id 
--}
 ------------------------------------------------------------------------
 
 --

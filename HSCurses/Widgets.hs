@@ -32,7 +32,10 @@ import HSCurses.MonadException
 
 type Pos = (Int, Int)
 type Offset = (Int, Int)
-type Size = (Int, Int)
+
+type Size = (Int, -- ^ height
+             Int  -- ^ width
+            )
 
 getHeight :: Size -> Int
 getHeight = fst
@@ -392,8 +395,8 @@ newTextWidget opts s = TextWidget
 
 drawTextWidget :: Pos -> Size -> DrawingHint -> TextWidget -> IO ()
 drawTextWidget (y, x) (height, width) hint tw = 
-    let ly = take height (drop (tw_yoffset tw) (lines (tw_text tw)))
-        l = take height $ map (drop (tw_xoffset tw)) ly ++ repeat []
+    let ly = take height $ drop (tw_yoffset tw) (lines (tw_text tw))
+        l = take height $ (map (drop (tw_xoffset tw)) ly ++ repeat [])
     in do _draw hint (twopt_style . tw_options $ tw) 
                       (mapM drawLine $ zip l [0..])
           Curses.refresh
@@ -475,7 +478,7 @@ data TableWidget = TableWidget
       tbw_colOffset  :: Int,
       tbw_pos      :: Maybe Pos,
       tbw_options  :: TableWidgetOptions }
-
+                     
 data TableWidgetOptions = TBWOptions
     { tbwopt_fillCol    :: Maybe Int,
       tbwopt_activeCols :: [Int] }
