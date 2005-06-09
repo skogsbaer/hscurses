@@ -462,6 +462,9 @@ _activateTableCell refresh pos sz (ActiveTableCell w) =
 
 type Row = [TableCell]
 
+singletonRow :: TableCell -> Row
+singletonRow tc = [tc]
+
 getCellWidget :: TableWidget -> (Int, Int) -> TableCell
 getCellWidget tbw (row, col) = (tbw_rows tbw) !! row !! col
 
@@ -481,12 +484,18 @@ data TableWidget = TableWidget
                      
 data TableWidgetOptions = TBWOptions
     { tbwopt_fillCol    :: Maybe Int,
-      tbwopt_activeCols :: [Int] }
+      tbwopt_activeCols :: [Int],
+      tbwopt_minSize    :: Size }
     deriving (Eq, Show)
 
 defaultTBWOptions = TBWOptions
                     { tbwopt_fillCol = Nothing,
-                      tbwopt_activeCols = []}
+                      tbwopt_activeCols = [],
+                      tbwopt_minSize = (4, 10) }
+
+instance Widget TableWidget where
+    draw      = drawTableWidget
+    minSize   = tbwopt_minSize . tbw_options  
 
 newTableWidget :: TableWidgetOptions -> [Row] -> TableWidget
 newTableWidget opts rows = TableWidget
