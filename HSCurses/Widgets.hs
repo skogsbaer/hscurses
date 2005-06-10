@@ -130,6 +130,17 @@ scrollBackward dataLen offset displayLen =
        then offset
        else max (offset - scrollBy displayLen) 0
 
+
+--
+-- EmptyWidget
+--
+
+data EmptyWidget = EmptyWidget Size
+
+instance Widget EmptyWidget where
+    draw _ _ _ _ = return ()
+    minSize (EmptyWidget sz) = sz
+
 --
 -- Widget for text input
 --
@@ -362,7 +373,7 @@ data TextWidget = TextWidget
 instance Widget TextWidget where
     draw = drawTextWidget
     minSize tw = 
-        case twopt_minSize $ tw_options tw of
+        case twopt_size $ tw_options tw of
           TWSizeDefault -> let l = lines (tw_text tw)
                            in (length l, maximum (map length l))
           TWSizeFixed sz -> sz
@@ -371,18 +382,18 @@ data TextWidgetSize = TWSizeDefault    -- minimal size determined by content
                     | TWSizeFixed Size -- minimal size is fixed, content is
                                        -- possibly cut off
                       deriving (Eq, Show)
-
                                  {-
                     | Autowrap   -- minimal width determined by content,
                                  -- but lines are wrapped if necessary
-                                 -}                  
+                                 -}            
+      
 data TextWidgetOptions = TWOptions
-    { twopt_minSize   :: TextWidgetSize,
+    { twopt_size   :: TextWidgetSize,
       twopt_style     :: DrawingStyle }
     deriving (Eq, Show)
 
 defaultTWOptions = TWOptions
-                { twopt_minSize = TWSizeDefault,
+                { twopt_size = TWSizeDefault,
                   twopt_style = defaultDrawingStyle }
 
 newTextWidget :: TextWidgetOptions -> String -> TextWidget
@@ -394,10 +405,11 @@ newTextWidget opts s = TextWidget
                        }
 
 drawTextWidget :: Pos -> Size -> DrawingHint -> TextWidget -> IO ()
-drawTextWidget (y, x) (height, width) hint tw = 
+drawTextWidget pos@(y, x) sz@(height, width) hint tw = 
     let ly = take height $ drop (tw_yoffset tw) (lines (tw_text tw))
         l = take height $ (map (drop (tw_xoffset tw)) ly ++ repeat [])
-    in do _draw hint (twopt_style . tw_options $ tw) 
+    in --trace ("drawing text widget at " ++ show pos ++ " with size " ++ show sz) $
+       do _draw hint (twopt_style . tw_options $ tw) 
                       (mapM drawLine $ zip l [0..])
           Curses.refresh
     where drawLine (s, i) = 
@@ -693,8 +705,8 @@ findFirstActiveCell rows opts =
 findNextActiveCell :: TableWidgetOptions -> Int  -> Pos -> Direction 
                    -> Maybe Pos
 findNextActiveCell opts nrows pos@(y,x) dir = 
-    trace ("findNextActiveCell (opts=" ++ show opts ++ ", nrows=" ++ show nrows
-           ++ ", pos=" ++ show pos ++ ", dir=" ++ show dir) $
+--    trace ("findNextActiveCell (opts=" ++ show opts ++ ", nrows=" ++ show nrows
+--           ++ ", pos=" ++ show pos ++ ", dir=" ++ show dir) $
     let rows = [0..(nrows - 1)]
         cols = sort (tbwopt_activeCols opts)
         horiz f = case f cols x rows y of
@@ -708,7 +720,8 @@ findNextActiveCell opts nrows pos@(y,x) dir =
                 DirRight -> horiz goRight
                 DirUp -> vert goLeft
                 DirDown -> vert goRight
-        in trace ("result of findNextActiveCell: " ++ show res) res
+        in --trace ("result of findNextActiveCell: " ++ show res) 
+           res
     where goLeft _ _ rows y | not (y `elem` rows) = Nothing
           goLeft cols x _ _ = 
               case reverse (takeWhile (<x) cols) of

@@ -44,6 +44,7 @@ module HSCurses.Curses (
     stdScr,             -- :: Window
     initScr,            -- :: IO Window
     initCurses,         -- :: IO ()
+    resetParams,
     endWin,             -- :: IO ()
     scrSize,            -- :: IO (Int, Int)
 
@@ -62,7 +63,7 @@ module HSCurses.Curses (
     getYX,    
     
     -- * Input 
-    getCh, 
+    getCh, getch, ungetCh, keyResizeCode,
 
     -- * Input Options
     cBreak,             -- :: Bool -> IO ()
@@ -171,6 +172,7 @@ module HSCurses.Curses (
 
 import HSCurses.CWString       ( withLCStringLen )
 import HSCurses.MonadException
+import HSCurses.Logging
 
 import Prelude hiding           ( pi )
 import Data.Char
@@ -180,6 +182,7 @@ import Data.Ix                  ( Ix )
 import Control.Monad
 import Control.Monad.Trans
 import Control.Concurrent
+import Control.Concurrent.Chan
 
 import Foreign
 import CForeign
@@ -201,6 +204,9 @@ initCurses = do
     initScr
     b <- hasColors
     when b $ startColor >> useDefaultColors
+
+resetParams :: IO ()
+resetParams = do
     raw True    -- raw mode please
     echo False
     nl False
@@ -981,12 +987,14 @@ foreign import ccall unsafe wclrtoeol :: Window -> IO CInt
 -- | >      The getch, wgetch, mvgetch and mvwgetch, routines read a
 --   >      character  from the window.
 --
-foreign import ccall threadsafe getch :: IO CInt
+foreign import ccall unsafe getch :: IO CInt
 
 --foreign import ccall unsafe def_prog_mode :: IO CInt
 --foreign import ccall unsafe reset_prog_mode :: IO CInt
 foreign import ccall unsafe flushinp :: IO CInt
 
+foreign import ccall unsafe "HSCurses.h noqiflush" 
+    noqiflush :: IO ()
 
 foreign import ccall unsafe "HSCurses.h beep" c_beep :: IO CInt
 foreign import ccall unsafe "HSCurses.h flash" c_flash :: IO CInt
@@ -1117,32 +1125,62 @@ decodeKey key = case key of
     (#const KEY_RESIZE)        -> KeyResize
 #endif
 #ifdef KEY_MOUSE
-    (#const KEY_MOUSE)        -> KeyMouse
+    (#const KEY_MOUSE)         -> KeyMouse
 #endif
     _                          -> KeyUnknown (fromIntegral key)
+
+keyResizeCode :: Maybe CInt
+#ifdef KEY_RESIZE
+keyResizeCode = Just (#const KEY_RESIZE)
+#else
+keyResizeCode = Nothing
+#endif
 
 -- ---------------------------------------------------------------------
 -- get char
 --
 
+-- ncurses ungetch and Haskell's threadWaitRead do not work together well.
+-- So I decided to implement my own input queue.
+
+ungetCh i = 
+    do debug "ungetCh called"
+       writeChan inputBuf (fi i)
+
+inputBuf :: Chan CInt
+inputBuf = unsafePerformIO newChan
+{-# NOINLINE inputBuf #-}
+
+getchToInputBuf :: IO ()
+getchToInputBuf =
+    do debug ("Curses.getchToInputBuf: calling threadWaitRead")
+       threadWaitRead (fi 0)
+       {- From the (n)curses manpage:
+       Programmers  concerned  about portability should be prepared for either
+       of two cases: (a) signal receipt does not interrupt getch;  (b)  signal
+       receipt  interrupts getch and causes it to return ERR with errno set to
+       EINTR.  Under the ncurses implementation, handled signals never  inter‐
+       rupt getch.
+       -}
+       debug ("Curses.getchToInputBuf: back from threadWaitRead, calling getch")
+       v <- getch
+       writeChan inputBuf v
 --
 -- | read a character from the window
 --
-getCh :: IO (Maybe Key)
+getCh :: IO Key
 getCh = 
-    do threadWaitRead 0
-       {- Although getch is declared as thread-safe, signal handlers
-          cannot run while getch is waiting for the next input character.
-          Hence, we suspend the current thread until data is available
-          and then call getch. -}
-       v <- getch
+    do tid <- forkIO getchToInputBuf
+       v <- readChan inputBuf
+       killThread tid
        case v of
          (#const ERR) -> -- NO CODE IN THIS LINE 
              do e <- getErrno
                 if e `elem` [eAGAIN, eINTR] 
-                   then getCh
+                   then do debug "Curses.getCh returned eAGAIN or eINTR" 
+                           getCh
                    else throwErrno "HSCurses.Curses.getch"
-         k -> return (Just $ decodeKey k)
+         k -> return (decodeKey k)
 
 
 resizeTerminal :: Int -> Int -> IO ()

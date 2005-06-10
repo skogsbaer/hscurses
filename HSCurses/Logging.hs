@@ -16,15 +16,18 @@
 -- License along with this library; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-module HSCurses.Logging (trace) where
+module HSCurses.Logging (trace,debug) where
 
 import IO
 import Time
 import Locale
 import Data.IORef
 import System.IO.Unsafe             ( unsafePerformIO )
+import Control.Monad.Trans
+
 
 trace :: String -> a -> a
+debug :: MonadIO m => String -> m ()
 
 #ifdef __DEBUG__
 
@@ -46,13 +49,20 @@ formatTime =
                ++ ":" ++ sdec)
 
 trace s x = 
-    unsafePerformIO $ do ts <- formatTime
-                         hPutStrLn logFile ("[" ++ ts ++ "] " ++ s)
-                         hFlush logFile
+    unsafePerformIO $ do debug s
                          return x
+
+debug s = liftIO $ debug_ s
+
+debug_ s =
+    do ts <- formatTime
+       hPutStrLn logFile ("[" ++ ts ++ "] " ++ s)
+       hFlush logFile
 
 #else
 
 trace _ x = x
+
+debug s = return ()
 
 #endif

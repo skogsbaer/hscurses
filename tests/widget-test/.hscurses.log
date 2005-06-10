@@ -422,3 +422,46 @@
 [2005-05-16 11:29:04:20369] findNextActiveCell (opts=TBWOptions {tbwopt_fillCol = Just 1, tbwopt_activeCols = [0,2]}, nrows=5, pos=(3,2), dir=DirUp
 [2005-05-16 11:29:04:20378] result of findNextActiveCell: Just (2,2)
 [2005-06-05 10:38:56:38703] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2))]
+[2005-06-10 20:40:58:40225] convertStyles: [(Style DefaultF DefaultB,CursesStyle (Attr 0) (Pair 1)),(Style WhiteF PurpleB,CursesStyle (Attr 0) (Pair 2)),(AttributeStyle [Dim] CyanF WhiteB,CursesStyle (Attr 3145728) (Pair 3)),(ColorlessStyle [Bold],ColorlessCursesStyle (Attr 2097152))]
+[2005-06-10 20:40:58:40385] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:40:59:30911] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:40:59:30930] getKey: KeyRight
+[2005-06-10 20:40:59:31000] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:40:59:80499] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:40:59:80515] getKey: KeyLeft
+[2005-06-10 20:40:59:80604] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:00:92940] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:00:93097] getKey: KeyDown
+[2005-06-10 20:41:00:93735] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:00:48492] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:00:48510] getKey: KeyRight
+[2005-06-10 20:41:00:48567] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:01:68861] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:01:69022] getKey: KeyDown
+[2005-06-10 20:41:01:69838] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:01:46074] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:01:46088] getKey: KeyLeft
+[2005-06-10 20:41:01:46169] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:01:74875] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:01:74892] getKey: KeyLeft
+[2005-06-10 20:41:01:74959] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:01:98069] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:01:98084] getKey: KeyDown
+[2005-06-10 20:41:01:98156] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:02:26863] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:02:26877] getKey: KeyRight
+[2005-06-10 20:41:02:26948] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:02:50059] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:02:50074] getKey: KeyRight
+[2005-06-10 20:41:02:50142] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:02:86061] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:02:86077] getKey: KeyUp
+[2005-06-10 20:41:02:86151] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:03:14051] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:03:14065] getKey: KeyLeft
+[2005-06-10 20:41:03:14138] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:03:48448] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:03:48463] getKey: KeyUp
+[2005-06-10 20:41:03:48526] Curses.getCh: calling threadWaitRead
+[2005-06-10 20:41:04:44240] Curses.getCh: back from threadWaitRead, calling getch
+[2005-06-10 20:41:04:45680] getKey: KeyChar 'q'

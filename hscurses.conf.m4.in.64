@@ -24,9 +24,9 @@ Description:
   a table widget.
 Exposed-modules:
     HSCurses.Curses, HSCurses.CursesHelper, HSCurses.Widgets,
-    HSCurses.MonadException
+    HSCurses.MonadException, HSCurses.Logging
 Hidden-modules:
-    HSCurses.CWString, HSCurses.IConv, HSCurses.Logging
+    HSCurses.CWString, HSCurses.IConv
 C-sources:      
     cbits/HSCursesUtils.c HSCurses/CWString_hsc.c HSCurses/Curses_hsc.c
 Includes:         HSCurses.h, HSCursesUtils.h

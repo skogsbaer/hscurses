@@ -6,7 +6,7 @@ import System
 
 row1 sty = map (TableCell . newTextWidget defaultTWOptions) ["1", "eins", "one"]
 row2 sty = TableCell (newTextWidget 
-                      (defaultTWOptions { twopt_minSize = 
+                      (defaultTWOptions { twopt_size = 
                                           TWSizeFixed (2,10),
                                           twopt_style = 
                                           mkDrawingStyle (sty!!2)}) "2")
@@ -19,7 +19,7 @@ row4 sty = map (TableCell . newTextWidget defaultTWOptions)
                ["4", "vier", "four"]
 row5 sty = map (TableCell . newTextWidget defaultTWOptions) ["5", "fuenf"]
            ++ [TableCell (newTextWidget 
-                          (defaultTWOptions {twopt_minSize = 
+                          (defaultTWOptions {twopt_size = 
                                              TWSizeFixed (1,6),
                                              twopt_style = 
                                              mkDrawingStyle (sty!!3)}) 
@@ -27,7 +27,7 @@ row5 sty = map (TableCell . newTextWidget defaultTWOptions) ["5", "fuenf"]
 
 rows sty = [row1 sty, row2 sty, row3 sty, row4 sty, row5 sty]
 
-tableWidget sty = newTableWidget (TBWOptions (Just 1) [0,2]) (rows sty)
+tableWidget sty = newTableWidget (TBWOptions (Just 1) [0,2] (10,10)) (rows sty)
 
 tableSize = (2, 50)
 tablePos = (1,0)

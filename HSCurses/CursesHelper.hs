@@ -78,36 +78,28 @@ import System.Posix.Signals
 --
 -- | @start@ initializes the UI and grabs the keyboard.
 --
--- This function does not install a handler for the SIGWINCH signal.
--- This signal is sent when the terminal size changes, so it seems
--- a good idea to catch the signal and redraw your application from
--- within the handler. This approach is problematic for 3 reasons:
---
--- 1. Redraw is performed asynchronously.
--- 2. The redraw function cannot live in an application-specific monad.
---    The only way to access the application's state (which is certainly
---    necessary for doing the redraw) is via IORefs or similar constructs.
--- 3. SIGWINCH is not available on all platforms
---
--- The IMHO better solution for reacting on changes of the terminal size
--- is to check if @HSCurses.Curses.getCh@ returns the 
--- @HSCurses.Curses.keyResize@ character. This solution is implemented by
--- the @getKey@ function. The callback passed to @getKey@ can now live
--- in an application-specific monad and so it's possible to use parts of the
--- application's state for redrawing. The only disadvantage of this solution
--- is that it is a bit slower than reacting on the SIGWINCH signal.
---
--- If you want to redraw your application from a SIGWINCH handler, you
--- have to do the following: Install an appropriate handler for
--- the SIGWINCH signal (if available for the platform); the
--- signal is defined as @HSCurses.Curses.cursesSigWinch@. The redraw
--- handler passed to @getKey@ should then perform the redraw only if 
--- the signal is not available for the platform.
+-- This function installs a handler for the SIGWINCH signal
+-- which writes the KEY_RESIZE key to the input queue (if KEY_RESIZE and
+-- and SIGWINCH are both available). 
 -- 
 start :: IO ()
 start = do
-    Curses.initCurses           -- initialise the screen
+    Curses.initCurses                   -- initialise the screen
+    Curses.resetParams
     Curses.keypad Curses.stdScr True    -- grab the keyboard
+    case (Curses.cursesSigWinch, Curses.keyResizeCode) of
+      (Just sig, Just key) ->
+          do installHandler sig (Catch $ sigwinch sig key) Nothing
+             return ()
+      _ -> debug ("cannot install SIGWINCH handler: signal=" ++ 
+                  show Curses.cursesSigWinch ++ ", KEY_RESIZE=" ++ 
+                  show Curses.keyResizeCode)
+    where sigwinch sig key = 
+              do debug "SIGWINCH signal received"
+                 Curses.ungetCh key
+                 installHandler sig (Catch $ sigwinch sig key) Nothing
+                 return ()
+
 
 
 --
@@ -135,11 +127,12 @@ suspend = raiseSignal sigTSTP
 getKey :: MonadIO m => m () -> m Key
 getKey refresh = do
     k <- liftIO $ Curses.getCh
+    debug ("getKey: " ++ show k)
     case k of
-        Nothing -> getKey refresh
-        Just KeyResize -> do refresh
-                             getKey refresh
-        Just k' -> return k'
+      KeyResize -> 
+          do refresh
+             getKey refresh
+      _ -> return k
 
 
 --
