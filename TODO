@@ -1,3 +1,6 @@
+* Examples:
+  - `add' command for contact manager
+
 * Keys:
   - ENTER returns (KeyChar '\r'), but what is KeyEnter good for?  (**)
   - TAB returns (KeyChar '\t')
