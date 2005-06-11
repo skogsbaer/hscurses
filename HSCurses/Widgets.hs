@@ -58,6 +58,9 @@ getXPos = snd
 data Direction = DirLeft | DirRight | DirUp | DirDown
                deriving (Eq, Show, Ord)
 
+data HAlignment = AlignLeft | AlignCenter | AlignRight
+               deriving (Eq, Show)
+
 data Cont a = Cont a | Done a
 
 class Widget a where
@@ -140,6 +143,22 @@ data EmptyWidget = EmptyWidget Size
 instance Widget EmptyWidget where
     draw _ _ _ _ = return ()
     minSize (EmptyWidget sz) = sz
+
+
+--
+-- An opaque widget
+--
+
+data OpaqueWidget = OpaqueWidget Size
+
+instance Widget OpaqueWidget where
+    draw pos@(y,x) sz@(h,w) _ _ = 
+        let draw' n =
+                do Curses.wMove Curses.stdScr (y+n) x
+                   CursesH.drawLine w ""
+        in do mapM draw' (take h [0..])
+              Curses.refresh
+    minSize (OpaqueWidget sz) = sz
 
 --
 -- Widget for text input
@@ -375,7 +394,7 @@ instance Widget TextWidget where
     minSize tw = 
         case twopt_size $ tw_options tw of
           TWSizeDefault -> let l = lines (tw_text tw)
-                           in (length l, maximum (map length l))
+                           in (length l, if null l then 0 else maximum (map length l))
           TWSizeFixed sz -> sz
 
 data TextWidgetSize = TWSizeDefault    -- minimal size determined by content
@@ -389,12 +408,14 @@ data TextWidgetSize = TWSizeDefault    -- minimal size determined by content
       
 data TextWidgetOptions = TWOptions
     { twopt_size   :: TextWidgetSize,
-      twopt_style     :: DrawingStyle }
+      twopt_style  :: DrawingStyle,
+      twopt_halign :: HAlignment }  
     deriving (Eq, Show)
 
 defaultTWOptions = TWOptions
                 { twopt_size = TWSizeDefault,
-                  twopt_style = defaultDrawingStyle }
+                  twopt_style = defaultDrawingStyle,
+                  twopt_halign = AlignLeft }
 
 newTextWidget :: TextWidgetOptions -> String -> TextWidget
 newTextWidget opts s = TextWidget 
@@ -408,9 +429,10 @@ drawTextWidget :: Pos -> Size -> DrawingHint -> TextWidget -> IO ()
 drawTextWidget pos@(y, x) sz@(height, width) hint tw = 
     let ly = take height $ drop (tw_yoffset tw) (lines (tw_text tw))
         l = take height $ (map (drop (tw_xoffset tw)) ly ++ repeat [])
+        l' = map (align (twopt_halign $ tw_options tw) width ' ') l
     in --trace ("drawing text widget at " ++ show pos ++ " with size " ++ show sz) $
        do _draw hint (twopt_style . tw_options $ tw) 
-                      (mapM drawLine $ zip l [0..])
+                      (mapM drawLine $ zip l' [0..])
           Curses.refresh
     where drawLine (s, i) = 
               do Curses.wMove Curses.stdScr (y + i) x
@@ -494,14 +516,18 @@ data TableWidget = TableWidget
       tbw_pos      :: Maybe Pos,
       tbw_options  :: TableWidgetOptions }
                      
+data FillRow = First | Last | None deriving (Eq,Show)
+
 data TableWidgetOptions = TBWOptions
     { tbwopt_fillCol    :: Maybe Int,
+      tbwopt_fillRow    :: FillRow,
       tbwopt_activeCols :: [Int],
       tbwopt_minSize    :: Size }
     deriving (Eq, Show)
 
 defaultTBWOptions = TBWOptions
                     { tbwopt_fillCol = Nothing,
+                      tbwopt_fillRow = None,
                       tbwopt_activeCols = [],
                       tbwopt_minSize = (4, 10) }
 
@@ -516,7 +542,6 @@ newTableWidget opts rows = TableWidget
                                 tbw_pos = findFirstActiveCell rows opts,
                                 tbw_options = opts }
 
-
 data TableWidgetDisplayInfo = 
     TBWDisplayInfo
     { tbwdisp_height     :: Int   -- height of the display area
@@ -527,6 +552,8 @@ data TableWidgetDisplayInfo =
     , tbwdisp_nrows      :: Int   -- the number of rows visible
     , tbwdisp_heights    :: [Int] -- the heights of the visible rows
     , tbwdisp_widths     :: [Int] -- the widths of the visible rows
+      -- free space at the right side (xoffset, size)
+    , tbwdisp_rightMargin :: Maybe (Int, Size) 
     }
 
 tableWidgetDisplayInfo :: Size -> TableWidget -> TableWidgetDisplayInfo
@@ -539,31 +566,44 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
         heights' = drop colOffset allHeights
         nrows = getNRows heights' 0 0
         rows = take nrows $ drop colOffset allRows
-        heights = let hs = take nrows heights'
-                      s = sum hs
-                      d = height - s
-                      in applyToLast (+d) hs
+        (heights, heightDummy) = 
+            let hs = take nrows heights'
+                s = sum hs
+                d = height - s
+                in case tbwopt_fillRow $ tbw_options tbw of
+                     First -> (applyToFirst (+d) hs, 0)
+                     Last -> (applyToLast (+d) hs, 0)
+                     None -> (hs, d)
         widths' = minSpaces getWidth (transpose $ tbw_rows tbw)
-        widths = 
+        (widths, rightMargin) = 
             if sum widths' > width 
                then error ("table to wide: width=" ++ show (sum widths') ++
                            ", available width=" ++ show width)
                else case tbwopt_fillCol $ tbw_options tbw of
                       Just i | i >= 0 && i < ncols
-                                 -> take i widths' ++ 
-                                    let rest = drop i widths'
-                                    in (head rest + width - sum widths') :
-                                       tail rest
-                      _ -> widths'
+                                 -> (take i widths' ++ 
+                                     let rest = drop i widths'
+                                     in (head rest + width - sum widths') : tail rest
+                                    , Nothing)
+                      _ -> let diff = width - sum widths'
+                               msz = (height, diff)
+                               m = if diff > 0 then Just (sum widths', msz) 
+                                   else Nothing
+                           in (widths', m)
+        dummyHeights = if heightDummy == 0 then [] else [heightDummy]
+        dummyRows = if heightDummy == 0 then [] 
+                    else [map (\w -> TableCell (OpaqueWidget (heightDummy, w))) 
+                          widths]
         in TBWDisplayInfo
                { tbwdisp_height = height
                , tbwdisp_width = width
                , tbwdisp_firstVis = colOffset
                , tbwdisp_lastVis = colOffset + nrows - 1
-               , tbwdisp_rows = rows
-               , tbwdisp_nrows = nrows
-               , tbwdisp_heights = heights
+               , tbwdisp_rows = rows ++ dummyRows
+               , tbwdisp_nrows = nrows + length dummyRows
+               , tbwdisp_heights = heights ++ dummyHeights
                , tbwdisp_widths = widths
+               , tbwdisp_rightMargin = rightMargin
                }
     where
         minSpaces f ls = 
@@ -577,20 +617,25 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
         isQuadratic (x:xs) = isQuadratic' xs (length x)
         isQuadratic' (x:xs) n = length x == n && isQuadratic' xs n
         isQuadratic' [] _ = True
+        applyToFirst f [] = []
+        applyToFirst f (x:xs) = f x : xs
         applyToLast f [] = []
         applyToLast f l = 
             let (h, t) = (head $ reverse l, tail $ reverse l)
                 in reverse $ f h : t
 
 drawTableWidget :: Pos -> Size -> DrawingHint -> TableWidget -> IO ()
-drawTableWidget _ _ _ tbw | null (tbw_rows tbw) = return ()
 drawTableWidget pos@(y, x) sz hint tbw = 
     let info = tableWidgetDisplayInfo sz tbw
         heights = tbwdisp_heights info
         widths = tbwdisp_widths info
         firstVis = tbwdisp_firstVis info
         rows = tbwdisp_rows info
+        rightMargin = tbwdisp_rightMargin info
         in do drawRows rows heights widths 0 firstVis hint
+              case rightMargin of
+                Nothing -> return ()
+                Just (xoff,s) -> draw (y,x+xoff) s hint (OpaqueWidget s)
               Curses.refresh
     where drawRows :: [Row] -> [Int] -> [Int] -> Int -> Int 
                    -> DrawingHint -> IO ()
@@ -733,6 +778,19 @@ findNextActiveCell opts nrows pos@(y,x) dir =
                 [] -> Nothing
                 (x:_) -> Just x
 
+tableWidgetDeleteRow :: Int -> TableWidget -> TableWidget
+tableWidgetDeleteRow n tbw = 
+    let rows = tbw_rows tbw
+        rows' = deleteAt n rows
+        pos' = 
+           case tbw_pos tbw of
+             Nothing -> Nothing
+             Just (row,col) -> 
+                 let row' = min row (length rows' - 1)
+                     in if row' >= 0 then Just (row', col)
+                        else Nothing
+        in tbw { tbw_rows = rows', tbw_pos = pos' }
+
 --
 -- BorderWidget
 --
@@ -769,3 +827,34 @@ listReplace l a i =
       ([], _) | i < 0 -> error ("listReplace: negative index. index="++
                                 show i)
       (xs,(y:ys)) -> xs ++ (a:ys)
+
+--alignRows :: [[String]] -> Char -> String -> [String]
+alignRows :: [[[a]]] -> a -> [a] -> [[a]]
+alignRows rows fill delim = 
+    let widths = foldr maxWidths (repeat 0) rows
+        in map (alignRow widths) rows
+    where
+    maxWidths ::  [[a]] -> [Int] -> [Int]
+    maxWidths row acc = map (uncurry max) (zip acc (map length row))
+    alignRow widths row = concatMap (uncurry alignCell) (zip widths row)
+    alignCell width cell = 
+        let diff = width - length cell
+            in cell ++ (take diff $ repeat fill) ++ delim
+
+        
+align :: HAlignment -> Int -> a -> [a] -> [a]
+align a w f l = 
+    let space = w - length l
+        in case a of
+             AlignLeft -> l ++ (fill space)
+             AlignRight -> (fill space) ++ l        
+             AlignCenter ->
+                 let left = space `div` 2
+                     right = left + (space `mod` 2)
+                     in fill left ++ l ++ fill right
+    where fill n = take n (repeat f)
+
+deleteAt :: Int -> [a] -> [a]
+deleteAt n l = if n >= 0 && n < length l 
+                  then let (a,b) = splitAt n l in a ++ (tail b)
+                  else error ("deleteAt: illegal index: " ++ show n)
