@@ -1145,16 +1145,18 @@ keyResizeCode = Nothing
 
 ungetCh i = 
     do debug "ungetCh called"
-       writeChan inputBuf (fi i)
+       writeChan inputBuf (BufDirect (fi i))
 
-inputBuf :: Chan CInt
+data BufData = BufDirect CInt  -- data directly available
+             | DataViaGetch    -- data can be obtained by calling getch
+
+inputBuf :: Chan BufData
 inputBuf = unsafePerformIO newChan
 {-# NOINLINE inputBuf #-}
 
 getchToInputBuf :: IO ()
 getchToInputBuf =
-    do debug ("Curses.getchToInputBuf: calling threadWaitRead")
-       threadWaitRead (fi 0)
+    do threadWaitRead (fi 0)
        {- From the (n)curses manpage:
        Programmers  concerned  about portability should be prepared for either
        of two cases: (a) signal receipt does not interrupt getch;  (b)  signal
@@ -1162,17 +1164,22 @@ getchToInputBuf =
        EINTR.  Under the ncurses implementation, handled signals never  inter‐
        rupt getch.
        -}
-       debug ("Curses.getchToInputBuf: back from threadWaitRead, calling getch")
-       v <- getch
-       writeChan inputBuf v
+       -- we only signalize that getch can now called without getting blocked.
+       -- directly calling `getch' might result in losing the character just
+       -- read (race condition).
+       writeChan inputBuf DataViaGetch
 --
 -- | read a character from the window
 --
 getCh :: IO Key
 getCh = 
     do tid <- forkIO getchToInputBuf
-       v <- readChan inputBuf
-       killThread tid
+       d <- readChan inputBuf
+       killThread tid  -- we can kill the thread savely, because the thread does
+                       -- not read any data via getch
+       v <- case d of
+              BufDirect x -> return x
+              DataViaGetch -> getch -- won't block!
        case v of
          (#const ERR) -> -- NO CODE IN THIS LINE 
              do e <- getErrno
