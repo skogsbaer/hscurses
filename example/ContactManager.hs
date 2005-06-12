@@ -92,6 +92,18 @@ pprContact c =
     combine s1 _ [] = s1
     combine s1 delim s2 = s1 ++ delim ++ s2
 
+contactToLabelValueList :: Contact -> [(String, String)]
+contactToLabelValueList c = 
+    [ ("Last Name", lastName c)
+    , ("First Name", firstName c)
+    , ("Email", emailAddress c)
+    , ("Address", address c)
+    , ("ZIP Code", zipCode c)
+    , ("City", city c)
+    , ("State/Province", province c)
+    , ("Country", country c)
+    , ("Phone", phoneNumber c) ]
+
 readContacts :: FilePath -> IO [Contact]
 readContacts f = 
     do s <- readFile f
@@ -173,6 +185,7 @@ type BotlineWidget = TextWidget
 type MsglineWidget = TableWidget
 type ContactListWidget = TableWidget
 type ContactDetailsWidget = TextWidget
+type ContactEditWidget = TableWidget
 
 mkToplineWidget = 
     do opts <- lineOptions
@@ -254,6 +267,35 @@ mkContactDetailsWidget listWidget =
        opts <- contactDetailsOptions
        return $ newTextWidget opts contact
 
+mkContactEditWidget :: Contact -> CM ContactEditWidget
+mkContactEditWidget contact = 
+    let l = contactToLabelValueList contact
+        rows = map mkRow l
+        in do sz <- getSize
+              let opts = TBWOptions
+                         { tbwopt_fillCol = Just 1,
+                           tbwopt_fillRow = None,
+                           tbwopt_activeCols = [1],
+                           tbwopt_minSize = (getHeight sz - 3, getWidth sz) }
+              return $ newTableWidget opts rows
+    where mkRow (label, value) = 
+              let labelW = newTextWidget defaultTWOptions label
+                  valueW = newEditWidget defaultEWOptions value
+                  in [TableCell labelW, ActiveTableCell valueW]
+
+mkMainEditWidget contact = 
+    do tlw <- mkToplineWidget
+       blw <- mkBotlineWidget
+       msglw <- mkMsglineWidget
+       ew <- mkContactEditWidget contact
+       return $ MainEditWidget tlw blw msglw ew
+
+data MainEditWidget = MainEditWidget
+    { toplineEditWidget :: ToplineWidget
+    , botlineEditWidget :: BotlineWidget
+    , msglineEditWidget :: MsglineWidget
+    , contactEditWidget :: ContactEditWidget }
+
 mkMainWidget = 
     do tlw <- mkToplineWidget
        clw <- mkContactListWidget
@@ -262,6 +304,22 @@ mkMainWidget =
        blw <- mkBotlineWidget
        msglw <- mkMsglineWidget
        return $ MainWidget tlw mlw blw msglw clw cdw
+
+instance Widget MainEditWidget where
+    draw pos sz hint w = draw pos sz hint (mkRealMainEditWidget (Just sz) w)
+    minSize w = minSize (mkRealMainEditWidget Nothing w)
+
+mkRealMainEditWidget :: (Maybe Size) -> MainEditWidget -> TableWidget
+mkRealMainEditWidget msz w = 
+    let cells = [ TableCell $ toplineEditWidget w
+                , TableCell $ contactEditWidget w
+                , TableCell $ botlineEditWidget w
+                , TableCell $ msglineEditWidget w ]
+        rows = map singletonRow cells
+        opts = case msz of
+                 Nothing -> defaultTBWOptions
+                 Just sz -> defaultTBWOptions { tbwopt_minSize = sz }
+        in newTableWidget opts rows
 
 data MainWidget = MainWidget
     { toplineWidget :: ToplineWidget
@@ -272,10 +330,10 @@ data MainWidget = MainWidget
     , contactDetailsWidget :: ContactDetailsWidget }
 
 instance Widget MainWidget where
-    draw pos sz hint w = draw pos sz hint (mkRealWidget (Just sz) w)
-    minSize w = minSize (mkRealWidget Nothing w)
+    draw pos sz hint w = draw pos sz hint (mkRealMainWidget (Just sz) w)
+    minSize w = minSize (mkRealMainWidget Nothing w)
 
-mkRealWidget msz w = 
+mkRealMainWidget msz w = 
     let cells = [ TableCell $ toplineWidget w
                 , TableCell $ contactListWidget w
                 , TableCell $ midlineWidget w
@@ -311,12 +369,42 @@ delete w =
                      in do modify (\s -> s { cm_contacts =
                                              deleteAt row (cm_contacts s) })
                            updateStateDependentWidgets w lw'
+{-
+editEventloop w ewm =
+    do k <- CursesH.getKey (resize mkMainEditWidget)
+       case k of
+         Curses.KeyChar 'q' -> return w
+         Curses.KeyChar '\r' ->
+             do debug "editing..."
+                sz <- getSize
+                let ewm' = mkRealMainEditWidget (Just sz) ewm
+                    (epos, esz) = getCellInfo (0,0) sz ewm' (1,0)
+                    ew = contactEditWidget ewm
+                (ew', res) <-
+                    tableWidgetActivateCurrent (redraw ewm) epos esz DHFocus ew
+                editEventloop w ewm
+         _ -> editEventloop w ewm
+-}
 
-resize w = 
+edit w = 
+    let lw = contactListWidget w
+        in case tbw_pos lw of
+             Nothing -> return w
+             Just (row,_) ->
+                 do contacts <- gets cm_contacts
+                    let c = contacts !! row
+                    ew <- mkMainEditWidget c
+                    redraw ew
+                    return w
+                    --editEventloop w ew 
+
+resize :: Widget w => CM w -> CM ()                   
+resize f = 
     do liftIO $ do Curses.endWin
                    Curses.resetParams
                    Curses.cursSet Curses.CursorInvisible
                    Curses.refresh
+       w <- f
        redraw w
 
 redraw :: Widget w => w -> CM ()
@@ -326,27 +414,18 @@ redraw w =
        liftIO $ Curses.refresh
 
 eventloop w = 
-    do k <- CursesH.getKey (resize w)
+    do k <- CursesH.getKey (resize mkMainWidget)
        case k of
          Curses.KeyChar 'q' -> return ()
-         Curses.KeyChar 'd' ->
-             do w' <- delete w
-                redraw w'
-                eventloop w'
-         Curses.KeyUp -> 
-             do w' <- move DirUp w
-                redraw w'
-                eventloop w'
-         Curses.KeyDown -> 
-             do w' <- move DirDown w
-                redraw w'
-                eventloop w'
+         Curses.KeyChar 'd' -> process $ delete w
+         Curses.KeyChar 'e' -> process $ edit w
+         Curses.KeyUp       -> process $ move DirUp w
+         Curses.KeyDown     -> process $ move DirDown w
          _ -> eventloop w
-{-
-       case k of
-         Curses.KeyDown -> loop (tableWidgetGoDown tableSize tbw) msg
--}
-
+    where process f = 
+              do w' <- f
+                 redraw w'
+                 eventloop w'
 cmMain :: CM ()
 cmMain = 
     do w <- mkMainWidget
