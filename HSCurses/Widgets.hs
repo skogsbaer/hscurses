@@ -624,6 +624,17 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
             let (h, t) = (head $ reverse l, tail $ reverse l)
                 in reverse $ f h : t
 
+getCellInfo :: Pos -> Size -> TableWidget -> (Int,Int) -> (Pos, Size)
+getCellInfo pos@(y,x) sz tbw (row, col) = 
+    let info = tableWidgetDisplayInfo sz tbw
+        heights = tbwdisp_heights info
+        widths = tbwdisp_widths info
+        h = heights !! row
+        w = widths !! col
+        yoff = sum $ take row heights
+        xoff = sum $ take col widths
+        in ((y+yoff, x+xoff), (h, w))
+
 drawTableWidget :: Pos -> Size -> DrawingHint -> TableWidget -> IO ()
 drawTableWidget pos@(y, x) sz hint tbw = 
     let info = tableWidgetDisplayInfo sz tbw
@@ -683,10 +694,12 @@ tableWidgetActivateCurrent :: MonadExcIO m => m () -> Pos -> Size
                            -> m (TableWidget, Maybe String)
 tableWidgetActivateCurrent refresh pos@(y, x) sz hint tbw = 
     case tbw_pos tbw of
-      Nothing -> return (tbw, Nothing)
+      Nothing -> do debug "tableWidgetActivateCurrent: pos=Nothing"
+                    return (tbw, Nothing)
       Just p -> let w = getCellWidget tbw p
                     in if not $ isActive w
-                       then return (tbw, Nothing)
+                       then do debug "tableWidgetActivateCurrent: not active"
+                               return (tbw, Nothing)
                        else activate w p
     where 
     activate widget colyx@(coly, colx) =
