@@ -84,7 +84,7 @@ module HSCurses.Curses (
     clrToEol,       -- :: IO ()
     wClrToEol,
     beep,
-    waddch, waddchnstr, waddnstr,
+    waddch, 
 
     -- * Output Options    
     clearOk,
@@ -748,7 +748,7 @@ normalise s = map f . filter (/= '\r') s
 
 ------------------------------------------------------------------------
 
-#if defined(CF_WCHAR_SUPPORT) && defined(HAVE_WADDNWSTR)
+#if defined(HAVE_WCHAR_H) && defined(HAVE_LIBNCURSESW)
 
 --wAddStr :: Window -> String -> IO ()
 --wAddStr w str = throwIfErr_ ("waddnwstr: " ++ show str) $ withCWStringLen (normalise str) (\(ws,len) -> waddnwstr w ws (fi len))
@@ -801,13 +801,13 @@ foreign import ccall threadsafe
 foreign import ccall threadsafe
     waddch :: Window -> (#type chtype) -> IO CInt
 
-foreign import ccall threadsafe
-    vline  :: Char -> Int -> IO ()
-
 foreign import ccall threadsafe 
     waddchnstr :: Window -> CString -> CInt -> IO CInt
 
 #endif
+
+foreign import ccall threadsafe
+    vline  :: Char -> Int -> IO ()
 
 ------------------------------------------------------------------------
 

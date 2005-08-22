@@ -115,7 +115,7 @@ iconv to from str =
     unsafePerformIO $ try $ with_iconv to from (iconv_ str)
 
 
-#ifdef CF_WCHAR_SUPPORT
+#ifdef HAVE_WCHAR_H
 {-
 type CUni = (#type wchar_t)
 cuni_size = (#size wchar_t)

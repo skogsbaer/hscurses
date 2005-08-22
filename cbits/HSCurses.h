@@ -10,9 +10,9 @@
 # include "config.h"
 #endif
 
-#if HAVE_NCURSESW
+#if HAVE_NCURSESW_NCURSES_H
 #include <ncursesw/ncurses.h>
-#elif HAVE_NCURSES
+#elif HAVE_NCURSES_H
 #include <ncurses.h>
 #else
 #include <curses.h>

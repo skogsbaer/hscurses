@@ -28,7 +28,7 @@ module HSCurses.CWString (
     peekUTF8StringLen,
 
     -- * WChar stuff
-#ifdef CF_WCHAR_SUPPORT
+#ifdef HAVE_WCHAR_H
     withCWString,
     withCWStringLen,
     newCWString,
@@ -59,7 +59,7 @@ import Foreign.C.String
 import GHC.Exts
 #endif
 
-#ifdef CF_WCHAR_SUPPORT
+#ifdef HAVE_WCHAR_H
 
 import Foreign.C.Types
 
