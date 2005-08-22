@@ -63,7 +63,7 @@ module HSCurses.Curses (
     getYX,    
     
     -- * Input 
-    getCh, getch, ungetCh, keyResizeCode,
+    getCh, getch, decodeKey, ungetCh, keyResizeCode,
 
     -- * Input Options
     cBreak,             -- :: Bool -> IO ()
