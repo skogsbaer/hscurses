@@ -33,8 +33,8 @@ import HSCurses.MonadException
 type Pos = (Int, Int)
 type Offset = (Int, Int)
 
-type Size = (Int, -- ^ height
-             Int  -- ^ width
+type Size = (Int, -- height
+             Int  -- width
             )
 
 getHeight :: Size -> Int
