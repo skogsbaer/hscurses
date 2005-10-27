@@ -27,7 +27,7 @@ srcdist:
 	gunzip $$DIST.tar.gz && \
 	tar --delete --file=$$DIST.tar $$DIST/boring && \
 	mkdir $$DIST && \
-	darcs changes > $$DIST/$$CHANGELOG && \
+	darcs changes | sed 's/[[:alnum:].]*@[[:alnum:].]*/(Email address hidden)/g' > $$DIST/$$CHANGELOG && \
 	tar --append --file=$$DIST.tar $$DIST/$$CHANGELOG && \
 	mv $$DIST/$$CHANGELOG $$CHANGELOG && \
 	rm -rf $$DIST && \
