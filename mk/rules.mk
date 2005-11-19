@@ -188,9 +188,11 @@ $(DOC_INDEX): $(HS_PPS) $(DOC_IFACE1)
 	   -i `basename $(DOC_IFACE2)`
 
 .PHONY: doc
-html: $(DOC_INDEX)
-doc  :: html
-all  :: doc
+html:
+	mkdir html
+
+doc  :: $(DOC_INDEX)
+# all  :: doc
 endif
 
 

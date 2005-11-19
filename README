@@ -24,6 +24,7 @@ Build and installation steps:
 
   sh configure
   make
+  make doc          # if you want to build the API documentation
   make install      # probably as root
   make register     # probably as root
 
