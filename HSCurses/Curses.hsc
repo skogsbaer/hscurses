@@ -1167,19 +1167,25 @@ getchToInputBuf =
        -- we only signalize that getch can now called without getting blocked.
        -- directly calling `getch' might result in losing the character just
        -- read (race condition).
+       debug "now input available on stdin"
        writeChan inputBuf DataViaGetch
 --
 -- | read a character from the window
 --
 getCh :: IO Key
 getCh = 
-    do tid <- forkIO getchToInputBuf
+    do debug "getCh called"
+       tid <- forkIO getchToInputBuf
        d <- readChan inputBuf
        killThread tid  -- we can kill the thread savely, because the thread does
                        -- not read any data via getch
        v <- case d of
-              BufDirect x -> return x
-              DataViaGetch -> getch -- won't block!
+              BufDirect x -> 
+                do debug "getCh: getting data directly from buffer"
+                   return x
+              DataViaGetch -> 
+                do debug "getCh: getting data via getch"
+                   getch -- won't block!
        case v of
          (#const ERR) -> -- NO CODE IN THIS LINE 
              do e <- getErrno
@@ -1187,7 +1193,9 @@ getCh =
                    then do debug "Curses.getCh returned eAGAIN or eINTR" 
                            getCh
                    else throwErrno "HSCurses.Curses.getch"
-         k -> return (decodeKey k)
+         k -> let k' = decodeKey k
+                  in do debug ("getCh: result = " ++ show k')
+                        return k'
 
 
 resizeTerminal :: Int -> Int -> IO ()

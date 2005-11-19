@@ -32,7 +32,9 @@ debug :: MonadIO m => String -> m ()
 #ifdef __DEBUG__
 
 logFile :: Handle
-logFile = unsafePerformIO $ openFile ".hscurses.log" AppendMode
+logFile = unsafePerformIO $ do h <- openFile ".hscurses.log" AppendMode
+                               debug_ h "logging initialized"
+                               return h
 {-# NOINLINE logFile #-}
 
 formatTime :: IO String
@@ -52,12 +54,12 @@ trace s x =
     unsafePerformIO $ do debug s
                          return x
 
-debug s = liftIO $ debug_ s
+debug s = liftIO $ debug_ logFile s
 
-debug_ s =
+debug_ f s =
     do ts <- formatTime
-       hPutStrLn logFile ("[" ++ ts ++ "] " ++ s)
-       hFlush logFile
+       hPutStrLn f ("[" ++ ts ++ "] " ++ s)
+       hFlush f
 
 #else
 

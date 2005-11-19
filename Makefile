@@ -1,7 +1,7 @@
 TOPDIR = .
 
 # way = p
-HCFLAGS = -D__DEBUG__
+# HCFLAGS = -D__DEBUG__
 
 include $(TOPDIR)/mk/config.mk
 
