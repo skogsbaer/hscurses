@@ -140,14 +140,22 @@ $(PKG).conf.install: $(PKG).conf.m4 $(PKG_PREREQS)
 	@$(RM) $(PKG).conf.install.old
 
 # (un-)register package.conf (needs usually be done as root
-.PHONY: register unregister
+.PHONY: register unregister user-register user-unregister
 register: $(PKG).conf.m4 $(PKG_PREREQS)
 	@m4 -D__INSTALLING__ $(PKG).conf.m4 \
 	  | sed 's/"",//g; s/, ""//g' \
-	  | $(GHC_PKG) -u 
+	  | $(GHC_PKG) register -
+
+user-register: $(PKG).conf.m4 $(PKG_PREREQS)
+	@m4 -D__INSTALLING__ $(PKG).conf.m4 \
+	  | sed 's/"",//g; s/, ""//g' \
+	  | $(GHC_PKG) --user register -
 
 unregister:
-	$(GHC_PKG) -r $(PKG)
+	$(GHC_PKG) unregister $(PKG)
+
+user-unregister:
+	$(GHC_PKG) --user unregister $(PKG)
 
 EXTRA_CLEANS+= $(PKG).conf.install $(PKG).conf
 
@@ -165,27 +173,18 @@ HS_PPS        = $(addsuffix .raw-hs, \
                         $(filter-out $(basename $(NO_DOCS)), \
                                 $(basename $(HADDOCK_SRCS))))
 
-EXTRA_HS_PPS  = $(addsuffix .raw-hs, $(basename $(NO_DOCS)))
-
 CLEAN_FILES     += $(HS_PPS) $(EXTRA_HS_PPS)
 CLEAN_DIRS      += $(HTML_DIR)
 
 INSTALL_DATAS  += $(HTML_DIR)
 
-DOC_IFACE1 = html/hscurses.interface1
-DOC_IFACE2 = html/hscurses.interface2
 DOC_INDEX  = html/index.html
 
 # circular (excluded) modules first
-$(DOC_IFACE1): $(EXTRA_HS_PPS)
-	@$(INSTALL_DIR) $(HTML_DIR)
-	$(HADDOCK) -D $(DOC_IFACE1) -o $(HTML_DIR) $(EXTRA_HS_PPS) -k $(PKG)
 
-$(DOC_INDEX): $(HS_PPS) $(DOC_IFACE1)
+$(DOC_INDEX): $(HS_PPS)
 	@$(INSTALL_DIR) $(HTML_DIR)
-	$(HADDOCK) -D $(DOC_IFACE2) -o $(HTML_DIR) $(HS_PPS) -k $(PKG)
-	cd $(HTML_DIR) && $(HADDOCK) -h --gen-index -i `basename $(DOC_IFACE1)` \
-	   -i `basename $(DOC_IFACE2)`
+	cd $(HTML_DIR) && $(HADDOCK) -h -k $(PKG) $(addprefix ../,$(HS_PPS))
 
 .PHONY: doc
 html:

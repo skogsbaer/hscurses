@@ -26,7 +26,10 @@ Build and installation steps:
   make
   make doc          # if you want to build the API documentation
   make install      # probably as root
+
   make register     # probably as root
+OR
+  make user-register  # don't need to be root
 
 In order to generate the API documentation, you need haddock
 (http://www.haskell.org/haddock). The command is then:
