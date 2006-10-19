@@ -15,7 +15,7 @@ Copyright:      Stefan Wehr 2004, 2005
                 John Meacham 2002-2004
 Homepage:       http://www.stefanwehr.de/haskell
 Category:       User-interface
-Depends:        base, haskell98, posix
+Depends:        base, haskell98, unix
 Synopsis:       NCurses bindings for Haskell
 Description:   
   Binding to NCurses, a library of functions that manage an

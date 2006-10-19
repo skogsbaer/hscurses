@@ -38,7 +38,7 @@ DIST_CLEAN_DIRS+= autom4te.cache
 #
 # Library flags
 #
-PKG_OPTS       += -package-name $(PKG)
+PKG_OPTS       += -package-name $(PKG)-1.0
 GHCI_LIBRARY    = $(patsubst lib%.a,%.o,$(LIBRARY))
 
 #
