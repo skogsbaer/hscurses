@@ -3876,7 +3876,7 @@ done
 current_directory=`pwd`
 
 
-                    ac_config_files="$ac_config_files mk/config.mk hscurses.conf.m4"
+                              ac_config_files="$ac_config_files mk/config.mk hscurses.conf.m4 hscurses.buildinfo"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -4404,6 +4404,7 @@ do
   # Handling of arguments.
   "mk/config.mk" ) CONFIG_FILES="$CONFIG_FILES mk/config.mk" ;;
   "hscurses.conf.m4" ) CONFIG_FILES="$CONFIG_FILES hscurses.conf.m4" ;;
+  "hscurses.buildinfo" ) CONFIG_FILES="$CONFIG_FILES hscurses.buildinfo" ;;
   "cbits/config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS cbits/config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}

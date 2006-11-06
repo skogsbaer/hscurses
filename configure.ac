@@ -171,5 +171,5 @@ AC_SUBST(SYMS)
 current_directory=`pwd`
 AC_SUBST(current_directory)
 
-AC_CONFIG_FILES([mk/config.mk hscurses.conf.m4])
+AC_CONFIG_FILES([mk/config.mk hscurses.conf.m4 hscurses.buildinfo])
 AC_OUTPUT

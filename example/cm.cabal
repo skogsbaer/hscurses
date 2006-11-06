@@ -1,0 +1,12 @@
+Name:          contact-manager
+Synopsis:      Primitive addressbook
+Version:       0.1
+License:       GPL
+License-file:  ../LICENSE
+Author:   Stefan Wehr <http://www.informatik.uni-freiburg.de/~wehr>
+Build-Depends:       base, hscurses >= 1.0, mtl, haskell98
+
+Executable:          cm
+Main-Is:             ContactManager.hs
+ghc-options:         -funbox-strict-fields -threaded
+
