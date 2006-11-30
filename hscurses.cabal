@@ -11,9 +11,9 @@ Copyright:      Stefan Wehr 2004, 2005
                 Don Stewart 2004
                 Tuomo Valkonen 2004
                 John Meacham 2002-2004
-Homepage:       http://www.stefanwehr.de/haskell
+Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
 Category:       User-interface
-Build-depends:  base >= 2.0, haskell98 >= 1.0, unix >= 1.0, mtl >= 1.0
+Build-depends:  base >= 1.0, haskell98 >= 1.0, unix >= 1.0, mtl >= 1.0
 Synopsis:       NCurses bindings for Haskell
 Description:   
   Binding to NCurses, a library of functions that manage an
