@@ -35,7 +35,13 @@ Other-modules:
 C-sources:
     cbits/HSCursesUtils.c, HSCurses/CWString_hsc.c, HSCurses/Curses_hsc.c
 Includes:         HSCurses.h, HSCursesUtils.h
-Extensions:       CPP
+data-files:       README, TODO, example/contacts2, example/Setup.hs, example/ContactManager.hs, example/cm.cabal, example/contacts, example/Makefile
+extra-source-files: configure, hscurses.conf.m4.in.before64, HSCurses/Curses.hsc, HSCurses/CursesHelper.hs,
+                    HSCurses/CWString.hsc, HSCurses/Widgets.hs, HSCurses/MonadException.hs,
+                    HSCurses/Logging.hs, HSCurses/IConv.hsc, install-sh, hscurses.conf.m4.in.64,
+                    hscurses.buildinfo.in, configure.ac, cbits/config.h.in, cbits/HSCursesUtils.h,
+                    cbits/HSCurses.h, Makefile, mk/config.mk.in, mk/rules.mk, mk/paths.mk, HSCurses/Curses_hsc.h, HSCurses/CWString_hsc.h
+
+Extensions:       CPP, ForeignFunctionInterface
 include-dirs:     cbits .
 ghc-options:      -funbox-strict-fields
-
