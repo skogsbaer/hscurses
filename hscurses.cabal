@@ -6,27 +6,34 @@ Author:         John Meacham <john at repetae dot net>
                 Tuomo Valkonen <tuomov at iki.fi>
                 Don Stewart <http://www.cse.unsw.edu.au/~dons>
                 Stefan Wehr <http://www.stefanwehr.de>
-Maintainer:     Stefan Wehr <http://www.stefanwehr.de>
 Copyright:      Stefan Wehr 2004, 2005
                 Don Stewart 2004
                 Tuomo Valkonen 2004
                 John Meacham 2002-2004
-Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
+Maintainer:     Stefan Wehr <http://www.stefanwehr.de>
+Stability:      Stable
 Category:       User-interface
-Build-depends:  base >= 1.0, haskell98 >= 1.0, unix >= 1.0, mtl >= 1.0
 Synopsis:       NCurses bindings for Haskell
-Description:   
+Description:
   Binding to NCurses, a library of functions that manage an
   application's display on character-cell terminals. Additionally,
   it contains some basic widgets such as a text input widget and
   a table widget.
+
+Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
+
+Build-depends:  base >= 1.0, haskell98 >= 1.0, unix >= 1.0, mtl >= 1.0
+build-type:     Simple
+tested-with:    GHC==6.8.2
+
 Exposed-modules:
     HSCurses.Curses, HSCurses.CursesHelper, HSCurses.Widgets,
     HSCurses.MonadException, HSCurses.Logging
 Other-modules:
     HSCurses.CWString, HSCurses.IConv
-C-sources:      
-    cbits/HSCursesUtils.c HSCurses/CWString_hsc.c HSCurses/Curses_hsc.c
+
+C-sources:
+    cbits/HSCursesUtils.c, HSCurses/CWString_hsc.c, HSCurses/Curses_hsc.c
 Includes:         HSCurses.h, HSCursesUtils.h
 Extensions:       CPP
 include-dirs:     cbits .
