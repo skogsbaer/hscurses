@@ -1,47 +1,47 @@
 Name:           hscurses
-Version:        1.1
+Version:        1.2
 License:        LGPL
 License-file:   LICENSE
 Author:         John Meacham <john at repetae dot net>
                 Tuomo Valkonen <tuomov at iki.fi>
                 Don Stewart <http://www.cse.unsw.edu.au/~dons>
-                Stefan Wehr <http://www.stefanwehr.de>
+                Stefan Wehr <http://www.informatik.uni-freiburg.de/~wehr/>
 Copyright:      Stefan Wehr 2004, 2005
                 Don Stewart 2004
                 Tuomo Valkonen 2004
                 John Meacham 2002-2004
-Maintainer:     Stefan Wehr <http://www.stefanwehr.de>
+Maintainer:     Stefan Wehr <http://www.informatik.uni-freiburg.de/~wehr/>
 Stability:      Stable
 Category:       User-interface
 Synopsis:       NCurses bindings for Haskell
 Description:
-  Binding to NCurses, a library of functions that manage an
-  application's display on character-cell terminals. Additionally,
-  it contains some basic widgets such as a text input widget and
-  a table widget.
-
+    Binding to NCurses, a library of functions that manage an
+    application's display on character-cell terminals. Additionally,
+    it contains some basic widgets such as a text input widget and
+    a table widget.
 Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
-
 Build-depends:  base >= 1.0, haskell98 >= 1.0, unix >= 1.0, mtl >= 1.0
-build-type:     Simple
-tested-with:    GHC==6.8.2
-
+Tested-with:    GHC==6.8.2, GHC==6.6.1
 Exposed-modules:
     HSCurses.Curses, HSCurses.CursesHelper, HSCurses.Widgets,
     HSCurses.MonadException, HSCurses.Logging
 Other-modules:
     HSCurses.CWString, HSCurses.IConv
-
 C-sources:
     cbits/HSCursesUtils.c, HSCurses/CWString_hsc.c, HSCurses/Curses_hsc.c
-Includes:         HSCurses.h, HSCursesUtils.h
-data-files:       README, TODO, example/contacts2, example/Setup.hs, example/ContactManager.hs, example/cm.cabal, example/contacts, example/Makefile
-extra-source-files: configure, hscurses.conf.m4.in.before64, HSCurses/Curses.hsc, HSCurses/CursesHelper.hs,
-                    HSCurses/CWString.hsc, HSCurses/Widgets.hs, HSCurses/MonadException.hs,
-                    HSCurses/Logging.hs, HSCurses/IConv.hsc, install-sh, hscurses.conf.m4.in.64,
-                    hscurses.buildinfo.in, configure.ac, cbits/config.h.in, cbits/HSCursesUtils.h,
-                    cbits/HSCurses.h, Makefile, mk/config.mk.in, mk/rules.mk, mk/paths.mk, HSCurses/Curses_hsc.h, HSCurses/CWString_hsc.h
-
+Includes:         
+    HSCurses.h, HSCursesUtils.h
+Data-files:       
+    README, TODO, example/contacts2, example/Setup.hs, example/ContactManager.hs, 
+    example/cm.cabal, example/contacts, example/Makefile
+Extra-source-files: 
+    configure, hscurses.conf.m4.in.before64, HSCurses/Curses.hsc, 
+    HSCurses/CursesHelper.hs, HSCurses/CWString.hsc, HSCurses/Widgets.hs, 
+    HSCurses/MonadException.hs, HSCurses/Logging.hs, HSCurses/IConv.hsc, 
+    install-sh, hscurses.conf.m4.in.64, hscurses.buildinfo.in, configure.ac, 
+    cbits/config.h.in, cbits/HSCursesUtils.h, cbits/HSCurses.h, Makefile, 
+    mk/config.mk.in, mk/rules.mk, mk/paths.mk, HSCurses/Curses_hsc.h, 
+    HSCurses/CWString_hsc.h
 Extensions:       CPP, ForeignFunctionInterface
-include-dirs:     cbits .
-ghc-options:      -funbox-strict-fields
+Include-dirs:     cbits .
+Ghc-options:      -funbox-strict-fields
