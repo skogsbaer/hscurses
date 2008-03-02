@@ -8,7 +8,7 @@ top of the ncurses binding, such as a text input widget and a table
 widget.
 
 The hscurses library has been reported to work on Linux x86 and on
-OpenBSD using GHC 6.2, 6.4, 6.6
+OpenBSD using GHC 6.2, 6.4, 6.6, 6.6.1, 6.8.2.
 
 Building and installing the hscurses library with GHC 6.6
 ---------------------------------------------------------
