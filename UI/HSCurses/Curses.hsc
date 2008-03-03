@@ -1143,7 +1143,7 @@ keyResizeCode = Nothing
 
 -- ncurses ungetch and Haskell's threadWaitRead do not work together well.
 -- So I decided to implement my own input queue.
-
+ungetCh :: (Integral a) => a -> IO ()
 ungetCh i =
     do debug "ungetCh called"
        writeChan inputBuf (BufDirect (fi i))
@@ -1157,7 +1157,7 @@ inputBuf = unsafePerformIO newChan
 
 getchToInputBuf :: IO ()
 getchToInputBuf =
-    do threadWaitRead (fi 0)
+    do threadWaitRead (fi (0::Int))
        {- From the (n)curses manpage:
        Programmers  concerned  about portability should be prepared for either
        of two cases: (a) signal receipt does not interrupt getch;  (b)  signal
