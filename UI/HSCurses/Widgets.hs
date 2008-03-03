@@ -100,6 +100,7 @@ mkDrawingStyle defStyle =
                   , dstyle_active = revStyle
                   }
 
+defaultDrawingStyle :: DrawingStyle
 defaultDrawingStyle = mkDrawingStyle CursesH.defaultCursesStyle
 _draw :: DrawingHint -> DrawingStyle -> IO a -> IO a
 _draw DHActive sty io = CursesH.withStyle (dstyle_active sty) io
@@ -110,6 +111,7 @@ _draw DHFocus sty io = CursesH.withStyle (dstyle_focus sty) io
 -- Helper functions for scrolling
 --
 
+scrollFactor :: Double
 scrollFactor = 0.8
 
 scrollBy :: Int -> Int
@@ -121,6 +123,7 @@ scrollBy displayLen =
 -- dataLen: total number of data items
 -- offset: the index of the first data item shown on the current page
 -- displayLen: the number of data items that is shown in one page
+scrollForward :: Int -> Int -> Int -> Int
 scrollForward dataLen offset displayLen =
     if offset + displayLen >= dataLen
        then offset
@@ -128,6 +131,7 @@ scrollForward dataLen offset displayLen =
 
 -- returns the new offset for scrolling in backward direction.
 -- parameters as for scrollForward
+scrollBackward :: t -> Int -> Int -> Int
 scrollBackward _ offset displayLen =
     if offset == 0
        then offset
@@ -174,6 +178,7 @@ data EditWidget = EditWidget
       ew_options       :: EditWidgetOptions
     }
 
+ew_contentPos :: EditWidget -> Int
 ew_contentPos ew = ew_xcursor ew + ew_xoffset ew
 
 instance Widget EditWidget where
@@ -189,6 +194,7 @@ data EditWidgetOptions = EWOptions
       ewopt_style          :: DrawingStyle
     }
 
+defaultEWOptions :: EditWidgetOptions
 defaultEWOptions = EWOptions
                    { ewopt_keyHandlers = editWidgetKeyHandlers,
                      ewopt_minWidth = 8,
@@ -210,16 +216,57 @@ newEditWidget opts =
 
 
 
+editWidgetGoLeft :: Pos
+                                                -> Size
+                                                -> EditWidget
+                                                -> IO (Cont EditWidget)
 editWidgetGoLeft = mkKeyHandler editWidgetGoLeft'
+editWidgetGoRight :: Pos
+                                                 -> Size
+                                                 -> EditWidget
+                                                 -> IO (Cont EditWidget)
 editWidgetGoRight = mkKeyHandler editWidgetGoRight'
+editWidgetDeleteLeft :: Pos
+                                                    -> Size
+                                                    -> EditWidget
+                                                    -> IO (Cont EditWidget)
 editWidgetDeleteLeft = mkKeyHandler editWidgetDeleteLeft'
+editWidgetDeleteUnderCursor :: Pos
+                                                           -> Size
+                                                           -> EditWidget
+                                                           -> IO (Cont EditWidget)
 editWidgetDeleteUnderCursor = mkKeyHandler editWidgetDeleteUnderCursor'
+editWidgetDeleteToEnd :: Pos
+                                                     -> Size
+                                                     -> EditWidget
+                                                     -> IO (Cont EditWidget)
 editWidgetDeleteToEnd = mkKeyHandler editWidgetDeleteToEnd'
+editWidgetGoHome :: Pos
+                                                -> Size
+                                                -> EditWidget
+                                                -> IO (Cont EditWidget)
 editWidgetGoHome = mkKeyHandler editWidgetGoHome'
+editWidgetGoEnd :: Pos
+                                               -> Size
+                                               -> EditWidget
+                                               -> IO (Cont EditWidget)
 editWidgetGoEnd = mkKeyHandler editWidgetGoEnd'
+editWidgetHistoryUp :: Pos
+                                                   -> Size
+                                                   -> EditWidget
+                                                   -> IO (Cont EditWidget)
 editWidgetHistoryUp = mkKeyHandler editWidgetHistoryUp'
+editWidgetHistoryDown :: Pos
+                                                     -> Size
+                                                     -> EditWidget
+                                                     -> IO (Cont EditWidget)
 editWidgetHistoryDown = mkKeyHandler editWidgetHistoryDown'
 
+editWidgetKeyHandlers :: [(Curses.Key,
+                                                       Pos
+                                                       -> Size
+                                                       -> EditWidget
+                                                       -> IO (Cont EditWidget))]
 editWidgetKeyHandlers =
     [(Curses.KeyLeft, editWidgetGoLeft),
      (Curses.KeyRight, editWidgetGoRight),
@@ -237,11 +284,20 @@ editWidgetKeyHandlers =
      (Curses.KeyDown, editWidgetHistoryDown)
     ]
 
+editWidgetGetContent :: EditWidget -> String
 editWidgetGetContent ew = ew_content ew
+editWidgetSetContent :: EditWidget
+                                                    -> String
+                                                    -> EditWidget
 editWidgetSetContent ew s =
     addToHistory (ew { ew_content = s, ew_xoffset = 0, ew_xcursor = 0 }) s
 
+editWidgetGetOptions :: EditWidget
+                                                    -> EditWidgetOptions
 editWidgetGetOptions ew = ew_options ew
+editWidgetSetOptions :: EditWidget
+                                                    -> EditWidgetOptions
+                                                    -> EditWidget
 editWidgetSetOptions ew opts = ew { ew_options = opts }
 
 drawEditWidget :: Pos -> Size -> DrawingHint -> EditWidget -> IO ()
@@ -282,6 +338,7 @@ activateEditWidget refresh pos@(y, x) sz@(_, width) ew =
            Curses.wMove Curses.stdScr y (x + ew_xcursor ew)
            Curses.refresh
 
+editWidgetGoLeft' :: t -> t1 -> EditWidget -> EditWidget
 editWidgetGoLeft' _ _ ew =
     let newXcursor = max (ew_xcursor ew - 1) 0
         newXoffset = if ew_xcursor ew == 0
@@ -290,6 +347,7 @@ editWidgetGoLeft' _ _ ew =
         in ew { ew_xoffset = newXoffset,
                 ew_xcursor = newXcursor }
 
+editWidgetGoRight' :: t -> (t1, Int) -> EditWidget -> EditWidget
 editWidgetGoRight' _ (_, width) ew =
     let len = length (ew_content ew)
         lastChar = len - ew_xoffset ew - 1
@@ -310,18 +368,21 @@ editWidgetDeleteLeft' pos sz ew =
               then editWidgetGoRight' pos sz (editWidgetGoLeft' pos sz ew')
               else ew'
 
+editWidgetDeleteUnderCursor' :: t -> t1 -> EditWidget -> EditWidget
 editWidgetDeleteUnderCursor' _ _ ew =
     let pos = ew_contentPos ew
         oldContent = ew_content ew
         newContent = take pos oldContent ++ drop (pos+1) oldContent
         in ew { ew_content = newContent }
 
+editWidgetDeleteToEnd' :: t -> t1 -> EditWidget -> EditWidget
 editWidgetDeleteToEnd' _ _ ew =
     let pos = ew_contentPos ew
         oldContent = ew_content ew
         newContent = take pos oldContent
         in ew { ew_content = newContent }
 
+editWidgetGoHome' :: t -> t1 -> EditWidget -> EditWidget
 editWidgetGoHome' _ _ ew =
     ew { ew_xcursor = 0,
          ew_xoffset = 0 }
@@ -334,10 +395,13 @@ editWidgetGoEnd' pos sz ew =
               then ew
               else editWidgetGoEnd' pos sz (editWidgetGoRight' pos sz ew)
 
+editWidgetFinish :: (Monad m) => t -> t1 -> EditWidget -> m (Cont EditWidget)
 editWidgetFinish _ _ ew =  return (Done (addToHistory ew (ew_content ew)))
 
+maxHistoryLength :: Int
 maxHistoryLength = 50
 
+addToHistory :: EditWidget -> [Char] -> EditWidget
 addToHistory ew s =
     let newHist = if not (null s)
                      then take maxHistoryLength (s : ew_history ew)
@@ -345,7 +409,10 @@ addToHistory ew s =
         in ew { ew_history = newHist, ew_historyIndex = -1,
                 ew_historySavedContent = Nothing }
 
+editWidgetHistoryUp' :: t -> t1 -> EditWidget -> EditWidget
 editWidgetHistoryUp' _ _ ew = editWidgetHistory (+) ew
+
+editWidgetHistoryDown' :: t -> t1 -> EditWidget -> EditWidget
 editWidgetHistoryDown' _ _ ew = editWidgetHistory (-) ew
 
 -- ew_historyList: list of history items, i.e. non-null strings which were
@@ -354,6 +421,7 @@ editWidgetHistoryDown' _ _ ew = editWidgetHistory (-) ew
 -- ew_historyIndex: the index of the history item shown in the widget. The
 --   value -1 means that the value saved in ew_historySavedContent should
 --   be shown.
+editWidgetHistory :: (Num t) => (Int -> t -> Int) -> EditWidget -> EditWidget
 editWidgetHistory op ew =
     let i = ew_historyIndex ew
         l = ew_history ew
@@ -412,6 +480,7 @@ data TextWidgetOptions = TWOptions
       twopt_halign :: HAlignment }
     deriving (Eq, Show)
 
+defaultTWOptions :: TextWidgetOptions
 defaultTWOptions = TWOptions
                 { twopt_size = TWSizeDefault,
                   twopt_style = defaultDrawingStyle,
@@ -525,6 +594,7 @@ data TableWidgetOptions = TBWOptions
       tbwopt_minSize    :: Size }
     deriving (Eq, Show)
 
+defaultTBWOptions :: TableWidgetOptions
 defaultTBWOptions = TBWOptions
                     { tbwopt_fillCol = Nothing,
                       tbwopt_fillRow = None,
@@ -728,6 +798,10 @@ tableWidgetGoUp =  tableWidgetMove DirUp
 tableWidgetGoDown :: Size -> TableWidget -> TableWidget
 tableWidgetGoDown =  tableWidgetMove DirDown
 
+tableWidgetMove :: Direction
+                                               -> (Int, Int)
+                                               -> TableWidget
+                                               -> TableWidget
 tableWidgetMove dir sz tbw =
     let pos = tbw_pos tbw
         opts = tbw_options tbw
@@ -739,6 +813,10 @@ tableWidgetMove dir sz tbw =
                          newP@(Just (y, _)) ->
                              tableWidgetMakeVisible (tbw {tbw_pos=newP}) sz y
 
+tableWidgetMakeVisible :: TableWidget
+                                                      -> (Int, Int)
+                                                      -> Int
+                                                      -> TableWidget
 tableWidgetMakeVisible tbw sz@(_,_) y =
     let info = tableWidgetDisplayInfo sz tbw
         firstVis = tbwdisp_firstVis info
