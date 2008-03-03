@@ -1,6 +1,6 @@
 
 # sanity
-AC_INIT(HSCurses/Curses.hsc)
+AC_INIT(UI/HSCurses/Curses.hsc)
 
 # Prepare to generate the config.h.in file
 AC_CONFIG_HEADERS([cbits/config.h])
@@ -14,7 +14,7 @@ AC_PREREQ([2.52])
 AC_ARG_WITH(hc,
 [AC_HELP_STRING([--with-hc=ARG],
     [Use ARG as the path to a Haskell compiler [default=autodetect]])],
-[ WithGhc="$withval" 
+[ WithGhc="$withval"
   if test "$WithGhc" = "nhc98"; then
     AC_DEFINE(__NHC__, [], [Defined if compiling with nhc98])
     SYMS="$SYMS -D__NHC__"
@@ -101,11 +101,11 @@ AC_DEFUN(FPTOOLS_LD_X,
 echo 'foo() {}' > conftest.c
 ${CC-cc} -c conftest.c
 if ${LdCmd} -r -x -o foo.o conftest.o; then
-   fptools_cv_ld_x=yes 
+   fptools_cv_ld_x=yes
 else
    fptools_cv_ld_x=no
 fi
-rm -rf conftest.c conftest.o foo.o 
+rm -rf conftest.c conftest.o foo.o
 ])
 if test "$fptools_cv_ld_x" = yes; then
     LdXFlag=-x
@@ -125,7 +125,7 @@ AC_PROG_RANLIB
 #
 # Curses. If you don't have wchar_t-aware ncurses (Debian package:
 # libncursesw5-dev),  uncomment the first line and comment-out the
-# two later. 
+# two later.
 #
 # The shell variables should be added to, e.g., $LIBS
 #

@@ -271,7 +271,7 @@ PACKAGE_VERSION=
 PACKAGE_STRING=
 PACKAGE_BUGREPORT=
 
-ac_unique_file="HSCurses/Curses.hsc"
+ac_unique_file="UI/HSCurses/Curses.hsc"
 # Factoring default headers for most tests.
 ac_includes_default="\
 #include <stdio.h>

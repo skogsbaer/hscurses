@@ -2,33 +2,33 @@
 -- glasgow-exts needed for existentials and multi-parameter type classes.
 
 -- Copyright (c) 2005 Stefan Wehr - http://www.stefanwehr.de
--- 
+--
 -- This library is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU Lesser General Public
 -- License as published by the Free Software Foundation; either
 -- version 2.1 of the License, or (at your option) any later version.
--- 
+--
 -- This library is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 -- Lesser General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU Lesser General Public
 -- License along with this library; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-module HSCurses.Widgets where
+module UI.HSCurses.Widgets where
 
 import Char
+import Control.Exception (assert)
+import Control.Monad.Trans
 import List
 import Maybe
-import qualified HSCurses.Curses as Curses
-import qualified HSCurses.CursesHelper as CursesH
-import HSCurses.Logging
 
-import Control.Monad.Trans
-import Control.Exception (assert)
-import HSCurses.MonadException
+import UI.HSCurses.Logging
+import UI.HSCurses.MonadException
+import qualified UI.HSCurses.Curses as Curses
+import qualified UI.HSCurses.CursesHelper as CursesH
 
 type Pos = (Int, Int)
 type Offset = (Int, Int)
@@ -80,7 +80,7 @@ mkKeyHandler f pos sz w = return (Cont (f pos sz w))
 -- Drawing
 --
 
-data DrawingHint = DHNormal 
+data DrawingHint = DHNormal
                  | DHFocus
                  | DHActive
                    deriving (Eq, Show, Ord)
@@ -93,7 +93,7 @@ data DrawingStyle = DStyle
 
 
 mkDrawingStyle :: CursesH.CursesStyle -> DrawingStyle
-mkDrawingStyle defStyle = 
+mkDrawingStyle defStyle =
     let revStyle = CursesH.changeCursesStyle defStyle [CursesH.Reverse]
         in DStyle { dstyle_normal = defStyle
                   , dstyle_focus = revStyle
@@ -113,7 +113,7 @@ _draw DHFocus sty io = CursesH.withStyle (dstyle_focus sty) io
 scrollFactor = 0.8
 
 scrollBy :: Int -> Int
-scrollBy displayLen = 
+scrollBy displayLen =
     let amount = floor ((fromInteger.toInteger) displayLen * scrollFactor)
     in max (displayLen - 1) (min 1 amount)
 
@@ -128,7 +128,7 @@ scrollForward dataLen offset displayLen =
 
 -- returns the new offset for scrolling in backward direction.
 -- parameters as for scrollForward
-scrollBackward dataLen offset displayLen = 
+scrollBackward dataLen offset displayLen =
     if offset == 0
        then offset
        else max (offset - scrollBy displayLen) 0
@@ -152,7 +152,7 @@ instance Widget EmptyWidget where
 data OpaqueWidget = OpaqueWidget Size
 
 instance Widget OpaqueWidget where
-    draw pos@(y,x) sz@(h,w) _ _ = 
+    draw pos@(y,x) sz@(h,w) _ _ =
         let draw' n =
                 do Curses.wMove Curses.stdScr (y+n) x
                    CursesH.drawLine w ""
@@ -196,11 +196,11 @@ defaultEWOptions = EWOptions
                    }
 
 newEditWidget :: EditWidgetOptions -> String -> EditWidget
-newEditWidget opts = 
-    editWidgetSetContent 
-      (EditWidget 
+newEditWidget opts =
+    editWidgetSetContent
+      (EditWidget
        { ew_content = "",
-         ew_xoffset = 0,  
+         ew_xoffset = 0,
          ew_xcursor = 0,
          ew_history = [],
          ew_historyIndex = -1,
@@ -220,7 +220,7 @@ editWidgetGoEnd = mkKeyHandler editWidgetGoEnd'
 editWidgetHistoryUp = mkKeyHandler editWidgetHistoryUp'
 editWidgetHistoryDown = mkKeyHandler editWidgetHistoryDown'
 
-editWidgetKeyHandlers = 
+editWidgetKeyHandlers =
     [(Curses.KeyLeft, editWidgetGoLeft),
      (Curses.KeyRight, editWidgetGoRight),
      (Curses.KeyBackspace, editWidgetDeleteLeft),
@@ -238,31 +238,31 @@ editWidgetKeyHandlers =
     ]
 
 editWidgetGetContent ew = ew_content ew
-editWidgetSetContent ew s = 
+editWidgetSetContent ew s =
     addToHistory (ew { ew_content = s, ew_xoffset = 0, ew_xcursor = 0 }) s
 
 editWidgetGetOptions ew = ew_options ew
 editWidgetSetOptions ew opts = ew { ew_options = opts }
 
 drawEditWidget :: Pos -> Size -> DrawingHint -> EditWidget -> IO ()
-drawEditWidget (y, x) (height, width) hint ew = 
+drawEditWidget (y, x) (height, width) hint ew =
     _draw hint (ewopt_style . ew_options $ ew) $
     do Curses.wMove Curses.stdScr y x
        CursesH.drawLine width (drop (ew_xoffset ew) $ ew_content ew)
        Curses.refresh
 
-activateEditWidget :: MonadExcIO m => m () -> Pos -> Size 
+activateEditWidget :: MonadExcIO m => m () -> Pos -> Size
                    -> EditWidget -> m (EditWidget, String)
 activateEditWidget refresh pos@(y, x) sz@(height, width) ew =
     CursesH.withCursor Curses.CursorVisible $ processKey ew
-    where 
-    processKey ew = 
+    where
+    processKey ew =
         do liftIO $ draw ew
            k <- CursesH.getKey refresh
            case lookup k (ewopt_keyHandlers $ ew_options ew) of
-             Nothing -> 
+             Nothing ->
                  case k of
-                   Curses.KeyChar c | isAscii c && isPrint c 
+                   Curses.KeyChar c | isAscii c && isPrint c
                        -> processKey $ insertChar ew c
                    _   -> processKey ew
              Just f  ->
@@ -271,7 +271,7 @@ activateEditWidget refresh pos@(y, x) sz@(height, width) ew =
                       Cont ew' -> processKey ew'
                       Done ew' -> do liftIO $ drawEditWidget pos sz DHActive ew'
                                      return (ew', editWidgetGetContent ew')
-    insertChar ew c = 
+    insertChar ew c =
         let pos = ew_contentPos ew
             oldContent = ew_content ew
             newContent = take pos oldContent ++ (c : drop pos oldContent)
@@ -282,7 +282,7 @@ activateEditWidget refresh pos@(y, x) sz@(height, width) ew =
            Curses.wMove Curses.stdScr y (x + ew_xcursor ew)
            Curses.refresh
 
-editWidgetGoLeft' _ _ ew = 
+editWidgetGoLeft' _ _ ew =
     let newXcursor = max (ew_xcursor ew - 1) 0
         newXoffset = if ew_xcursor ew == 0
                         then max (ew_xoffset ew - 1) 0
@@ -301,7 +301,7 @@ editWidgetGoRight' _ (_, width) ew =
                 ew_xcursor = newXcursor }
 
 editWidgetDeleteLeft' :: Pos -> Size -> EditWidget -> EditWidget
-editWidgetDeleteLeft' pos sz ew = 
+editWidgetDeleteLeft' pos sz ew =
     let cpos = ew_contentPos ew - 1
         oldContent = ew_content ew
         newContent = take cpos oldContent ++ drop (cpos+1) oldContent
@@ -310,7 +310,7 @@ editWidgetDeleteLeft' pos sz ew =
               then editWidgetGoRight' pos sz (editWidgetGoLeft' pos sz ew')
               else ew'
 
-editWidgetDeleteUnderCursor' _ _ ew = 
+editWidgetDeleteUnderCursor' _ _ ew =
     let pos = ew_contentPos ew
         oldContent = ew_content ew
         newContent = take pos oldContent ++ drop (pos+1) oldContent
@@ -338,7 +338,7 @@ editWidgetFinish _ _ ew =  return (Done (addToHistory ew (ew_content ew)))
 
 maxHistoryLength = 50
 
-addToHistory ew s = 
+addToHistory ew s =
     let newHist = if not (null s)
                      then take maxHistoryLength (s : ew_history ew)
                      else ew_history ew
@@ -348,13 +348,13 @@ addToHistory ew s =
 editWidgetHistoryUp' _ _ ew = editWidgetHistory (+) ew
 editWidgetHistoryDown' _ _ ew = editWidgetHistory (-) ew
 
--- ew_historyList: list of history items, i.e. non-null strings which were 
+-- ew_historyList: list of history items, i.e. non-null strings which were
 --   entered into the widget and confirmed with ENTER or which were added
 --   via editWidgetSetContent.
 -- ew_historyIndex: the index of the history item shown in the widget. The
 --   value -1 means that the value saved in ew_historySavedContent should
 --   be shown.
-editWidgetHistory op ew = 
+editWidgetHistory op ew =
     let i = ew_historyIndex ew
         l = ew_history ew
         j =  i `op` 1
@@ -369,9 +369,9 @@ editWidgetHistory op ew =
               else if j == -1
                       then case ew_historySavedContent ew of
                              Nothing -> ew
-                             Just x -> ew { ew_content = x, 
+                             Just x -> ew { ew_content = x,
                                             ew_historyIndex = j,
-                                            ew_xcursor = 0, 
+                                            ew_xcursor = 0,
                                             ew_xoffset = 0  }
                    else ew
 
@@ -391,7 +391,7 @@ data TextWidget = TextWidget
 
 instance Widget TextWidget where
     draw = drawTextWidget
-    minSize tw = 
+    minSize tw =
         case twopt_size $ tw_options tw of
           TWSizeDefault -> let l = lines (tw_text tw)
                            in (length l, if null l then 0 else maximum (map length l))
@@ -404,12 +404,12 @@ data TextWidgetSize = TWSizeDefault    -- minimal size determined by content
                                  {-
                     | Autowrap   -- minimal width determined by content,
                                  -- but lines are wrapped if necessary
-                                 -}            
-      
+                                 -}
+
 data TextWidgetOptions = TWOptions
     { twopt_size   :: TextWidgetSize,
       twopt_style  :: DrawingStyle,
-      twopt_halign :: HAlignment }  
+      twopt_halign :: HAlignment }
     deriving (Eq, Show)
 
 defaultTWOptions = TWOptions
@@ -418,7 +418,7 @@ defaultTWOptions = TWOptions
                   twopt_halign = AlignLeft }
 
 newTextWidget :: TextWidgetOptions -> String -> TextWidget
-newTextWidget opts s = TextWidget 
+newTextWidget opts s = TextWidget
                        { tw_text = s,
                          tw_yoffset = 0,
                          tw_xoffset = 0,
@@ -426,15 +426,15 @@ newTextWidget opts s = TextWidget
                        }
 
 drawTextWidget :: Pos -> Size -> DrawingHint -> TextWidget -> IO ()
-drawTextWidget pos@(y, x) sz@(height, width) hint tw = 
+drawTextWidget pos@(y, x) sz@(height, width) hint tw =
     let ly = take height $ drop (tw_yoffset tw) (lines (tw_text tw))
         l = take height $ (map (drop (tw_xoffset tw)) ly ++ repeat [])
         l' = map (align (twopt_halign $ tw_options tw) width ' ') l
     in --trace ("drawing text widget at " ++ show pos ++ " with size " ++ show sz) $
-       do _draw hint (twopt_style . tw_options $ tw) 
+       do _draw hint (twopt_style . tw_options $ tw)
                       (mapM drawLine $ zip l' [0..])
           Curses.refresh
-    where drawLine (s, i) = 
+    where drawLine (s, i) =
               do Curses.wMove Curses.stdScr (y + i) x
                  CursesH.drawLine width s
 
@@ -451,13 +451,13 @@ textWidgetScrollDown (h, _) tw =
         in tw { tw_yoffset = scrollForward dataLen offset h }
 
 textWidgetScrollUp :: Size -> TextWidget -> TextWidget
-textWidgetScrollUp (h, _) tw = 
+textWidgetScrollUp (h, _) tw =
     let dataLen = length $ lines (tw_text tw)
         offset = tw_yoffset tw
         in tw { tw_yoffset = scrollBackward dataLen offset h }
 
 textWidgetScrollLeft :: Size -> TextWidget -> TextWidget
-textWidgetScrollLeft (_, w) tw = 
+textWidgetScrollLeft (_, w) tw =
     let dataLen = length $ lines (tw_text tw)
         offset = tw_xoffset tw
         in tw { tw_xoffset = scrollBackward dataLen offset w }
@@ -486,9 +486,9 @@ instance Widget TableCell where
     minSize (TableCell w) = minSize w
     minSize (ActiveTableCell w) = minSize w
 
-_activateTableCell :: MonadExcIO m => m () -> Pos -> Size 
+_activateTableCell :: MonadExcIO m => m () -> Pos -> Size
                    -> TableCell -> m (TableCell, String)
-_activateTableCell _ _ _ (TableCell _) = 
+_activateTableCell _ _ _ (TableCell _) =
     error "_activateTableCell: cannot activate non-active cell!"
 _activateTableCell refresh pos sz (ActiveTableCell w) =
     do (new, res) <- activate refresh pos sz w
@@ -515,7 +515,7 @@ data TableWidget = TableWidget
       tbw_colOffset  :: Int,
       tbw_pos      :: Maybe Pos,
       tbw_options  :: TableWidgetOptions }
-                     
+
 data FillRow = First | Last | None deriving (Eq,Show)
 
 data TableWidgetOptions = TBWOptions
@@ -533,7 +533,7 @@ defaultTBWOptions = TBWOptions
 
 instance Widget TableWidget where
     draw      = drawTableWidget
-    minSize   = tbwopt_minSize . tbw_options  
+    minSize   = tbwopt_minSize . tbw_options
 
 newTableWidget :: TableWidgetOptions -> [Row] -> TableWidget
 newTableWidget opts rows = TableWidget
@@ -542,7 +542,7 @@ newTableWidget opts rows = TableWidget
                                 tbw_pos = findFirstActiveCell rows opts,
                                 tbw_options = opts }
 
-data TableWidgetDisplayInfo = 
+data TableWidgetDisplayInfo =
     TBWDisplayInfo
     { tbwdisp_height     :: Int   -- height of the display area
     , tbwdisp_width      :: Int   -- width of the display area
@@ -553,11 +553,11 @@ data TableWidgetDisplayInfo =
     , tbwdisp_heights    :: [Int] -- the heights of the visible rows
     , tbwdisp_widths     :: [Int] -- the widths of the visible rows
       -- free space at the right side (xoffset, size)
-    , tbwdisp_rightMargin :: Maybe (Int, Size) 
+    , tbwdisp_rightMargin :: Maybe (Int, Size)
     }
 
 tableWidgetDisplayInfo :: Size -> TableWidget -> TableWidgetDisplayInfo
-tableWidgetDisplayInfo sz@(height, width) tbw = 
+tableWidgetDisplayInfo sz@(height, width) tbw =
     assert (isQuadratic (tbw_rows tbw)) $
     let allRows = tbw_rows tbw
         ncols = length (allRows!!0)
@@ -566,7 +566,7 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
         heights' = drop colOffset allHeights
         nrows = getNRows heights' 0 0
         rows = take nrows $ drop colOffset allRows
-        (heights, heightDummy) = 
+        (heights, heightDummy) =
             let hs = take nrows heights'
                 s = sum hs
                 d = height - s
@@ -575,24 +575,24 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
                      Last -> (applyToLast (+d) hs, 0)
                      None -> (hs, d)
         widths' = minSpaces getWidth (transpose $ tbw_rows tbw)
-        (widths, rightMargin) = 
-            if sum widths' > width 
+        (widths, rightMargin) =
+            if sum widths' > width
                then error ("table to wide: width=" ++ show (sum widths') ++
                            ", available width=" ++ show width)
                else case tbwopt_fillCol $ tbw_options tbw of
                       Just i | i >= 0 && i < ncols
-                                 -> (take i widths' ++ 
+                                 -> (take i widths' ++
                                      let rest = drop i widths'
                                      in (head rest + width - sum widths') : tail rest
                                     , Nothing)
                       _ -> let diff = width - sum widths'
                                msz = (height, diff)
-                               m = if diff > 0 then Just (sum widths', msz) 
+                               m = if diff > 0 then Just (sum widths', msz)
                                    else Nothing
                            in (widths', m)
         dummyHeights = if heightDummy == 0 then [] else [heightDummy]
-        dummyRows = if heightDummy == 0 then [] 
-                    else [map (\w -> TableCell (OpaqueWidget (heightDummy, w))) 
+        dummyRows = if heightDummy == 0 then []
+                    else [map (\w -> TableCell (OpaqueWidget (heightDummy, w)))
                           widths]
         in TBWDisplayInfo
                { tbwdisp_height = height
@@ -606,9 +606,9 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
                , tbwdisp_rightMargin = rightMargin
                }
     where
-        minSpaces f ls = 
-            snd $ mapAccumL 
-                    (\acc ws -> 
+        minSpaces f ls =
+            snd $ mapAccumL
+                    (\acc ws ->
                        (acc, acc + maximum (map (f . minSize) ws)))
                     0 ls
         getNRows (h:hs) n acc | h + n <= height = getNRows hs (h+n) (acc+1)
@@ -620,12 +620,12 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
         applyToFirst f [] = []
         applyToFirst f (x:xs) = f x : xs
         applyToLast f [] = []
-        applyToLast f l = 
+        applyToLast f l =
             let (h, t) = (head $ reverse l, tail $ reverse l)
                 in reverse $ f h : t
 
 getCellInfo :: Pos -> Size -> TableWidget -> (Int,Int) -> (Pos, Size)
-getCellInfo pos@(y,x) sz tbw (row, col) = 
+getCellInfo pos@(y,x) sz tbw (row, col) =
     let info = tableWidgetDisplayInfo sz tbw
         heights = tbwdisp_heights info
         widths = tbwdisp_widths info
@@ -636,7 +636,7 @@ getCellInfo pos@(y,x) sz tbw (row, col) =
         in ((y+yoff, x+xoff), (h, w))
 
 drawTableWidget :: Pos -> Size -> DrawingHint -> TableWidget -> IO ()
-drawTableWidget pos@(y, x) sz hint tbw = 
+drawTableWidget pos@(y, x) sz hint tbw =
     let info = tableWidgetDisplayInfo sz tbw
         heights = tbwdisp_heights info
         widths = tbwdisp_widths info
@@ -648,22 +648,22 @@ drawTableWidget pos@(y, x) sz hint tbw =
                 Nothing -> return ()
                 Just (xoff,s) -> draw (y,x+xoff) s hint (OpaqueWidget s)
               Curses.refresh
-    where drawRows :: [Row] -> [Int] -> [Int] -> Int -> Int 
+    where drawRows :: [Row] -> [Int] -> [Int] -> Int -> Int
                    -> DrawingHint -> IO ()
           drawRows [] _ _ _ _ _ = return ()
-          drawRows (r:rs) (h:hs) widths yoffset rowIndex hint = 
+          drawRows (r:rs) (h:hs) widths yoffset rowIndex hint =
             do drawCols r h widths yoffset 0 (rowIndex, 0) hint
                drawRows rs hs widths (yoffset + h) (rowIndex + 1) hint
-          drawCols :: Row -> Int -> [Int] -> Int -> Int -> (Int, Int) 
+          drawCols :: Row -> Int -> [Int] -> Int -> Int -> (Int, Int)
                    -> DrawingHint -> IO ()
           drawCols [] _ _ _ _ _ _ = return ()
-          drawCols (c:cs) h (w:ws) yoffset xoffset (rowIndex, colIndex) hint = 
+          drawCols (c:cs) h (w:ws) yoffset xoffset (rowIndex, colIndex) hint =
             let hint' = case tbw_pos tbw of
                            Just (y, x) | y == rowIndex && x == colIndex
                                -> DHFocus
                            _ -> hint
             in do draw (y+yoffset, x+xoffset) (h,w) hint' c
-                  drawCols cs h ws yoffset (xoffset + w) 
+                  drawCols cs h ws yoffset (xoffset + w)
                            (rowIndex, colIndex+1) hint
 
 
@@ -678,7 +678,7 @@ tableWidgetScrollDown (h, _) tbw =
              Just (y,x) -> newTbw { tbw_pos = Just (max newOffset y, x) }
 
 tableWidgetScrollUp :: Size -> TableWidget -> TableWidget
-tableWidgetScrollUp sz@(h,_) tbw =  
+tableWidgetScrollUp sz@(h,_) tbw =
     let dataLen = length $ tbw_rows tbw
         offset = tbw_colOffset tbw
         newOffset = scrollBackward dataLen offset h
@@ -686,13 +686,13 @@ tableWidgetScrollUp sz@(h,_) tbw =
         newLastVis = tbwdisp_lastVis (tableWidgetDisplayInfo sz newTbw)
         in case tbw_pos newTbw of
              Nothing -> newTbw
-             Just (y,x) -> 
+             Just (y,x) ->
                  newTbw { tbw_pos = Just (min newLastVis y, x) }
 
-tableWidgetActivateCurrent :: MonadExcIO m => m () -> Pos -> Size 
-                           -> DrawingHint -> TableWidget 
+tableWidgetActivateCurrent :: MonadExcIO m => m () -> Pos -> Size
+                           -> DrawingHint -> TableWidget
                            -> m (TableWidget, Maybe String)
-tableWidgetActivateCurrent refresh pos@(y, x) sz hint tbw = 
+tableWidgetActivateCurrent refresh pos@(y, x) sz hint tbw =
     case tbw_pos tbw of
       Nothing -> do debug "tableWidgetActivateCurrent: pos=Nothing"
                     return (tbw, Nothing)
@@ -701,7 +701,7 @@ tableWidgetActivateCurrent refresh pos@(y, x) sz hint tbw =
                        then do debug "tableWidgetActivateCurrent: not active"
                                return (tbw, Nothing)
                        else activate w p
-    where 
+    where
     activate widget colyx@(coly, colx) =
         let info = tableWidgetDisplayInfo sz tbw
             vcol = colx
@@ -712,7 +712,7 @@ tableWidgetActivateCurrent refresh pos@(y, x) sz hint tbw =
             w = widths !! vcol
             yoffset = sum (take vrow heights)
             xoffset = sum (take vcol widths)
-        in do (new, res) <- _activateTableCell refresh (y+yoffset, x+xoffset) 
+        in do (new, res) <- _activateTableCell refresh (y+yoffset, x+xoffset)
                               (h, w) widget
               return (setCellWidget tbw colyx new, Just res)
 
@@ -728,7 +728,7 @@ tableWidgetGoUp =  tableWidgetMove DirUp
 tableWidgetGoDown :: Size -> TableWidget -> TableWidget
 tableWidgetGoDown =  tableWidgetMove DirDown
 
-tableWidgetMove dir sz tbw = 
+tableWidgetMove dir sz tbw =
     let pos = tbw_pos tbw
         opts = tbw_options tbw
         nrows = length (tbw_rows tbw)
@@ -739,30 +739,30 @@ tableWidgetMove dir sz tbw =
                          newP@(Just (y, _)) ->
                              tableWidgetMakeVisible (tbw {tbw_pos=newP}) sz y
 
-tableWidgetMakeVisible tbw sz@(height,_) y = 
+tableWidgetMakeVisible tbw sz@(height,_) y =
     let info = tableWidgetDisplayInfo sz tbw
         firstVis = tbwdisp_firstVis info
         lastVis = tbwdisp_lastVis info
         in if y < firstVis
               then tableWidgetMakeVisible (tableWidgetScrollUp sz tbw) sz y
               else if y > lastVis
-                      then tableWidgetMakeVisible 
+                      then tableWidgetMakeVisible
                                (tableWidgetScrollDown sz tbw) sz y
                       else tbw
 
 findFirstActiveCell :: [Row] -> TableWidgetOptions -> Maybe Pos
-findFirstActiveCell rows opts = 
+findFirstActiveCell rows opts =
     let nrows = length rows
-        firstActiveCells = map (\y -> findNextActiveCell opts nrows 
+        firstActiveCells = map (\y -> findNextActiveCell opts nrows
                                                          (y, -1) DirRight)
                                [0..nrows-1]
         in case catMaybes firstActiveCells of
              [] -> Nothing
              (x:_) -> Just x
 
-findNextActiveCell :: TableWidgetOptions -> Int  -> Pos -> Direction 
+findNextActiveCell :: TableWidgetOptions -> Int  -> Pos -> Direction
                    -> Maybe Pos
-findNextActiveCell opts nrows pos@(y,x) dir = 
+findNextActiveCell opts nrows pos@(y,x) dir =
 --    trace ("findNextActiveCell (opts=" ++ show opts ++ ", nrows=" ++ show nrows
 --           ++ ", pos=" ++ show pos ++ ", dir=" ++ show dir) $
     let rows = [0..(nrows - 1)]
@@ -778,27 +778,27 @@ findNextActiveCell opts nrows pos@(y,x) dir =
                 DirRight -> horiz goRight
                 DirUp -> vert goLeft
                 DirDown -> vert goRight
-        in --trace ("result of findNextActiveCell: " ++ show res) 
+        in --trace ("result of findNextActiveCell: " ++ show res)
            res
     where goLeft _ _ rows y | not (y `elem` rows) = Nothing
-          goLeft cols x _ _ = 
+          goLeft cols x _ _ =
               case reverse (takeWhile (<x) cols) of
                 [] -> Nothing
                 (x:_) -> Just x
           goRight _ _ rows y | not (y `elem` rows) = Nothing
-          goRight cols x _ _ = 
+          goRight cols x _ _ =
               case dropWhile (x>=) cols of
                 [] -> Nothing
                 (x:_) -> Just x
 
 tableWidgetDeleteRow :: Int -> TableWidget -> TableWidget
-tableWidgetDeleteRow n tbw = 
+tableWidgetDeleteRow n tbw =
     let rows = tbw_rows tbw
         rows' = deleteAt n rows
-        pos' = 
+        pos' =
            case tbw_pos tbw of
              Nothing -> Nothing
-             Just (row,col) -> 
+             Just (row,col) ->
                  let row' = min row (length rows' - 1)
                      in if row' >= 0 then Just (row', col)
                         else Nothing
@@ -824,16 +824,16 @@ joinLists l s = if (null l) then [] else foldr1 (\x -> \y -> x ++ s ++ y) l
 -- | Split a list by some delimiter
 splitList :: Eq a => [a] -> [a] -> [[a]]
 splitList d l =
-    unfoldr (\x -> if (null x) 
-                      then Nothing 
+    unfoldr (\x -> if (null x)
+                      then Nothing
                       else Just $ nextToken d [] (snd $ splitAt (length d) x))
             (d++l)
   where nextToken _ r [] = (r, [])
-        nextToken d r l@(h:t) | (d `isPrefixOf` l) = (r, l) 
+        nextToken d r l@(h:t) | (d `isPrefixOf` l) = (r, l)
                               | otherwise = nextToken d (r++[h]) t
 
 listReplace :: [a] -> a -> Int -> [a]
-listReplace l a i = 
+listReplace l a i =
     case splitAt i l of
       (_, []) -> error ("listReplace: index to large. index="++show i++
                         ", length="++show (length l))
@@ -843,24 +843,24 @@ listReplace l a i =
 
 --alignRows :: [[String]] -> Char -> String -> [String]
 alignRows :: [[[a]]] -> a -> [a] -> [[a]]
-alignRows rows fill delim = 
+alignRows rows fill delim =
     let widths = foldr maxWidths (repeat 0) rows
         in map (alignRow widths) rows
     where
     maxWidths ::  [[a]] -> [Int] -> [Int]
     maxWidths row acc = map (uncurry max) (zip acc (map length row))
     alignRow widths row = concatMap (uncurry alignCell) (zip widths row)
-    alignCell width cell = 
+    alignCell width cell =
         let diff = width - length cell
             in cell ++ (take diff $ repeat fill) ++ delim
 
-        
+
 align :: HAlignment -> Int -> a -> [a] -> [a]
-align a w f l = 
+align a w f l =
     let space = w - length l
         in case a of
              AlignLeft -> l ++ (fill space)
-             AlignRight -> (fill space) ++ l        
+             AlignRight -> (fill space) ++ l
              AlignCenter ->
                  let left = space `div` 2
                      right = left + (space `mod` 2)
@@ -868,6 +868,6 @@ align a w f l =
     where fill n = take n (repeat f)
 
 deleteAt :: Int -> [a] -> [a]
-deleteAt n l = if n >= 0 && n < length l 
+deleteAt n l = if n >= 0 && n < length l
                   then let (a,b) = splitAt n l in a ++ (tail b)
                   else error ("deleteAt: illegal index: " ++ show n)

@@ -1,20 +1,20 @@
 {-# OPTIONS -fffi -fglasgow-exts #-}
--- glaexts needed for newtype deriving 
+-- glaexts needed for newtype deriving
 
 -- Copyright (c) 2002-2004 John Meacham (john at repetae dot net)
 -- Copyright (c) 2004 Don Stewart - http://www.cse.unsw.edu.au/~dons
 -- Copyright (c) 2005 Stefan Wehr - http://www.stefanwehr.de
--- 
+--
 -- This library is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU Lesser General Public
 -- License as published by the Free Software Foundation; either
 -- version 2.1 of the License, or (at your option) any later version.
--- 
+--
 -- This library is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 -- Lesser General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU Lesser General Public
 -- License along with this library; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -27,18 +27,18 @@
 -- >      The curses library routines give the user a terminal-inde-
 -- >      pendent method of updating character screens with  reason-
 -- >      able  optimization.
--- 
+--
 -- Sections of the quoted documentation are from the OpenBSD man pages, which
 -- are distributed under a BSD license.
 --
--- A useful reference is: 
+-- A useful reference is:
 --        /Writing Programs with NCURSES/, by Eric S. Raymond and Zeyd
 --        M. Ben-Halim, <http://dickey.his.com/ncurses/>
 --
 -- N.B attrs don't work with Irix curses.h. This should be fixed.
 --
 
-module HSCurses.Curses (
+module UI.HSCurses.Curses (
 
     -- * Basic Functions
     stdScr,             -- :: Window
@@ -60,9 +60,9 @@ module HSCurses.Curses (
 
     -- * Navigation
     move,           -- :: Int -> Int -> IO ()
-    getYX,    
-    
-    -- * Input 
+    getYX,
+
+    -- * Input
     getCh, getch, decodeKey, ungetCh, keyResizeCode,
 
     -- * Input Options
@@ -74,7 +74,7 @@ module HSCurses.Curses (
     noDelay,            -- :: Window -> Bool -> IO ()
 
     -- * Output
-    wAddStr, 
+    wAddStr,
     addLn,         -- :: IO ()
     mvWAddStr,
     wMove,
@@ -84,16 +84,16 @@ module HSCurses.Curses (
     clrToEol,       -- :: IO ()
     wClrToEol,
     beep,
-    waddch, 
+    waddch,
 
-    -- * Output Options    
+    -- * Output Options
     clearOk,
     leaveOk,
     nl,                 -- :: Bool -> IO ()
 
     -- * Cursor Routines
     CursorVisibility(..), cursSet,
-    
+
     -- * Color Support
     hasColors,      -- :: IO Bool
     startColor,     -- :: IO ()
@@ -110,22 +110,22 @@ module HSCurses.Curses (
     initColor,      -- :: Color -> (Int, Int, Int) -> IO ()
     colorContent,   -- :: Color -> IO (Int, Int, Int)
     defaultBackground, defaultForeground,
-    
+
     -- * Attributes
     attrPlus,
-    Attr,  
+    Attr,
     attr0, -- :: Attr
-    
+
     isAltCharset, isBlink, isBold, isDim, isHorizontal, isInvis,
     isLeft, isLow, isProtect, isReverse, isRight, isStandout, isTop,
     isUnderline, isVertical,
         -- :: Attr -> Bool
-    
+
     setAltCharset, setBlink, setBold, setDim, setHorizontal, setInvis,
     setLeft, setLow, setProtect, setReverse, setRight, setStandout,
     setTop, setUnderline, setVertical,
         -- :: Attr -> Bool -> Attr
-    
+
     attrSet, -- :: Attr -> Pair -> IO ()
     attrOn, attrOff,
 
@@ -134,7 +134,7 @@ module HSCurses.Curses (
     attrDimOn, attrDimOff,
     attrBoldOn, attrBoldOff,
     wAttrOn,
-    wAttrOff, 
+    wAttrOff,
     wAttrSet, wAttrGet,
 
     -- * Mouse Routines
@@ -160,8 +160,8 @@ module HSCurses.Curses (
     throwIfErr, throwIfErr_,
     flushinp,
     recognize
-        
-  ) where 
+
+  ) where
 
 #include <config.h>
 #include <HSCurses.h>
@@ -170,9 +170,9 @@ module HSCurses.Curses (
 # include <signal.h>
 #endif
 
-import HSCurses.CWString       ( withLCStringLen )
-import HSCurses.MonadException
-import HSCurses.Logging
+import UI.HSCurses.CWString       ( withLCStringLen )
+import UI.HSCurses.MonadException
+import UI.HSCurses.Logging
 
 import Prelude hiding           ( pi )
 import Data.Char
@@ -197,7 +197,7 @@ import Data.Bits
 ------------------------------------------------------------------------
 --
 -- | @initCurses fn@ does all initialization necessary for a Curses
---   application. 
+--   application.
 --
 initCurses :: IO ()
 initCurses = do
@@ -244,7 +244,7 @@ type Window = Ptr WindowTag
 --
 stdScr :: Window
 stdScr = unsafePerformIO (peek stdscr)
-foreign import ccall "static HSCurses.h &stdscr" 
+foreign import ccall "static HSCurses.h &stdscr"
     stdscr :: Ptr Window
 
 --
@@ -253,7 +253,7 @@ foreign import ccall "static HSCurses.h &stdscr"
 --
 -- >     To initialize the routines, the routine initscr or newterm
 -- >     must be called before any of the other routines that  deal
--- >     with  windows  and  screens  are used. 
+-- >     with  windows  and  screens  are used.
 --
 -- >     The initscr code determines the terminal type and initial-
 -- >     izes all curses data structures.  initscr also causes  the
@@ -328,7 +328,7 @@ foreign import ccall unsafe "HSCurses.h echo" echo_c :: IO CInt
 -- >        ter use of the line-feed capability, resulting  in  faster
 -- >        cursor  motion.   Also, curses will then be able to detect
 -- >        the return key.
--- > 
+-- >
 nl :: Bool -> IO ()
 nl True  = throwIfErr_ "nl"   nl_c
 nl False = throwIfErr_ "nonl" nonl
@@ -343,7 +343,7 @@ foreign import ccall unsafe "HSCurses.h nonl" nonl :: IO CInt
 -- >        interrupt,  but  causing  curses to have the wrong idea of
 -- >        what is on the  screen.   Disabling  (bf  is  FALSE),  the
 -- >        option  prevents the flush.
--- > 
+-- >
 intrFlush :: Bool -> IO ()
 intrFlush bf =
     throwIfErr_ "intrflush" $ intrflush stdScr (if bf then 1 else 0)
@@ -354,14 +354,14 @@ foreign import ccall unsafe "HSCurses.h intrflush" intrflush :: Window -> (#type
 --
 keypad :: Window -> Bool -> IO ()
 keypad win bf = throwIfErr_ "keypad" $ keypad_c win (if bf then 1 else 0)
-foreign import ccall unsafe "HSCurses.h keypad" 
+foreign import ccall unsafe "HSCurses.h keypad"
     keypad_c :: Window -> (#type bool) -> IO CInt
 
 noDelay :: Window -> Bool -> IO ()
 noDelay win bf =
     throwIfErr_ "nodelay" $ nodelay win (if bf then 1 else 0)
 
-foreign import ccall unsafe "HSCurses.h nodelay" 
+foreign import ccall unsafe "HSCurses.h nodelay"
     nodelay :: Window -> (#type bool) -> IO CInt
 
 --
@@ -377,19 +377,19 @@ leaveOk  :: Bool -> IO CInt
 leaveOk True  = leaveok_c stdScr 1
 leaveOk False = leaveok_c stdScr 0
 
-foreign import ccall unsafe "HSCurses.h leaveok" 
+foreign import ccall unsafe "HSCurses.h leaveok"
     leaveok_c :: Window -> (#type bool) -> IO CInt
 
 clearOk :: Bool -> IO CInt
 clearOk True  = clearok_c stdScr 1
 clearOk False = clearok_c stdScr 0
 
-foreign import ccall unsafe "HSCurses.h clearok" 
+foreign import ccall unsafe "HSCurses.h clearok"
     clearok_c :: Window -> (#type bool) -> IO CInt
 
 ------------------------------------------------------------------------
 
-foreign import ccall unsafe "HSCurses.h use_default_colors" 
+foreign import ccall unsafe "HSCurses.h use_default_colors"
     useDefaultColors :: IO ()
 
 defaultBackground, defaultForeground :: Color
@@ -401,7 +401,7 @@ defaultForeground = Color (-1)
 defineKey :: CInt -> String -> IO ()
 defineKey k s =  withCString s (\s' -> define_key s' k) >> return ()
 
-foreign import ccall unsafe "HSCurses.h define_key" 
+foreign import ccall unsafe "HSCurses.h define_key"
     define_key :: Ptr CChar -> CInt -> IO ()
 
 --
@@ -432,7 +432,7 @@ foreign import ccall "HSCurses.h &COLS"  colsPtr  :: Ptr CInt
 refresh :: IO ()
 refresh = throwIfErr_ "refresh" refresh_c
 
-foreign import ccall unsafe "HSCurses.h refresh" 
+foreign import ccall unsafe "HSCurses.h refresh"
     refresh_c :: IO CInt
 
 --
@@ -441,7 +441,7 @@ foreign import ccall unsafe "HSCurses.h refresh"
 update :: IO ()
 update = throwIfErr_ "update" update_c
 
-foreign import ccall unsafe "HSCurses.h doupdate" 
+foreign import ccall unsafe "HSCurses.h doupdate"
     update_c :: IO CInt
 
 ------------------------------------------------------------------------
@@ -462,12 +462,12 @@ newtype Pair = Pair Int deriving (Eq, Ord, Ix, Show)
 
 --
 -- | colorPairs defines the maximum number of color-pairs the terminal
--- can support). 
+-- can support).
 --
 colorPairs :: IO Int
 colorPairs = fmap fromIntegral $ peek colorPairsPtr
 
-foreign import ccall "HSCurses.h &COLOR_PAIRS" 
+foreign import ccall "HSCurses.h &COLOR_PAIRS"
         colorPairsPtr :: Ptr CInt
 
 newtype Color = Color Int deriving (Eq, Ord, Ix)
@@ -526,7 +526,7 @@ initPair (Pair p) (Color f) (Color b) =
     throwIfErr_ "init_pair" $
         init_pair (fromIntegral p) (fromIntegral f) (fromIntegral b)
 
-foreign import ccall unsafe 
+foreign import ccall unsafe
     init_pair :: CShort -> CShort -> CShort -> IO CInt
 
 
@@ -563,26 +563,26 @@ colorContent (Color c) =
         b <- peek bPtr
         return (fromIntegral r, fromIntegral g, fromIntegral b)
 
-foreign import ccall unsafe 
+foreign import ccall unsafe
     color_content :: CShort -> Ptr CShort -> Ptr CShort -> Ptr CShort -> IO CInt
 
-foreign import ccall unsafe "HSCurses.h hs_curses_color_pair" 
+foreign import ccall unsafe "HSCurses.h hs_curses_color_pair"
     colorPair :: Pair -> (#type chtype)
 #def inline chtype hs_curses_color_pair (HsInt pair) {return COLOR_PAIR (pair);}
 
 -------------
--- Attributes 
+-- Attributes
 -------------
 
-foreign import ccall unsafe "HSCurses.h attr_set" 
+foreign import ccall unsafe "HSCurses.h attr_set"
     attr_set :: Attr -> CShort -> Ptr a -> IO Int
 
 -- foreign import ccall unsafe "HSCurses.h attr_get" :: Attr -> CShort -> Ptr a -> IO Int
 
-foreign import ccall unsafe "HSCurses.h wattr_set" 
+foreign import ccall unsafe "HSCurses.h wattr_set"
     wattr_set :: Window -> Attr -> CInt -> Ptr a -> IO CInt
 
-foreign import ccall unsafe "HSCurses.h wattr_get" 
+foreign import ccall unsafe "HSCurses.h wattr_get"
     wattr_get :: Window -> Ptr Attr -> Ptr CShort -> Ptr a -> IO CInt
 
 foreign import ccall "HSCurses.h attr_on" attr_on :: (#type attr_t) -> Ptr a -> IO Int
@@ -598,7 +598,7 @@ foreign import ccall standend :: IO Int
 -- |
 --
 wAttrSet :: Window -> (Attr,Pair) -> IO ()
-wAttrSet w (a,(Pair p)) = throwIfErr_ "wattr_set" $ 
+wAttrSet w (a,(Pair p)) = throwIfErr_ "wattr_set" $
     wattr_set w a (fromIntegral p) nullPtr
 
 --
@@ -606,7 +606,7 @@ wAttrSet w (a,(Pair p)) = throwIfErr_ "wattr_set" $
 --
 wAttrGet :: Window -> IO (Attr,Pair)
 wAttrGet w =
-    alloca $ \pa -> 
+    alloca $ \pa ->
         alloca $ \pp -> do
             throwIfErr_ "wattr_get" $ wattr_get w pa pp nullPtr
             a <- peek pa
@@ -698,19 +698,19 @@ wAttrOff w x = throwIfErr_ "wattroff" $ wattroff w (fi x)
 
 attrDimOn :: IO ()
 attrDimOn  = throwIfErr_ "attron A_DIM" $
-    attron (#const A_DIM) 
+    attron (#const A_DIM)
 
 attrDimOff :: IO ()
 attrDimOff = throwIfErr_ "attroff A_DIM" $
-    attroff (#const A_DIM) 
+    attroff (#const A_DIM)
 
 attrBoldOn :: IO ()
 attrBoldOn  = throwIfErr_ "attron A_BOLD" $
-    attron (#const A_BOLD) 
+    attron (#const A_BOLD)
 
 attrBoldOff :: IO ()
 attrBoldOff = throwIfErr_ "attroff A_BOLD" $
-    attroff (#const A_BOLD) 
+    attroff (#const A_BOLD)
 
 
 attrDim :: Int
@@ -721,10 +721,10 @@ attrBold = (#const A_BOLD)
 ------------------------------------------------------------------------
 
 mvWAddStr :: Window -> Int -> Int -> String -> IO ()
-mvWAddStr w y x str = wMove w y x >> wAddStr w str 
+mvWAddStr w y x str = wMove w y x >> wAddStr w str
 
 addLn :: IO ()
-addLn = wAddStr stdScr "\n" 
+addLn = wAddStr stdScr "\n"
 
 --
 -- | normalise the string, stripping \\r and making control chars
@@ -752,11 +752,11 @@ normalise s = map f . filter (/= '\r') s
 
 --wAddStr :: Window -> String -> IO ()
 --wAddStr w str = throwIfErr_ ("waddnwstr: " ++ show str) $ withCWStringLen (normalise str) (\(ws,len) -> waddnwstr w ws (fi len))
-    
-foreign import ccall unsafe 
+
+foreign import ccall unsafe
     waddnwstr :: Window -> CWString -> CInt -> IO CInt
 
-foreign import ccall unsafe 
+foreign import ccall unsafe
     waddch :: Window -> (#type chtype) -> IO CInt
 
 wAddStr :: Window -> String -> IO ()
@@ -774,7 +774,7 @@ wAddStr win str = do
                 convStr acc
                 throwIfErr "waddch" $ waddch win ch'
                 loop str' id)
-    loop str id 
+    loop str id
 
 #else
 
@@ -786,7 +786,7 @@ wAddStr win str = do
 --
 --      wAddStr Yi.Curses 20.0   38.1
 --      wAddStr Yi.Curses 10.0   32.5
--- 
+--
 -- TODO make this way less expensive. That accum sucks.
 -- use difference lists for O(1) append
 --
@@ -801,7 +801,7 @@ foreign import ccall threadsafe
 foreign import ccall threadsafe
     waddch :: Window -> (#type chtype) -> IO CInt
 
-foreign import ccall threadsafe 
+foreign import ccall threadsafe
     waddchnstr :: Window -> CString -> CInt -> IO CInt
 
 #endif
@@ -859,7 +859,7 @@ foreign import ccall unsafe clrtoeol :: IO CInt
 move :: Int -> Int -> IO ()
 move y x = throwIfErr_ "move" $ move_c (fromIntegral y) (fromIntegral x)
 
-foreign import ccall unsafe "move" 
+foreign import ccall unsafe "move"
     move_c :: CInt -> CInt -> IO CInt
 
 --
@@ -872,7 +872,7 @@ foreign import ccall unsafe "move"
 wMove :: Window -> Int -> Int -> IO ()
 wMove w y x = throwIfErr_ "wmove" $ wmove w (fi y) (fi x)
 
-foreign import ccall unsafe  
+foreign import ccall unsafe
     wmove :: Window -> CInt -> CInt -> IO CInt
 
 ------------------
@@ -886,7 +886,7 @@ vis_c vis = case vis of
     CursorInvisible   -> 0
     CursorVisible     -> 1
     CursorVeryVisible -> 2
-    
+
 c_vis :: CInt -> CursorVisibility
 c_vis 0 = CursorInvisible
 c_vis 1 = CursorVisible
@@ -903,19 +903,19 @@ c_vis n = error ("Illegal C value for cursor visibility: " ++ show n)
 -- >       returned; otherwise, ERR is returned.
 --
 cursSet :: CursorVisibility -> IO CursorVisibility
-cursSet CursorInvisible = 
+cursSet CursorInvisible =
     do leaveOk True
        old <- curs_set 0
        return $ c_vis old
-cursSet v = 
-    do leaveOk False 
+cursSet v =
+    do leaveOk False
        old <- curs_set (vis_c v)
        return $ c_vis old
 
-foreign import ccall unsafe "HSCurses.h curs_set" 
+foreign import ccall unsafe "HSCurses.h curs_set"
     curs_set :: CInt -> IO CInt
 
--- 
+--
 -- | Get the current cursor coordinates
 --
 getYX :: Window -> IO (Int, Int)
@@ -935,7 +935,7 @@ getYX w =
 --
 --      void getyx(WINDOW *win, int y, int x);
 --
-foreign import ccall unsafe "HSCursesUtils.h hscurses_nomacro_getyx" 
+foreign import ccall unsafe "HSCursesUtils.h hscurses_nomacro_getyx"
         nomacro_getyx :: Window -> Ptr CInt -> Ptr CInt -> IO ()
 
 ------------------------------------------------------------------------
@@ -946,36 +946,36 @@ touchWin w = throwIfErr_ "touchwin" $ touchwin w
 foreign import ccall touchwin :: Window -> IO CInt
 
 newPad :: Int -> Int -> IO Window
-newPad nlines ncols = throwIfNull "newpad" $ 
+newPad nlines ncols = throwIfNull "newpad" $
     newpad (fromIntegral nlines) (fromIntegral ncols)
 
 pRefresh :: Window -> Int -> Int -> Int -> Int -> Int -> Int -> IO ()
-pRefresh pad pminrow pmincol sminrow smincol smaxrow smaxcol = 
+pRefresh pad pminrow pmincol sminrow smincol smaxrow smaxcol =
     throwIfErr_ "prefresh" $
-        prefresh pad (fromIntegral pminrow) 
-                     (fromIntegral pmincol) 
-                     (fromIntegral sminrow) 
-                     (fromIntegral smincol) 
-                     (fromIntegral smaxrow) 
+        prefresh pad (fromIntegral pminrow)
+                     (fromIntegral pmincol)
+                     (fromIntegral sminrow)
+                     (fromIntegral smincol)
+                     (fromIntegral smaxrow)
                      (fromIntegral smaxcol)
 
 delWin :: Window -> IO ()
 delWin w = throwIfErr_ "delwin" $ delwin w
-    
-foreign import ccall unsafe 
+
+foreign import ccall unsafe
     prefresh :: Window -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO CInt
 
-foreign import ccall unsafe 
+foreign import ccall unsafe
     newpad :: CInt -> CInt -> IO Window
 
-foreign import ccall unsafe 
+foreign import ccall unsafe
     delwin :: Window -> IO CInt
 
 newWin :: Int -> Int -> Int -> Int -> IO Window
-newWin nlines ncolumn begin_y begin_x = throwIfNull "newwin" $ 
+newWin nlines ncolumn begin_y begin_x = throwIfNull "newwin" $
     newwin (fi nlines) (fi ncolumn) (fi begin_y) (fi begin_x)
 
-foreign import ccall unsafe 
+foreign import ccall unsafe
     newwin :: CInt -> CInt -> CInt -> CInt -> IO Window
 
 wClrToEol :: Window -> IO ()
@@ -993,7 +993,7 @@ foreign import ccall unsafe getch :: IO CInt
 --foreign import ccall unsafe reset_prog_mode :: IO CInt
 foreign import ccall unsafe flushinp :: IO CInt
 
-foreign import ccall unsafe "HSCurses.h noqiflush" 
+foreign import ccall unsafe "HSCurses.h noqiflush"
     noqiflush :: IO ()
 
 foreign import ccall unsafe "HSCurses.h beep" c_beep :: IO CInt
@@ -1002,7 +1002,7 @@ foreign import ccall unsafe "HSCurses.h flash" c_flash :: IO CInt
 beep :: IO ()
 beep = do
     br <- c_beep
-    when (br /= (#const OK)) (c_flash >> return ()) 
+    when (br /= (#const OK)) (c_flash >> return ())
 
 ------------------------------------------------------------------------
 --
@@ -1143,7 +1143,7 @@ keyResizeCode = Nothing
 -- ncurses ungetch and Haskell's threadWaitRead do not work together well.
 -- So I decided to implement my own input queue.
 
-ungetCh i = 
+ungetCh i =
     do debug "ungetCh called"
        writeChan inputBuf (BufDirect (fi i))
 
@@ -1173,24 +1173,24 @@ getchToInputBuf =
 -- | read a character from the window
 --
 getCh :: IO Key
-getCh = 
+getCh =
     do debug "getCh called"
        tid <- forkIO getchToInputBuf
        d <- readChan inputBuf
        killThread tid  -- we can kill the thread savely, because the thread does
                        -- not read any data via getch
        v <- case d of
-              BufDirect x -> 
+              BufDirect x ->
                 do debug "getCh: getting data directly from buffer"
                    return x
-              DataViaGetch -> 
+              DataViaGetch ->
                 do debug "getCh: getting data via getch"
                    getch -- won't block!
        case v of
-         (#const ERR) -> -- NO CODE IN THIS LINE 
+         (#const ERR) -> -- NO CODE IN THIS LINE
              do e <- getErrno
-                if e `elem` [eAGAIN, eINTR] 
-                   then do debug "Curses.getCh returned eAGAIN or eINTR" 
+                if e `elem` [eAGAIN, eINTR]
+                   then do debug "Curses.getCh returned eAGAIN or eINTR"
                            getCh
                    else throwErrno "HSCurses.Curses.getch"
          k -> let k' = decodeKey k
@@ -1203,7 +1203,7 @@ resizeTerminal :: Int -> Int -> IO ()
 #ifdef HAVE_RESIZETERM
 resizeTerminal a b = throwIfErr_ "resizeterm"  $ resizeterm (fi a) (fi b)
 
-foreign import ccall unsafe "HSCurses.h resizeterm" 
+foreign import ccall unsafe "HSCurses.h resizeterm"
     resizeterm :: CInt -> CInt -> IO CInt
 #else
 resizeTerminal _ _ = return ()
@@ -1227,20 +1227,20 @@ cursesSigWinch = Nothing
 cursesTest :: IO ()
 cursesTest = do
     initScr
-    hc <- hasColors 
+    hc <- hasColors
     when hc startColor
     ccc <- canChangeColor
     (ys,xs) <- scrSize
     cp <- colorPairs
     cs <- colors
     endWin
-    putStrLn $ "ScreenSize: " ++ show (xs,ys) 
+    putStrLn $ "ScreenSize: " ++ show (xs,ys)
     putStrLn $ "hasColors: " ++ show hc
     putStrLn $ "canChangeColor: " ++ show ccc
     putStrLn $ "colorPairs: " ++ show cp
     putStrLn $ "colors: " ++ show cs
 
-    
+
 
 
 -----------------
@@ -1248,28 +1248,28 @@ cursesTest = do
 -----------------
 
 data MouseEvent = MouseEvent {
-    mouseEventId :: Int, 
-    mouseEventX :: Int, 
-    mouseEventY :: Int, 
-    mouseEventZ :: Int, 
+    mouseEventId :: Int,
+    mouseEventX :: Int,
+    mouseEventY :: Int,
+    mouseEventZ :: Int,
     mouseEventButton :: [ButtonEvent]
    } deriving(Show)
 
-data ButtonEvent = ButtonPressed Int | ButtonReleased Int | ButtonClicked Int | 
-    ButtonDoubleClicked Int | ButtonTripleClicked Int | ButtonShift | ButtonControl | ButtonAlt 
+data ButtonEvent = ButtonPressed Int | ButtonReleased Int | ButtonClicked Int |
+    ButtonDoubleClicked Int | ButtonTripleClicked Int | ButtonShift | ButtonControl | ButtonAlt
                 deriving(Eq,Show)
 
 withMouseEventMask :: MonadIO m => [ButtonEvent] -> m a -> m a
 
 #ifdef KEY_MOUSE
 
-foreign import ccall unsafe "HSCurses.h mousemask" 
+foreign import ccall unsafe "HSCurses.h mousemask"
     mousemask :: (#type mmask_t) -> Ptr (#type mmask_t) -> IO (#type mmask_t)
 
 withMouseEventMask bes action = do
-    ov <- liftIO $ alloca (\a ->  mousemask (besToMouseMask bes) a >> peek a) 
-    r <- action 
-    liftIO $ mousemask ov nullPtr 
+    ov <- liftIO $ alloca (\a ->  mousemask (besToMouseMask bes) a >> peek a)
+    r <- action
+    liftIO $ mousemask ov nullPtr
     return r
 
 besToMouseMask :: [ButtonEvent] -> (#type mmask_t)
@@ -1342,7 +1342,7 @@ sterling = chr 0x00A3
 {-
 -- haddock doesn't like these commented out with --
    #if defined(__STDC_ISO_10646__)  && defined(HAVE_WADDNWSTR)
-   #else 
+   #else
 -}
 
 recognize :: Char -> IO a -> ((#type chtype) -> IO a) -> IO a

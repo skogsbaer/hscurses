@@ -20,15 +20,16 @@ Description:
     it contains some basic widgets such as a text input widget and
     a table widget.
 Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
+
 Build-depends:  base >= 1.0, haskell98 >= 1.0, unix >= 1.0, mtl >= 1.0
 Build-Type:     Simple
 Tested-with:    GHC==6.8.2, GHC==6.6.1
 
 Exposed-modules:
-    HSCurses.Curses, HSCurses.CursesHelper, HSCurses.Widgets,
-    HSCurses.MonadException, HSCurses.Logging
+    UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
+    UI.HSCurses.MonadException, UI.HSCurses.Logging
 Other-modules:
-    HSCurses.CWString, HSCurses.IConv
+    UI.HSCurses.CWString, UI.HSCurses.IConv
 C-sources:
     cbits/HSCursesUtils.c
 Includes:
@@ -37,9 +38,9 @@ Data-files:
     README, TODO, example/contacts2, example/Setup.hs, example/ContactManager.hs,
     example/cm.cabal, example/contacts, example/Makefile
 Extra-source-files:
-    configure, hscurses.conf.m4.in.before64, HSCurses/Curses.hsc,
-    HSCurses/CursesHelper.hs, HSCurses/CWString.hsc, HSCurses/Widgets.hs,
-    HSCurses/MonadException.hs, HSCurses/Logging.hs, HSCurses/IConv.hsc,
+    configure, hscurses.conf.m4.in.before64, UI/HSCurses/Curses.hsc,
+    UI/HSCurses/CursesHelper.hs, UI/HSCurses/CWString.hsc, UI/HSCurses/Widgets.hs,
+    UI/HSCurses/MonadException.hs, UI/HSCurses/Logging.hs, UI/HSCurses/IConv.hsc,
     install-sh, hscurses.conf.m4.in.64, hscurses.buildinfo.in, configure.ac,
     cbits/config.h.in, cbits/HSCursesUtils.h, cbits/HSCurses.h, Makefile,
     mk/config.mk.in, mk/rules.mk, mk/paths.mk

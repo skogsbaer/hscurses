@@ -1,20 +1,20 @@
 -- Copyright (c) 2005 Stefan Wehr - http://www.stefanwehr.de
--- 
+--
 -- This library is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU Lesser General Public
 -- License as published by the Free Software Foundation; either
 -- version 2.1 of the License, or (at your option) any later version.
--- 
+--
 -- This library is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 -- Lesser General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU Lesser General Public
 -- License along with this library; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-module HSCurses.MonadException where
+module UI.HSCurses.MonadException where
 
 import Prelude hiding (catch)
 import Control.Exception
@@ -41,14 +41,14 @@ catchJustM :: MonadExc m =>
     -> (b -> m a)             -- ^ Handler
     -> m a
 catchJustM p a handler = catchM a handler'
-  where handler' e = case p e of 
+  where handler' e = case p e of
             Nothing -> throw e
             Just b  -> handler b
 
 handleM :: MonadExc m => (Exception -> m a) -> m a -> m a
 handleM = flip catchM
 
-handleJustM :: MonadExc m => 
+handleJustM :: MonadExc m =>
               (Exception -> Maybe b) -> (b -> m a) -> m a -> m a
 handleJustM p = flip (catchJustM p)
 
@@ -64,7 +64,7 @@ tryJustM p a = do
             Nothing -> throw e
             Just b  -> return (Left b)
 
-catchDynM :: (MonadExc m, Typeable exc) => 
+catchDynM :: (MonadExc m, Typeable exc) =>
              m a -> (exc -> m a) -> m a
 catchDynM m k = catchM m handle
   where handle ex = case ex of
@@ -81,7 +81,7 @@ bracketM :: MonadExc m =>
     -> m c         -- returns the value from the in-between computation
 bracketM before after thing =
   blockM (do
-    a <- before 
+    a <- before
     r <- catchM
        (unblockM (thing a))
        (\e -> do { after a; throw e })
@@ -93,7 +93,7 @@ bracketM_ :: MonadExc m => m a -> m b -> m c -> m c
 bracketM_ before after thing = bracketM before (const after) (const thing)
 
 finally :: IO a -- ^ computation to run first
-    -> IO b     -- ^ computation to run afterward (even if an exception 
+    -> IO b     -- ^ computation to run afterward (even if an exception
                 --   was raised)
     -> IO a     -- returns the value from the first computation
 a `finally` sequel =
@@ -125,14 +125,14 @@ instance MonadExc m => MonadExc (StateT s m) where
 instance (MonadExc m, MonadIO m) => MonadExcIO (StateT s m)
 
 modifyState :: MonadExc m => (s -> m (a, s)) -> StateT s m a
-modifyState f = 
+modifyState f =
     do oldState <- get
        (x, newState) <- lift $ f oldState
        put newState
        return x
 
 catchState run handler =
-    modifyState (\oldState -> runStateT run oldState `catchM` 
+    modifyState (\oldState -> runStateT run oldState `catchM`
                               (\e -> runStateT (handler e) oldState))
 
 blockState run =
@@ -140,4 +140,4 @@ blockState run =
 
 unblockState run =
     modifyState (\oldState -> unblockM (runStateT run oldState))
-       
+

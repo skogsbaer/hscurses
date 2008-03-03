@@ -4,17 +4,17 @@
 -- Copyright (c) 2004 Tuomo Valkonen <tuomov at iki dot fi>
 -- Copyright (c) 2004 Don Stewart - http://www.cse.unsw.edu.au/~dons
 -- Copyright (c) 2005 Stefan Wehr - http://www.stefanwehr.de
--- 
+--
 -- This library is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU Lesser General Public
 -- License as published by the Free Software Foundation; either
 -- version 2.1 of the License, or (at your option) any later version.
--- 
+--
 -- This library is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 -- Lesser General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU Lesser General Public
 -- License along with this library; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -26,18 +26,18 @@
 # include <iconv.h>
 #endif
 
-module HSCurses.IConv {-(
+module UI.HSCurses.IConv {-(
     IConv,
     iconv,
     iconv_,
     with_iconv,
-    to_unicode, 
+    to_unicode,
     from_unicode,
     to_unicode_,
     from_unicode_
   )-} where
 
-import HSCurses.CWString          ( peekUTF8StringLen, withUTF8StringLen )
+import UI.HSCurses.CWString          ( peekUTF8StringLen, withUTF8StringLen )
 
 import Foreign
 import Foreign.C
@@ -60,29 +60,29 @@ throw_if_not_2_big s r_ = do
 	    return r
       else
         return r
-    
+
 iconv_open :: String -> String -> IO IConv
 iconv_open to from =
     withCString to $
         \cto -> withCString from $
             \cfrom -> do
-	        throwErrnoIf err_ptr "iconv_open" 
+	        throwErrnoIf err_ptr "iconv_open"
 		    $ c_iconv_open cto cfrom
 
 
 iconv_close :: IConv -> IO ()
-iconv_close ic = 
+iconv_close ic =
     throwErrnoIfMinus1_ "iconv_close" $ c_iconv_close ic
-    
+
 outbuf_size :: Int
 outbuf_size = 1024
 
 do_iconv :: ((Ptr a, Int) -> IO String) -> IConv -> (Ptr b, Int) -> IO String
 do_iconv get_string_fn ic (inbuf, inbuf_bytes) =
-    alloca $ \inbuf_ptr -> 
-        alloca $ \inbytesleft_ptr -> 
-            alloca $ \outbuf_ptr -> 
-                alloca $ \outbytesleft_ptr -> 
+    alloca $ \inbuf_ptr ->
+        alloca $ \inbytesleft_ptr ->
+            alloca $ \outbuf_ptr ->
+                alloca $ \outbytesleft_ptr ->
                     allocaBytes outbuf_size $ \outbuf -> do
       poke (inbytesleft_ptr :: Ptr CSize) (fromIntegral inbuf_bytes)
       poke inbuf_ptr inbuf
@@ -162,21 +162,21 @@ with_cuni = withUTF8StringLen
 #endif
 
 to_unicode_ :: String -> String -> IO String
-to_unicode_ from str =    
+to_unicode_ from str =
      with_iconv cuni_charset from $
       \ic -> withCStringLen str $ do_iconv peek_cuni ic
 
 to_unicode :: String -> String -> Either Exception String
-to_unicode from str = 
+to_unicode from str =
     unsafePerformIO $ try $ to_unicode_ from str
-    
+
 from_unicode_ :: String -> String -> IO String
-from_unicode_ to str = 
+from_unicode_ to str =
      with_iconv to cuni_charset $
       \ic -> with_cuni str $ do_iconv peekCStringLen ic
 
 from_unicode :: String -> String -> Either Exception String
-from_unicode from str = 
+from_unicode from str =
     unsafePerformIO $ try $ from_unicode_ from str
 
 

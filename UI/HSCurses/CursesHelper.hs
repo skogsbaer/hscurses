@@ -1,6 +1,6 @@
 {-# OPTIONS -cpp -#include HSCursesUtils.h -#include <signal.h> #-}
 
--- 
+--
 -- Copyright (C) 2005 Stefan Wehr
 --
 -- Derived from: yi/Curses/UI.hs
@@ -10,27 +10,27 @@
 -- Derived from: riot/UI.hs
 --      Copyright (c) Tuomo Valkonen 2004.
 --      Released under the same license.
--- 
+--
 -- This program is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU General Public License as
 -- published by the Free Software Foundation; either version 2 of
 -- the License, or (at your option) any later version.
--- 
+--
 -- This program is distributed in the hope that it will be useful,
 -- but WITHOUT ANY WARRANTY; without even the implied warranty of
 -- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 -- General Public License for more details.
--- 
+--
 -- You should have received a copy of the GNU General Public License
 -- along with this program; if not, write to the Free Software
 -- Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
 -- 02111-1307, USA.
--- 
+--
 --
 
-module HSCurses.CursesHelper (
+module UI.HSCurses.CursesHelper (
 
-        -- * UI initialisation 
+        -- * UI initialisation
         start, end, suspend, resizeui,
 
         -- * Input
@@ -52,7 +52,7 @@ module HSCurses.CursesHelper (
         -- * Style
         Style(..), CursesStyle, mkCursesStyle, changeCursesStyle,
         setStyle, resetStyle, convertStyles,
-        defaultStyle, defaultCursesStyle, withStyle, 
+        defaultStyle, defaultCursesStyle, withStyle,
 
         -- * Keys
         displayKey,
@@ -61,15 +61,15 @@ module HSCurses.CursesHelper (
         withCursor, withProgram
   )   where
 
-import HSCurses.Curses hiding ( refresh, Window )
-import qualified HSCurses.Curses as Curses
-import HSCurses.Logging
+import UI.HSCurses.Curses hiding ( refresh, Window )
+import UI.HSCurses.Logging
+import UI.HSCurses.MonadException
+import qualified UI.HSCurses.Curses as Curses
 
 import Char
 import Data.Maybe
 import Data.List
 import Control.Monad.Trans
-import HSCurses.MonadException
 import System.Posix.Signals
 
 --
@@ -80,8 +80,8 @@ import System.Posix.Signals
 --
 -- This function installs a handler for the SIGWINCH signal
 -- which writes the KEY_RESIZE key to the input queue (if KEY_RESIZE and
--- and SIGWINCH are both available). 
--- 
+-- and SIGWINCH are both available).
+--
 start :: IO ()
 start = do
     Curses.initCurses                   -- initialise the screen
@@ -91,10 +91,10 @@ start = do
       (Just sig, Just key) ->
           do installHandler sig (Catch $ sigwinch sig key) Nothing
              return ()
-      _ -> debug ("cannot install SIGWINCH handler: signal=" ++ 
-                  show Curses.cursesSigWinch ++ ", KEY_RESIZE=" ++ 
+      _ -> debug ("cannot install SIGWINCH handler: signal=" ++
+                  show Curses.cursesSigWinch ++ ", KEY_RESIZE=" ++
                   show Curses.keyResizeCode)
-    where sigwinch sig key = 
+    where sigwinch sig key =
               do debug "SIGWINCH signal received"
                  Curses.ungetCh key
                  installHandler sig (Catch $ sigwinch sig key) Nothing
@@ -103,7 +103,7 @@ start = do
 
 
 --
--- | Clean up and go home. 
+-- | Clean up and go home.
 --
 end :: IO ()
 end = do Curses.endWin
@@ -129,7 +129,7 @@ getKey refresh = do
     k <- liftIO $ Curses.getCh
     debug ("getKey: " ++ show k)
     case k of
-      KeyResize -> 
+      KeyResize ->
           do refresh
              getKey refresh
       _ -> return k
@@ -160,7 +160,7 @@ gotoTop = Curses.wMove Curses.stdScr 0 0
 
 --
 -- | Resize the window
--- From "Writing Programs with NCURSES", by Eric S. Raymond and 
+-- From "Writing Programs with NCURSES", by Eric S. Raymond and
 -- Zeyd M. Ben-Halim
 --
 --
@@ -203,12 +203,12 @@ colorsToPairs cs =
            blackWhite = p < nColors
        if blackWhite
           then trace ("Terminal does not support enough colors. Number of " ++
-                      " colors requested: " ++ show nColors ++ 
+                      " colors requested: " ++ show nColors ++
                       ". Number of colors supported: " ++ show p)
                  return $ take nColors (repeat (Curses.Pair 0))
           else mapM toPairs (zip [1..] cs)
-     where toPairs (n, (fg, bg)) = 
-               let p = Curses.Pair n 
+     where toPairs (n, (fg, bg)) =
+               let p = Curses.Pair n
                in do Curses.initPair p fg bg
                      return p
 
@@ -310,7 +310,7 @@ data Attribute = Bold
 -- | Converts an abstract attribute list into its curses representation.
 --
 convertAttributes :: [Attribute] -> Curses.Attr
-convertAttributes = 
+convertAttributes =
     foldr setAttrs Curses.attr0
     where setAttrs Bold = setBoldA
           setAttrs Underline = setUnderlineA
@@ -318,7 +318,7 @@ convertAttributes =
           setAttrs Reverse = setReverseA
           setAttrs Blink = setBlinkA
 
-setBoldA, setUnderlineA, setDimA, 
+setBoldA, setUnderlineA, setDimA,
   setReverseA, setBlinkA :: Curses.Attr -> Curses.Attr
 setBoldA = flip Curses.setBold True
 setUnderlineA = flip Curses.setUnderline True
@@ -377,12 +377,12 @@ resetStyle = setStyle defaultCursesStyle
 --
 setStyle :: CursesStyle -> IO ()
 setStyle (CursesStyle a p) = Curses.wAttrSet Curses.stdScr (a, p)
-setStyle (ColorlessCursesStyle a) = 
+setStyle (ColorlessCursesStyle a) =
     do (_, p) <- Curses.wAttrGet Curses.stdScr
        Curses.wAttrSet Curses.stdScr (a, p)
 
 withStyle :: MonadExcIO m => CursesStyle -> m a -> m a
-withStyle style action = 
+withStyle style action =
     bracketM
         (liftIO $ do old <- Curses.wAttrGet Curses.stdScr    -- before
                      setStyle style
@@ -392,7 +392,7 @@ withStyle style action =
 
 --
 -- | Converts a list of human-readable styles into the corresponding
---   curses representation. 
+--   curses representation.
 --
 --   This function should be called exactly once at application startup
 --   for all styles of the application.
@@ -409,16 +409,16 @@ convertStyles styleList =
                   (abg, cbg) = convertBg bg
               in (afg ++ abg ++ attrs, Just (cfg, cbg))
           convertStyle (ColorlessStyle attrs) = (attrs, Nothing)
-          colorsToPairs' cs = 
+          colorsToPairs' cs =
               do pairs <- colorsToPairs (catMaybes cs)
                  return $ mergeNothing cs pairs
-          mergeNothing (Just _:crest) (p:prest) = Just p 
+          mergeNothing (Just _:crest) (p:prest) = Just p
                                                   : mergeNothing crest prest
           mergeNothing (Nothing:crest) ps = Nothing : mergeNothing crest ps
           mergeNothing [] [] = []
-          toCursesStyle cursesAttrs Nothing = 
+          toCursesStyle cursesAttrs Nothing =
               ColorlessCursesStyle cursesAttrs
-          toCursesStyle cursesAttrs (Just cursesPair) = 
+          toCursesStyle cursesAttrs (Just cursesPair) =
               CursesStyle cursesAttrs cursesPair
 
 ------------------------------------------------------------------------
@@ -430,7 +430,7 @@ displayKey :: Key -> String
 displayKey (KeyChar ' ') = "<Space>"
 displayKey (KeyChar '\t') = "<Tab>"
 displayKey (KeyChar '\r') = "<Enter>"
-displayKey (KeyChar c) 
+displayKey (KeyChar c)
     | isPrint c = [c]
 displayKey (KeyChar c)  -- Control
     | ord '\^A' <= ord c && ord c <= ord '\^Z'
@@ -462,12 +462,12 @@ displayKey k = show k
 -- | set the cursor, and do action
 --
 withCursor :: MonadExcIO m => CursorVisibility -> m a -> m a
-withCursor nv action = 
+withCursor nv action =
     bracketM
         (liftIO $ Curses.cursSet nv)             -- before
         (\vis -> liftIO $ Curses.cursSet vis)    -- after
         (\_ -> action)                           -- do this
 
 withProgram :: MonadExcIO m => m a -> m a
-withProgram action = withCursor CursorVisible $ 
+withProgram action = withCursor CursorVisible $
     bracketM_ (liftIO endWin) (liftIO flushinp) action
