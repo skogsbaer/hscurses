@@ -312,30 +312,30 @@ activateEditWidget :: MonadExcIO m => m () -> Pos -> Size
 activateEditWidget refresh pos@(y, x) sz@(_, width) ew =
     CursesH.withCursor Curses.CursorVisible $ processKey ew
     where
-    processKey ew =
-        do liftIO $ draw ew
+    processKey ex =
+        do liftIO $ drawLocal ex
            k <- CursesH.getKey refresh
-           case lookup k (ewopt_keyHandlers $ ew_options ew) of
+           case lookup k (ewopt_keyHandlers $ ew_options ex) of
              Nothing ->
                  case k of
                    Curses.KeyChar c | isAscii c && isPrint c
-                       -> processKey $ insertChar ew c
-                   _   -> processKey ew
+                       -> processKey $ insertChar ex c
+                   _   -> processKey ex
              Just f  ->
-                 do x <- liftIO $ f pos sz ew
-                    case x of
-                      Cont ew' -> processKey ew'
-                      Done ew' -> do liftIO $ drawEditWidget pos sz DHActive ew'
-                                     return (ew', editWidgetGetContent ew')
-    insertChar ew c =
-        let pos = ew_contentPos ew
-            oldContent = ew_content ew
-            newContent = take pos oldContent ++ (c : drop pos oldContent)
-            in editWidgetGoRight' pos sz (ew { ew_content = newContent })
-    draw ew = _draw DHActive  (ewopt_style . ew_options $ ew) $
+                 do x' <- liftIO $ f pos sz ex
+                    case x' of
+                      Cont ex' -> processKey ex'
+                      Done ex' -> do liftIO $ drawEditWidget pos sz DHActive ex'
+                                     return (ex', editWidgetGetContent ex')
+    insertChar ew' c =
+        let pos' = ew_contentPos ew'
+            oldContent = ew_content ew'
+            newContent = take pos' oldContent ++ (c : drop pos' oldContent)
+            in editWidgetGoRight' pos' sz (ew' { ew_content = newContent })
+    drawLocal ew' = _draw DHActive  (ewopt_style . ew_options $ ew') $
         do Curses.wMove Curses.stdScr y x
-           CursesH.drawLine width (drop (ew_xoffset ew) $ ew_content ew)
-           Curses.wMove Curses.stdScr y (x + ew_xcursor ew)
+           CursesH.drawLine width (drop (ew_xoffset ew') $ ew_content ew')
+           Curses.wMove Curses.stdScr y (x + ew_xcursor ew')
            Curses.refresh
 
 editWidgetGoLeft' :: t -> t1 -> EditWidget -> EditWidget
@@ -721,20 +721,20 @@ drawTableWidget (y, x) sz hint tbw =
     where drawRows :: [Row] -> [Int] -> [Int] -> Int -> Int
                    -> DrawingHint -> IO ()
           drawRows [] _ _ _ _ _ = return ()
-          drawRows (r:rs) (h:hs) widths yoffset rowIndex hint =
-            do drawCols r h widths yoffset 0 (rowIndex, 0) hint
-               drawRows rs hs widths (yoffset + h) (rowIndex + 1) hint
+          drawRows (r:rs) (h:hs) widths yoffset rowIndex hint' =
+            do drawCols r h widths yoffset 0 (rowIndex, 0) hint'
+               drawRows rs hs widths (yoffset + h) (rowIndex + 1) hint'
           drawCols :: Row -> Int -> [Int] -> Int -> Int -> (Int, Int)
                    -> DrawingHint -> IO ()
           drawCols [] _ _ _ _ _ _ = return ()
-          drawCols (c:cs) h (w:ws) yoffset xoffset (rowIndex, colIndex) hint =
-            let hint' = case tbw_pos tbw of
-                           Just (y, x) | y == rowIndex && x == colIndex
+          drawCols (c:cs) h (w:ws) yoffset xoffset (rowIndex, colIndex) hint' =
+            let hint'' = case tbw_pos tbw of
+                           Just (z, a) | z == rowIndex && a == colIndex
                                -> DHFocus
-                           _ -> hint
-            in do draw (y+yoffset, x+xoffset) (h,w) hint' c
+                           _ -> hint'
+            in do draw (y+yoffset, x+xoffset) (h,w) hint'' c
                   drawCols cs h ws yoffset (xoffset + w)
-                           (rowIndex, colIndex+1) hint
+                           (rowIndex, colIndex+1) hint'
 
 
 tableWidgetScrollDown :: Size -> TableWidget -> TableWidget
@@ -770,9 +770,9 @@ tableWidgetActivateCurrent refresh (y, x) sz _ tbw =
                     in if not $ isActive w
                        then do debug "tableWidgetActivateCurrent: not active"
                                return (tbw, Nothing)
-                       else activate w p
+                       else activate' w p
     where
-    activate widget colyx@(coly, colx) =
+    activate' widget colyx@(coly, colx) =
         let info = tableWidgetDisplayInfo sz tbw
             vcol = colx
             vrow = coly - tbwdisp_firstVis info
@@ -847,10 +847,10 @@ findNextActiveCell opts nrows (y,x) dir =
         cols = sort (tbwopt_activeCols opts)
         horiz f = case f cols x rows y of
                     Nothing -> Nothing
-                    Just x -> Just (y, x)
+                    Just z -> Just (y, z)
         vert f = case f rows y cols x of
                    Nothing -> Nothing
-                   Just y -> Just (y, x)
+                   Just z -> Just (y, z)
         res = case dir of
                 DirLeft-> horiz goLeft
                 DirRight -> horiz goRight
@@ -858,16 +858,16 @@ findNextActiveCell opts nrows (y,x) dir =
                 DirDown -> vert goRight
         in --trace ("result of findNextActiveCell: " ++ show res)
            res
-    where goLeft _ _ rows y | not (y `elem` rows) = Nothing
-          goLeft cols x _ _ =
-              case reverse (takeWhile (<x) cols) of
+    where goLeft _ _ rows a | not (a `elem` rows) = Nothing
+          goLeft cols b _ _ =
+              case reverse (takeWhile (<b) cols) of
                 [] -> Nothing
-                (x:_) -> Just x
-          goRight _ _ rows y | not (y `elem` rows) = Nothing
-          goRight cols x _ _ =
-              case dropWhile (x>=) cols of
+                (c:_) -> Just c
+          goRight _ _ rows a | not (a `elem` rows) = Nothing
+          goRight cols a _ _ =
+              case dropWhile (a>=) cols of
                 [] -> Nothing
-                (x:_) -> Just x
+                (b:_) -> Just b
 
 tableWidgetDeleteRow :: Int -> TableWidget -> TableWidget
 tableWidgetDeleteRow n tbw =
@@ -907,8 +907,8 @@ splitList d l =
                       else Just $ nextToken d [] (snd $ splitAt (length d) x))
             (d++l)
   where nextToken _ r [] = (r, [])
-        nextToken d r l@(h:t) | (d `isPrefixOf` l) = (r, l)
-                              | otherwise = nextToken d (r++[h]) t
+        nextToken e r m@(h:t) | (e `isPrefixOf` m) = (r, m)
+                              | otherwise = nextToken e (r++[h]) t
 
 listReplace :: [a] -> a -> Int -> [a]
 listReplace l a i =
