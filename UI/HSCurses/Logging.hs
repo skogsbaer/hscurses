@@ -65,6 +65,6 @@ debug_ f s =
 
 trace _ x = x
 
-debug s = return ()
+debug _ = return ()
 
 #endif

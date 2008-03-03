@@ -19,7 +19,6 @@ module UI.HSCurses.MonadException where
 import Prelude hiding (catch)
 import Control.Exception
 import Control.Monad.State
-import Data.Typeable
 import Data.Dynamic
 
 class Monad m => MonadExc m where
@@ -66,8 +65,8 @@ tryJustM p a = do
 
 catchDynM :: (MonadExc m, Typeable exc) =>
              m a -> (exc -> m a) -> m a
-catchDynM m k = catchM m handle
-  where handle ex = case ex of
+catchDynM m k = catchM m handl
+  where handl ex = case ex of
                (DynException dyn) ->
                 case fromDynamic dyn of
                     Just exception  -> k exception
@@ -131,10 +130,13 @@ modifyState f =
        put newState
        return x
 
+catchState :: (MonadExc m) => StateT s m a -> (Exception -> StateT s m a)
+           -> StateT s m a
 catchState run handler =
     modifyState (\oldState -> runStateT run oldState `catchM`
                               (\e -> runStateT (handler e) oldState))
 
+blockState, unblockState :: (MonadExc m) => StateT s m a -> StateT s m a
 blockState run =
     modifyState (\oldState -> blockM (runStateT run oldState))
 

@@ -114,7 +114,7 @@ scrollFactor = 0.8
 
 scrollBy :: Int -> Int
 scrollBy displayLen =
-    let amount = floor ((fromInteger.toInteger) displayLen * scrollFactor)
+    let amount = floor ((fromInteger . toInteger) displayLen * scrollFactor)
     in max (displayLen - 1) (min 1 amount)
 
 -- returns the new offset for scrolling in forward direction
@@ -128,7 +128,7 @@ scrollForward dataLen offset displayLen =
 
 -- returns the new offset for scrolling in backward direction.
 -- parameters as for scrollForward
-scrollBackward dataLen offset displayLen =
+scrollBackward _ offset displayLen =
     if offset == 0
        then offset
        else max (offset - scrollBy displayLen) 0
@@ -152,7 +152,7 @@ instance Widget EmptyWidget where
 data OpaqueWidget = OpaqueWidget Size
 
 instance Widget OpaqueWidget where
-    draw pos@(y,x) sz@(h,w) _ _ =
+    draw (y,x) (h,w) _ _ =
         let draw' n =
                 do Curses.wMove Curses.stdScr (y+n) x
                    CursesH.drawLine w ""
@@ -245,7 +245,7 @@ editWidgetGetOptions ew = ew_options ew
 editWidgetSetOptions ew opts = ew { ew_options = opts }
 
 drawEditWidget :: Pos -> Size -> DrawingHint -> EditWidget -> IO ()
-drawEditWidget (y, x) (height, width) hint ew =
+drawEditWidget (y, x) (_, width) hint ew =
     _draw hint (ewopt_style . ew_options $ ew) $
     do Curses.wMove Curses.stdScr y x
        CursesH.drawLine width (drop (ew_xoffset ew) $ ew_content ew)
@@ -253,7 +253,7 @@ drawEditWidget (y, x) (height, width) hint ew =
 
 activateEditWidget :: MonadExcIO m => m () -> Pos -> Size
                    -> EditWidget -> m (EditWidget, String)
-activateEditWidget refresh pos@(y, x) sz@(height, width) ew =
+activateEditWidget refresh pos@(y, x) sz@(_, width) ew =
     CursesH.withCursor Curses.CursorVisible $ processKey ew
     where
     processKey ew =
@@ -426,7 +426,7 @@ newTextWidget opts s = TextWidget
                        }
 
 drawTextWidget :: Pos -> Size -> DrawingHint -> TextWidget -> IO ()
-drawTextWidget pos@(y, x) sz@(height, width) hint tw =
+drawTextWidget (y, x) (height, width) hint tw =
     let ly = take height $ drop (tw_yoffset tw) (lines (tw_text tw))
         l = take height $ (map (drop (tw_xoffset tw)) ly ++ repeat [])
         l' = map (align (twopt_halign $ tw_options tw) width ' ') l
@@ -557,7 +557,7 @@ data TableWidgetDisplayInfo =
     }
 
 tableWidgetDisplayInfo :: Size -> TableWidget -> TableWidgetDisplayInfo
-tableWidgetDisplayInfo sz@(height, width) tbw =
+tableWidgetDisplayInfo (height, width) tbw =
     assert (isQuadratic (tbw_rows tbw)) $
     let allRows = tbw_rows tbw
         ncols = length (allRows!!0)
@@ -617,15 +617,15 @@ tableWidgetDisplayInfo sz@(height, width) tbw =
         isQuadratic (x:xs) = isQuadratic' xs (length x)
         isQuadratic' (x:xs) n = length x == n && isQuadratic' xs n
         isQuadratic' [] _ = True
-        applyToFirst f [] = []
+        applyToFirst _ [] = []
         applyToFirst f (x:xs) = f x : xs
-        applyToLast f [] = []
+        applyToLast _ [] = []
         applyToLast f l =
             let (h, t) = (head $ reverse l, tail $ reverse l)
                 in reverse $ f h : t
 
 getCellInfo :: Pos -> Size -> TableWidget -> (Int,Int) -> (Pos, Size)
-getCellInfo pos@(y,x) sz tbw (row, col) =
+getCellInfo (y,x) sz tbw (row, col) =
     let info = tableWidgetDisplayInfo sz tbw
         heights = tbwdisp_heights info
         widths = tbwdisp_widths info
@@ -636,7 +636,7 @@ getCellInfo pos@(y,x) sz tbw (row, col) =
         in ((y+yoff, x+xoff), (h, w))
 
 drawTableWidget :: Pos -> Size -> DrawingHint -> TableWidget -> IO ()
-drawTableWidget pos@(y, x) sz hint tbw =
+drawTableWidget (y, x) sz hint tbw =
     let info = tableWidgetDisplayInfo sz tbw
         heights = tbwdisp_heights info
         widths = tbwdisp_widths info
@@ -692,7 +692,7 @@ tableWidgetScrollUp sz@(h,_) tbw =
 tableWidgetActivateCurrent :: MonadExcIO m => m () -> Pos -> Size
                            -> DrawingHint -> TableWidget
                            -> m (TableWidget, Maybe String)
-tableWidgetActivateCurrent refresh pos@(y, x) sz hint tbw =
+tableWidgetActivateCurrent refresh (y, x) sz _ tbw =
     case tbw_pos tbw of
       Nothing -> do debug "tableWidgetActivateCurrent: pos=Nothing"
                     return (tbw, Nothing)
@@ -739,7 +739,7 @@ tableWidgetMove dir sz tbw =
                          newP@(Just (y, _)) ->
                              tableWidgetMakeVisible (tbw {tbw_pos=newP}) sz y
 
-tableWidgetMakeVisible tbw sz@(height,_) y =
+tableWidgetMakeVisible tbw sz@(_,_) y =
     let info = tableWidgetDisplayInfo sz tbw
         firstVis = tbwdisp_firstVis info
         lastVis = tbwdisp_lastVis info
@@ -762,7 +762,7 @@ findFirstActiveCell rows opts =
 
 findNextActiveCell :: TableWidgetOptions -> Int  -> Pos -> Direction
                    -> Maybe Pos
-findNextActiveCell opts nrows pos@(y,x) dir =
+findNextActiveCell opts nrows (y,x) dir =
 --    trace ("findNextActiveCell (opts=" ++ show opts ++ ", nrows=" ++ show nrows
 --           ++ ", pos=" ++ show pos ++ ", dir=" ++ show dir) $
     let rows = [0..(nrows - 1)]
@@ -839,7 +839,7 @@ listReplace l a i =
                         ", length="++show (length l))
       ([], _) | i < 0 -> error ("listReplace: negative index. index="++
                                 show i)
-      (xs,(y:ys)) -> xs ++ (a:ys)
+      (xs,(_:ys)) -> xs ++ (a:ys)
 
 --alignRows :: [[String]] -> Char -> String -> [String]
 alignRows :: [[[a]]] -> a -> [a] -> [[a]]
