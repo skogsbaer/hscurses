@@ -66,7 +66,7 @@ import UI.HSCurses.Logging
 import UI.HSCurses.MonadException
 import qualified UI.HSCurses.Curses as Curses
 
-import Char
+import Data.Char
 import Data.Maybe
 import Data.List
 import Control.Monad.Trans

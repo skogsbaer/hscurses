@@ -19,11 +19,11 @@
 
 module UI.HSCurses.Widgets where
 
-import Char
 import Control.Exception (assert)
 import Control.Monad.Trans
-import List
-import Maybe
+import Data.Char
+import Data.List
+import Data.Maybe
 
 import UI.HSCurses.Logging
 import UI.HSCurses.MonadException

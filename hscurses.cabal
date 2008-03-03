@@ -21,7 +21,7 @@ Description:
     a table widget.
 Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
 
-Build-depends:  base >= 1.0, haskell98 >= 1.0, unix >= 1.0, mtl >= 1.0
+Build-depends:  base >= 1.0, unix >= 1.0, mtl >= 1.0
 Build-Type:     Simple
 Tested-with:    GHC==6.8.2, GHC==6.6.1
 

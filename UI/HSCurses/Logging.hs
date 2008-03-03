@@ -18,12 +18,12 @@
 
 module UI.HSCurses.Logging (trace,debug) where
 
-import IO
-import Time
-import Locale
-import Data.IORef
-import System.IO.Unsafe             ( unsafePerformIO )
 import Control.Monad.Trans
+import Data.IORef
+import System.IO
+import System.IO.Unsafe             ( unsafePerformIO )
+import System.Locale
+import System.Time
 
 
 trace :: String -> a -> a

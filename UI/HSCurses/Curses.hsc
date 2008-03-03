@@ -185,7 +185,8 @@ import Control.Concurrent
 import Control.Concurrent.Chan
 
 import Foreign
-import CForeign
+import Foreign.C.String
+import Foreign.C.Types
 import Foreign.C.Error
 import System.Posix.Signals
 
