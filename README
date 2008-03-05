@@ -1,14 +1,14 @@
-               hscurses -- A Haskell Binding to NCurses
+               hscurses -- A Haskell Binding to ncurses
                =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 
-hscurses is a Haskell binding to the NCurses library, a library of
+hscurses is a Haskell binding to the ncurses library, a library of
 functions that manage an application's display on character-cell
 terminals. hscurses also provides some basic widgets implemented on
 top of the ncurses binding, such as a text input widget and a table
 widget.
 
 The hscurses library has been reported to work on Linux x86 and on
-OpenBSD using GHC 6.2, 6.4, 6.6, 6.6.1, 6.8.2.
+OpenBSD using GHC 6.6, 6.6.1, 6.8.2.
 
 Building and installing the hscurses library with GHC 6.6
 ---------------------------------------------------------
@@ -69,8 +69,8 @@ documentation.
 Copyright:
 ----------
 
-   John Meacham <john at repetae dot net>, 2002-2004.
-   Tuomo Valkonen <tuomov at iki.fi>, 2004.
+   John Meacham <john @ repetae . net>, 2002-2004.
+   Tuomo Valkonen <tuomov @ iki.fi>, 2004.
    Don Stewart <http://www.cse.unsw.edu.au/~dons>, 2004.
    Stefan Wehr <http://www.stefanwehr.de>, 2004-2005.
 
