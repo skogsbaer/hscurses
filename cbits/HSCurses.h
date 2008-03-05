@@ -7,7 +7,7 @@
 #undef PACKAGE_STRING
 #undef PACKAGE_TARNAME
 #undef PACKAGE_VERSION
-# include "config.h"
+# include "ghcconfig.h"
 #endif
 
 #if HAVE_NCURSESW_NCURSES_H
