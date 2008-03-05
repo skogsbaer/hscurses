@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
 MAKE=make
-GHC62=/usr/local/ghc6.2/bin/ghc
-GHC64=/usr/bin/ghc
+GHC68=`which ghc`
 
 TOPDIR=../..
 THISDIR=tests/dist-test
@@ -25,14 +24,14 @@ function run() {
     echo
 
     cd $TOPDIR
-    $MAKE distclean && autoreconf &&./configure --with-hc=$hc && $MAKE
+    autoreconf -i && runhaskell Setup configure && runhaskell Setup build
     if [ $? -ne 0 ] ; then
         echo "Test failed"
         exit 1
     fi
 
     cd $THISDIR
-    $hc --make -o $res -package-conf $TOPDIR/hscurses.conf -package hscurses Test.hs
+    $hc --make -o $res -package-conf $TOPDIR/hscurses.cabal -package hscurses Test.hs
     if [ $? -ne 0 ] ; then
         echo "Test failed"
         rm "$res" $cleans
@@ -42,8 +41,7 @@ function run() {
     rm $cleans
 }
 
-run $GHC62
-run $GHC64
+run $GHC68
 
 
 echo

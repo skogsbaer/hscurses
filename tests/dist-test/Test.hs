@@ -1,28 +1,28 @@
-import qualified HSCurses.Curses as Curses
-import qualified HSCurses.CursesHelper as CursesH
-import HSCurses.Widgets
+import qualified UI.HSCurses.Curses as Curses
+import qualified UI.HSCurses.CursesHelper as CursesH
+import UI.HSCurses.Widgets
 import Control.Exception
-import System
+import System.Exit
 
 row1 sty = map (TableCell . newTextWidget defaultTWOptions) ["1", "eins", "one"]
-row2 sty = TableCell (newTextWidget 
-                      (defaultTWOptions { twopt_minSize = 
+row2 sty = TableCell (newTextWidget
+                      (defaultTWOptions { twopt_minSize =
                                           TWSizeFixed (2,10),
-                                          twopt_style = 
+                                          twopt_style =
                                           mkDrawingStyle (sty!!2)}) "2")
            : map (TableCell . newTextWidget defaultTWOptions) ["zwei", "two"]
 row3 sty = map (TableCell . newTextWidget defaultTWOptions) ["3", "drei"]
-           ++ [ActiveTableCell $ newEditWidget 
-                    (defaultEWOptions {ewopt_style = 
+           ++ [ActiveTableCell $ newEditWidget
+                    (defaultEWOptions {ewopt_style =
                                        mkDrawingStyle (sty!!1)}) ""]
-row4 sty = map (TableCell . newTextWidget defaultTWOptions) 
+row4 sty = map (TableCell . newTextWidget defaultTWOptions)
                ["4", "vier", "four"]
 row5 sty = map (TableCell . newTextWidget defaultTWOptions) ["5", "fuenf"]
-           ++ [TableCell (newTextWidget 
-                          (defaultTWOptions {twopt_minSize = 
+           ++ [TableCell (newTextWidget
+                          (defaultTWOptions {twopt_minSize =
                                              TWSizeFixed (1,6),
-                                             twopt_style = 
-                                             mkDrawingStyle (sty!!3)}) 
+                                             twopt_style =
+                                             mkDrawingStyle (sty!!3)})
                           "five56XXXXX")]
 
 rows sty = [row1 sty, row2 sty, row3 sty, row4 sty, row5 sty]
@@ -39,7 +39,7 @@ text = "0        1         2         3         4         5"
 
 done = return ()
 
-loop tbw msg = 
+loop tbw msg =
     do drawTableWidget tablePos tableSize DHNormal tbw
        drawTextWidget msgPos msgSize DHNormal msg
        c <- CursesH.getKey done
@@ -52,27 +52,27 @@ loop tbw msg =
          Curses.KeyUp -> loop (tableWidgetGoUp tableSize tbw) msg
          Curses.KeyDown -> loop (tableWidgetGoDown tableSize tbw) msg
          Curses.KeyChar '\r' ->
-             do (new, res) <- tableWidgetActivateCurrent done tablePos 
+             do (new, res) <- tableWidgetActivateCurrent done tablePos
                                 tableSize DHNormal tbw
                 let msg' = case res of
                              Nothing -> textWidgetSetText msg
                                           "could not activate current cell"
-                             Just s -> textWidgetSetText msg 
+                             Just s -> textWidgetSetText msg
                                          ("new content: <" ++ s ++ ">")
                 loop new msg'
          _   -> loop tbw msg
 
-styles = [CursesH.defaultStyle, 
+styles = [CursesH.defaultStyle,
           CursesH.Style CursesH.WhiteF CursesH.PurpleB,
           CursesH.AttributeStyle [CursesH.Dim] CursesH.CyanF CursesH.WhiteB,
           CursesH.ColorlessStyle [CursesH.Bold]]
 
 main :: IO ()
-main = 
+main =
     do CursesH.start
        cstyles <- CursesH.convertStyles styles
        Curses.cursSet Curses.CursorInvisible
-       drawTextWidget (0, 0) (1, 60) DHFocus 
+       drawTextWidget (0, 0) (1, 60) DHFocus
                           (newTextWidget defaultTWOptions text)
        loop (tableWidget cstyles) (newTextWidget defaultTWOptions "")
        return ()

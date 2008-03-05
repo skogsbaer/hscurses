@@ -1,8 +1,8 @@
-import qualified HSCurses.Curses as Curses
-import qualified HSCurses.CursesHelper as CursesH
-import HSCurses.Widgets
+import qualified UI.HSCurses.Curses as Curses
+import qualified UI.HSCurses.CursesHelper as CursesH
+import UI.HSCurses.Widgets
 import Control.Exception
-import System
+import System.Exit
 
 twOptions sty = defaultTWOptions { twopt_style = mkDrawingStyle sty }
 
@@ -10,7 +10,7 @@ text sty  = newTextWidget (twOptions sty) (reverse "1\n12\n123\n1234\n12345\n123
 
 textSize = (4,4)
 
-loop tw = 
+loop tw =
     do drawTextWidget (0,0) textSize DHNormal tw
        c <- CursesH.getKey done
        case c of
@@ -27,7 +27,7 @@ done = return ()
 styles = [CursesH.defaultStyle, CursesH.Style CursesH.WhiteF CursesH.PurpleB]
 
 main :: IO ()
-main = 
+main =
     do CursesH.start
        cstyles <- CursesH.convertStyles styles
        Curses.cursSet Curses.CursorInvisible

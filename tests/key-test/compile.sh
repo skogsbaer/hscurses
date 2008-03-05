@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ghc --make -o key-test -package HSCurses KeyTest.hs
+ghc --make -o key-test -package hscurses KeyTest.hs

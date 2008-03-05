@@ -1,7 +1,7 @@
 # PROF_OPTS = -prof -auto-all
 GHC = ghc --make $(PROF_OPTS) -package-conf $(PKG_CONF) -package hscurses
 BINS = edit-test text-test table-test
-PKG_CONF = ../../hscurses.conf
+PKG_CONF = ../../hscurses.cabal
 
 default: text-test
 

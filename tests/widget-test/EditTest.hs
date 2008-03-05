@@ -1,10 +1,11 @@
-import qualified HSCurses.Curses as Curses
-import qualified HSCurses.CursesHelper as CursesH
-import HSCurses.Widgets
-import Control.Exception
-import System
+import qualified UI.HSCurses.Curses as Curses
+import qualified UI.HSCurses.CursesHelper as CursesH
+import UI.HSCurses.Widgets
 
-draw s = 
+import Control.Exception
+import System.Exit
+
+draw s =
     do (h, w) <- Curses.scrSize
        CursesH.gotoTop
        CursesH.drawLine w s
@@ -17,20 +18,20 @@ forever x = x >> forever x
 
 exit ew _ _ = return (Done ew)
 
-options stys = 
+options stys =
     let dsty = (mkDrawingStyle (stys!!1)) { dstyle_active = stys!!1 }
         in defaultEWOptions {ewopt_style = dsty }
 
-editWidget stys = newEditWidget (options stys) "" 
+editWidget stys = newEditWidget (options stys) ""
 
-edit ew = 
+edit ew =
     do (ew', s) <- activateEditWidget done (1, 10) (1, 10) ew
-       Curses.wMove Curses.stdScr 5 0       
+       Curses.wMove Curses.stdScr 5 0
        CursesH.drawLine 60 ("saved: " ++ s)
        Curses.refresh
        return ew'
 
-loop ew = 
+loop ew =
     do c <- CursesH.getKey done
        ew' <- case c of
                 Curses.KeyChar 'q' -> exitWith ExitSuccess
@@ -38,12 +39,12 @@ loop ew =
                 _ -> return ew
        loop ew'
 
-styles = [CursesH.defaultStyle, 
+styles = [CursesH.defaultStyle,
           CursesH.Style CursesH.CyanF CursesH.PurpleB]
 
 main :: IO ()
-main = 
-    do CursesH.start 
+main =
+    do CursesH.start
        cstyles <- CursesH.convertStyles styles
        Curses.cursSet Curses.CursorInvisible
        CursesH.gotoTop
