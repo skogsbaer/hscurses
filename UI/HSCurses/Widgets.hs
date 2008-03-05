@@ -1,4 +1,4 @@
-{-# OPTIONS -fglasgow-exts #-}
+{-# LANGUAGE ScopedTypeVariables, ExistentialQuantification #-}
 -- glasgow-exts needed for existentials and multi-parameter type classes.
 
 -- Copyright (c) 2005 Stefan Wehr - http://www.stefanwehr.de

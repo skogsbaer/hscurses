@@ -1,4 +1,4 @@
-{-# OPTIONS -fffi #-}
+{-# LANGUAGE ForeignFunctionInterface #-}
 
 --
 -- Copyright (c) 2004 Tuomo Valkonen <tuomov at iki dot fi>

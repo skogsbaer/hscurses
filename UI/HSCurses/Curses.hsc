@@ -1,4 +1,4 @@
-{-# OPTIONS -fffi -fglasgow-exts #-}
+{-# LANGUAGE ForeignFunctionInterface, GeneralizedNewtypeDeriving #-}
 -- glaexts needed for newtype deriving
 
 -- Copyright (c) 2002-2004 John Meacham (john at repetae dot net)
@@ -163,7 +163,7 @@ module UI.HSCurses.Curses (
 
   ) where
 
-#include <config.h>
+#include <ghcconfig.h>
 #include <HSCurses.h>
 
 #if HAVE_SIGNAL_H

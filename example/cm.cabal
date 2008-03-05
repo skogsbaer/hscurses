@@ -4,7 +4,9 @@ Version:       0.1
 License:       GPL
 License-file:  ../LICENSE
 Author:   Stefan Wehr <http://www.informatik.uni-freiburg.de/~wehr>
-Build-Depends:       base, hscurses >= 1.0, mtl, haskell98
+
+Build-Depends:       base>3, hscurses >= 1.2, mtl, pretty
+Build-Type:          Simple
 
 Executable:          cm
 Main-Is:             ContactManager.hs

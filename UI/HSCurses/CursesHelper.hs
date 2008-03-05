@@ -1,4 +1,5 @@
-{-# OPTIONS -cpp -#include HSCursesUtils.h -#include <signal.h> #-}
+{-# LANGUAGE CPP #-}
+{-# OPTIONS -#include HSCursesUtils.h -#include <signal.h> #-}
 
 --
 -- Copyright (C) 2005 Stefan Wehr

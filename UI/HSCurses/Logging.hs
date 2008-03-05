@@ -1,4 +1,4 @@
-{-# OPTIONS -cpp -fno-cse #-}
+{-# LANGUAGE CPP #-}
 
 -- Copyright (c) 2005 Stefan Wehr - http://www.stefanwehr.de
 --
