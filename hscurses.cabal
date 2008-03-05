@@ -38,12 +38,10 @@ Data-files:
     README, TODO, example/contacts2, example/Setup.hs, example/ContactManager.hs,
     example/cm.cabal, example/contacts
 Extra-source-files:
-    configure, UI/HSCurses/Curses.hsc,
+    UI/HSCurses/Curses.hsc,
     UI/HSCurses/CursesHelper.hs, UI/HSCurses/CWString.hsc, UI/HSCurses/Widgets.hs,
     UI/HSCurses/MonadException.hs, UI/HSCurses/Logging.hs, UI/HSCurses/IConv.hsc,
-    hscurses.buildinfo.in, configure.ac,
-    cbits/config.h.in, cbits/HSCursesUtils.h, cbits/HSCurses.h,
-    mk/config.mk.in, mk/rules.mk, mk/paths.mk
+    cbits/config.h.in, cbits/HSCursesUtils.h, cbits/HSCurses.h
 
 Extensions:       CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving, ScopedTypeVariables, ExistentialQuantification
 Include-dirs:     cbits .
