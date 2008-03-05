@@ -35,17 +35,6 @@ AC_ARG_WITH(hc,
 ])
 AC_SUBST(WithGhc)
 
-# code generation option for GHC (normally, we want to use `-fvia-C', however,
-# with ghc-6.4 -fvia-C produces a buggy binary, dying with:
-#       user error (Curses[-1]:keypad))
-if test `$WithGhc --numeric-version 2> /dev/null` = "6.4"; then
-  GhcCodegen="-fasm"
-else
-  GhcCodegen="-fvia-C"
-fi
-AC_SUBST(GhcCodegen)
-
-#
 # Look for a ghc-pkg that matches our ghc version.
 #
 ghc_pkg_guess=`dirname $WithGhc`/ghc-pkg-`$WithGhc --numeric-version`

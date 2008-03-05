@@ -7,16 +7,15 @@ terminals. hscurses also provides some basic widgets implemented on
 top of the ncurses binding, such as a text input widget and a table
 widget.
 
-The hscurses library has been reported to work on Linux x86 and on
-OpenBSD using GHC 6.6, 6.6.1, 6.8.2.
+The hscurses library has been reported to work on Linux x86 using GHC 6.8.2.
 
-Building and installing the hscurses library with GHC 6.6
+Building and installing the hscurses library with GHC 6.8
 ---------------------------------------------------------
 
 Requirements:
 
 - GNU m4
-- GHC >= 6.6
+- GHC >= 6.8
 - ncurses
 
 Build and installation steps:
@@ -30,41 +29,12 @@ In order to generate the API documentation, you need haddock
 
   runhaskell Setup.hs haddock
 
-
-Building and installing the hscurses library with GHC 6.2 and 6.4
------------------------------------------------------------------
-
-Requirements:
-
-- GNU make
-- GNU m4
-- GHC >= 6.2
-- ncurses
-
-Build and installation steps:
-
-  sh configure
-  make
-  make doc          # if you want to build the API documentation
-  make install      # probably as root
-
-  make register     # probably as root
-OR
-  make user-register  # don't need to be root
-
-In order to generate the API documentation, you need haddock
-(http://www.haskell.org/haddock). The command is then:
-
-  make doc          # result goes to ./html
-
-
 Using the hscurses library:
 ---------------------------
 
 Just add the flag `-package hscurses' to the compiler flags. At the
 moment, user documentation is only available through Haddock API
 documentation.
-
 
 Copyright:
 ----------
@@ -73,7 +43,6 @@ Copyright:
    Tuomo Valkonen <tuomov @ iki.fi>, 2004.
    Don Stewart <http://www.cse.unsw.edu.au/~dons>, 2004.
    Stefan Wehr <http://www.stefanwehr.de>, 2004-2005.
-
 
 History:
 --------
