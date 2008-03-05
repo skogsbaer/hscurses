@@ -1,5 +1,5 @@
 -- Copyright (c) 2005 Stefan Wehr (http://www.stefanwehr.de)
--- 
+--
 -- Permission is hereby granted, free of charge, to any person obtaining a
 -- copy of this software and associated documentation files (the
 -- "Software"), to deal in the Software without restriction, including
@@ -7,10 +7,10 @@
 -- distribute, sublicense, and/or sell copies of the Software, and to
 -- permit persons to whom the Software is furnished to do so, subject to
 -- the following conditions:
--- 
+--
 -- The above copyright notice and this permission notice shall be included
 -- in all copies or substantial portions of the Software.
--- 
+--
 -- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
 -- OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 -- MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -19,7 +19,7 @@
 -- TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 -- SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
--- Simple addressbook application to show the capabilities of the hscurses 
+-- Simple addressbook application to show the capabilities of the hscurses
 -- library, especially its widget set.
 
 module Main where
@@ -31,15 +31,17 @@ TODO:
 * add
 -}
 
-import List ( sort )
-import System
 import Control.Exception
 import Control.Monad.State
+import Data.List ( sort )
+import System.Environment (getArgs, getProgName)
+import System.Exit (exitFailure)
 import Text.PrettyPrint.HughesPJ
-import qualified HSCurses.Curses as Curses
-import qualified HSCurses.CursesHelper as CursesH
-import HSCurses.Widgets
-import HSCurses.Logging
+
+import UI.HSCurses.Logging
+import UI.HSCurses.Widgets
+import qualified UI.HSCurses.Curses as Curses
+import qualified UI.HSCurses.CursesHelper as CursesH
 
 type Name = String
 type Email = String
@@ -75,10 +77,10 @@ emptyContact = Contact
                , phoneNumber      = ""
                }
 
-pprContact c = 
+pprContact c =
     pprLine (combine (lastName c) ", " (firstName c)) $
     pprLine (address c) $
-    pprLine (combine (zipCode c) " " (city c)) $ 
+    pprLine (combine (zipCode c) " " (city c)) $
     pprLine (province c) $
     pprLine (country c) $
     pprLine (phoneNumber c) $
@@ -93,7 +95,7 @@ pprContact c =
     combine s1 delim s2 = s1 ++ delim ++ s2
 
 contactToLabelValueList :: Contact -> [(String, String)]
-contactToLabelValueList c = 
+contactToLabelValueList c =
     [ ("Last Name", lastName c)
     , ("First Name", firstName c)
     , ("Email", emailAddress c)
@@ -105,14 +107,14 @@ contactToLabelValueList c =
     , ("Phone", phoneNumber c) ]
 
 readContacts :: FilePath -> IO [Contact]
-readContacts f = 
+readContacts f =
     do s <- readFile f
        case reads s of
          [(contacts, [])] -> return (sort contacts)
          _ -> error ("corrupt contact file: " ++ f)
 
 writeContacts :: FilePath -> [Contact] -> IO ()
-writeContacts f contacts = 
+writeContacts f contacts =
     writeFile f (show contacts)
 
 sampleContacts =
@@ -138,11 +140,11 @@ sampleContacts =
                    , city = "Sydney"
                    , country = "Australia" } ]
 
-    
+
 title = "contact-manager"
 
 help = "q:quit, d:delete, a:add"
-                              
+
 data CMState = CMState
     { cm_styles  :: [CursesH.CursesStyle]
     , cm_contacts :: [Contact]
@@ -150,29 +152,29 @@ data CMState = CMState
 type CM = StateT CMState IO
 
 runCM :: [CursesH.CursesStyle] -> [Contact] -> CM a -> IO a
-runCM stys contacts cm = evalStateT cm (CMState { cm_styles = stys 
+runCM stys contacts cm = evalStateT cm (CMState { cm_styles = stys
                                                 , cm_contacts = contacts })
 
 nthStyle :: Int -> CM CursesH.CursesStyle
-nthStyle n = 
+nthStyle n =
     do cs <- gets cm_styles
        return $ cs !! n
 
 getSize = liftIO $ Curses.scrSize
- 
+
 styles = [ CursesH.defaultStyle
          , CursesH.AttributeStyle [CursesH.Bold] CursesH.GreenF CursesH.DarkBlueB
          ]
 
-    
+
 defStyle = nthStyle 0
 lineStyle = nthStyle 1
 
-lineDrawingStyle = 
+lineDrawingStyle =
     do sty <- lineStyle
        return $ mkDrawingStyle sty
 
-lineOptions = 
+lineOptions =
     do sz <- getSize
        ds <- lineDrawingStyle
        return $ TWOptions { twopt_size = TWSizeFixed (1, getWidth sz),
@@ -187,13 +189,13 @@ type ContactListWidget = TableWidget
 type ContactDetailsWidget = TextWidget
 type ContactEditWidget = TableWidget
 
-mkToplineWidget = 
+mkToplineWidget =
     do opts <- lineOptions
-       return $ newTextWidget (opts { twopt_halign = AlignCenter }) 
+       return $ newTextWidget (opts { twopt_halign = AlignCenter })
                   title
 
 mkMidlineWidget :: ContactListWidget -> CM MidlineWidget
-mkMidlineWidget listWidget = 
+mkMidlineWidget listWidget =
     do opts <- lineOptions
        contacts <- gets cm_contacts
        let s = case tbw_pos listWidget of
@@ -201,7 +203,7 @@ mkMidlineWidget listWidget =
                  Just (row, _) -> show (1+row) ++ "/" ++ show (length contacts)
        return $ newTextWidget  (opts { twopt_halign = AlignRight }) s
 
-mkBotlineWidget = 
+mkBotlineWidget =
     do opts <- lineOptions
        return $ newTextWidget opts help
 
@@ -209,7 +211,7 @@ mkBotlineWidget =
 -- i.e. at the lower-right corner of the message line. Otherwise, an
 -- error occurs because drawing a character to this position moves the
 -- cursor to the next line, which doesn't exist.
-mkMsglineWidget = 
+mkMsglineWidget =
     do sz <- getSize
        let width = getWidth sz
            opts = TWOptions { twopt_size = TWSizeFixed (1, width - 1),
@@ -224,11 +226,11 @@ nlines = 4
 
 contactListHeight (h, _) = (h - nlines) `div` 2
 
-contactDetailsHeight (h, _) = 
+contactDetailsHeight (h, _) =
     let n = h - nlines
         in n `div` 2 + (n `mod` 2)
 
-contactListOptions = 
+contactListOptions =
     do sz <- getSize
        return $ TBWOptions
                   { tbwopt_fillCol = Nothing,
@@ -236,39 +238,39 @@ contactListOptions =
                     tbwopt_activeCols = [0],
                     tbwopt_minSize = (contactListHeight sz, getWidth sz) }
 
-contactDetailsOptions = 
+contactDetailsOptions =
     do sz <- getSize
-       return $ TWOptions { twopt_size = TWSizeFixed (contactDetailsHeight sz, 
+       return $ TWOptions { twopt_size = TWSizeFixed (contactDetailsHeight sz,
                                                          getWidth sz),
                             twopt_style = defaultDrawingStyle,
                             twopt_halign = AlignLeft }
 
 mkContactListWidget :: CM ContactListWidget
-mkContactListWidget = 
+mkContactListWidget =
     do contacts <- gets cm_contacts
        sz <- getSize
        let lines = alignRows (map contactLine contacts) ' ' "  "
            rows = map (contactRow $ getWidth sz) lines
-       opts <- contactListOptions 
+       opts <- contactListOptions
        return $ newTableWidget opts rows
     where contactLine c = [lastName c, firstName c, emailAddress c]
-          contactRow w s = [TableCell $ newTextWidget 
+          contactRow w s = [TableCell $ newTextWidget
                             (defaultTWOptions { twopt_size = TWSizeFixed (1, w) }) s]
           lastRow = [TableCell (EmptyWidget (0,0))]
 
 mkContactDetailsWidget :: ContactListWidget -> CM ContactDetailsWidget
-mkContactDetailsWidget listWidget = 
+mkContactDetailsWidget listWidget =
     do contacts <- gets cm_contacts
        let contact = case tbw_pos listWidget of
                        Nothing -> ""
-                       Just (row, _) -> 
+                       Just (row, _) ->
                            let c = contacts !! row
                                in show $ pprContact c
        opts <- contactDetailsOptions
        return $ newTextWidget opts contact
 
 mkContactEditWidget :: Contact -> CM ContactEditWidget
-mkContactEditWidget contact = 
+mkContactEditWidget contact =
     let l = contactToLabelValueList contact
         rows = map mkRow l
         in do sz <- getSize
@@ -278,12 +280,12 @@ mkContactEditWidget contact =
                            tbwopt_activeCols = [1],
                            tbwopt_minSize = (getHeight sz - 3, getWidth sz) }
               return $ newTableWidget opts rows
-    where mkRow (label, value) = 
+    where mkRow (label, value) =
               let labelW = newTextWidget defaultTWOptions label
                   valueW = newEditWidget defaultEWOptions value
                   in [TableCell labelW, ActiveTableCell valueW]
 
-mkMainEditWidget contact = 
+mkMainEditWidget contact =
     do tlw <- mkToplineWidget
        blw <- mkBotlineWidget
        msglw <- mkMsglineWidget
@@ -296,7 +298,7 @@ data MainEditWidget = MainEditWidget
     , msglineEditWidget :: MsglineWidget
     , contactEditWidget :: ContactEditWidget }
 
-mkMainWidget = 
+mkMainWidget =
     do tlw <- mkToplineWidget
        clw <- mkContactListWidget
        mlw <- mkMidlineWidget clw
@@ -310,7 +312,7 @@ instance Widget MainEditWidget where
     minSize w = minSize (mkRealMainEditWidget Nothing w)
 
 mkRealMainEditWidget :: (Maybe Size) -> MainEditWidget -> TableWidget
-mkRealMainEditWidget msz w = 
+mkRealMainEditWidget msz w =
     let cells = [ TableCell $ toplineEditWidget w
                 , TableCell $ contactEditWidget w
                 , TableCell $ botlineEditWidget w
@@ -333,7 +335,7 @@ instance Widget MainWidget where
     draw pos sz hint w = draw pos sz hint (mkRealMainWidget (Just sz) w)
     minSize w = minSize (mkRealMainWidget Nothing w)
 
-mkRealMainWidget msz w = 
+mkRealMainWidget msz w =
     let cells = [ TableCell $ toplineWidget w
                 , TableCell $ contactListWidget w
                 , TableCell $ midlineWidget w
@@ -355,12 +357,12 @@ updateStateDependentWidgets w listWidget =
                   , midlineWidget = midlineWidget }
 
 move :: Direction -> MainWidget -> CM MainWidget
-move dir w = 
+move dir w =
     do sz <- getSize
        let listWidget = tableWidgetMove dir sz (contactListWidget w)
        updateStateDependentWidgets w listWidget
 
-delete w = 
+delete w =
     let lw = contactListWidget w
         in case tbw_pos lw of
              Nothing -> return w
@@ -386,7 +388,7 @@ editEventloop w ewm =
          _ -> editEventloop w ewm
 -}
 
-edit w = 
+edit w =
     let lw = contactListWidget w
         in case tbw_pos lw of
              Nothing -> return w
@@ -396,10 +398,10 @@ edit w =
                     ew <- mkMainEditWidget c
                     redraw ew
                     return w
-                    --editEventloop w ew 
+                    --editEventloop w ew
 
-resize :: Widget w => CM w -> CM ()                   
-resize f = 
+resize :: Widget w => CM w -> CM ()
+resize f =
     do liftIO $ do Curses.endWin
                    Curses.resetParams
                    Curses.cursSet Curses.CursorInvisible
@@ -408,12 +410,12 @@ resize f =
        redraw w
 
 redraw :: Widget w => w -> CM ()
-redraw w = 
+redraw w =
     do sz <- getSize
        liftIO $ draw (0, 0) sz DHNormal w
        liftIO $ Curses.refresh
 
-eventloop w = 
+eventloop w =
     do k <- CursesH.getKey (resize mkMainWidget)
        case k of
          Curses.KeyChar 'q' -> return ()
@@ -422,19 +424,19 @@ eventloop w =
          Curses.KeyUp       -> process $ move DirUp w
          Curses.KeyDown     -> process $ move DirDown w
          _ -> eventloop w
-    where process f = 
+    where process f =
               do w' <- f
                  redraw w'
                  eventloop w'
 cmMain :: CM ()
-cmMain = 
+cmMain =
     do w <- mkMainWidget
        redraw w
        eventloop w
 
 
 main :: IO ()
-main = 
+main =
     do args <- getArgs
        contacts <-
              if length args /= 1
@@ -443,7 +445,7 @@ main =
                         exitFailure
                 else readContacts (args!!0)
        runCurses contacts `finally` CursesH.end
-    where runCurses contacts = 
+    where runCurses contacts =
               do CursesH.start
                  cstyles <- CursesH.convertStyles styles
                  Curses.cursSet Curses.CursorInvisible
