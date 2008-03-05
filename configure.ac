@@ -54,11 +54,6 @@ AC_SUBST(GhcPkgCmd)
 ghcPkgVersion=`$GhcPkgCmd --version | sed 's/GHC package manager version //'`
 echo -e "$ghcPkgVersion\n6.3" | sort -c > /dev/null 2>&1
 sorted=$?
-if test $sorted -eq 0; then
-  cp ./hscurses.conf.m4.in.before64 ./hscurses.conf.m4.in
-else
-  cp ./hscurses.conf.m4.in.64 ./hscurses.conf.m4.in
-fi
 
 #
 # Look for a hsc2hs that matches our ghc version.
@@ -160,5 +155,5 @@ AC_SUBST(SYMS)
 current_directory=`pwd`
 AC_SUBST(current_directory)
 
-AC_CONFIG_FILES([mk/config.mk hscurses.conf.m4 hscurses.buildinfo])
+AC_CONFIG_FILES([mk/config.mk hscurses.buildinfo])
 AC_OUTPUT

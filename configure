@@ -652,7 +652,6 @@ host_alias
 target_alias
 GHC
 WithGhc
-GhcCodegen
 GhcPkgCmd
 Hsc2hsCmd
 GccCmd
@@ -1818,17 +1817,6 @@ fi
 
 
 
-# code generation option for GHC (normally, we want to use `-fvia-C', however,
-# with ghc-6.4 -fvia-C produces a buggy binary, dying with:
-#       user error (Curses[-1]:keypad))
-if test `$WithGhc --numeric-version 2> /dev/null` = "6.4"; then
-  GhcCodegen="-fasm"
-else
-  GhcCodegen="-fvia-C"
-fi
-
-
-#
 # Look for a ghc-pkg that matches our ghc version.
 #
 ghc_pkg_guess=`dirname $WithGhc`/ghc-pkg-`$WithGhc --numeric-version`
@@ -1884,11 +1872,6 @@ fi
 ghcPkgVersion=`$GhcPkgCmd --version | sed 's/GHC package manager version //'`
 echo -e "$ghcPkgVersion\n6.3" | sort -c > /dev/null 2>&1
 sorted=$?
-if test $sorted -eq 0; then
-  cp ./hscurses.conf.m4.in.before64 ./hscurses.conf.m4.in
-else
-  cp ./hscurses.conf.m4.in.64 ./hscurses.conf.m4.in
-fi
 
 #
 # Look for a hsc2hs that matches our ghc version.
@@ -4426,7 +4409,7 @@ done
 current_directory=`pwd`
 
 
-ac_config_files="$ac_config_files mk/config.mk hscurses.conf.m4 hscurses.buildinfo"
+ac_config_files="$ac_config_files mk/config.mk hscurses.buildinfo"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -4982,7 +4965,6 @@ do
   case $ac_config_target in
     "cbits/config.h") CONFIG_HEADERS="$CONFIG_HEADERS cbits/config.h" ;;
     "mk/config.mk") CONFIG_FILES="$CONFIG_FILES mk/config.mk" ;;
-    "hscurses.conf.m4") CONFIG_FILES="$CONFIG_FILES hscurses.conf.m4" ;;
     "hscurses.buildinfo") CONFIG_FILES="$CONFIG_FILES hscurses.buildinfo" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
@@ -5084,7 +5066,6 @@ host_alias!$host_alias$ac_delim
 target_alias!$target_alias$ac_delim
 GHC!$GHC$ac_delim
 WithGhc!$WithGhc$ac_delim
-GhcCodegen!$GhcCodegen$ac_delim
 GhcPkgCmd!$GhcPkgCmd$ac_delim
 Hsc2hsCmd!$Hsc2hsCmd$ac_delim
 GccCmd!$GccCmd$ac_delim
@@ -5111,7 +5092,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 64; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 63; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
