@@ -95,7 +95,7 @@ AC_CHECK_PROG(STRIP,strip,strip)
 AC_PATH_PROG(LdCmd,ld)
 
 # check for -x flag to ld. stolen from $fptools
-AC_DEFUN(FPTOOLS_LD_X,
+AC_DEFUN([FPTOOLS_LD_X],
 [AC_CACHE_CHECK([whether ld understands -x], fptools_cv_ld_x,
 [
 echo 'foo() {}' > conftest.c
