@@ -57,8 +57,9 @@ module UI.HSCurses.Curses (
     refresh,            -- :: IO ()
     update,
     resizeTerminal,
-    timeout,
-            -- :: Int -> IO ()
+    timeout,            -- :: Int -> IO ()
+    noqiflush,           -- :: IO ()
+
     -- * Navigation
     move,               -- :: Int -> Int -> IO ()
     getYX,
@@ -80,13 +81,14 @@ module UI.HSCurses.Curses (
     mvWAddStr,
     mvAddCh,       -- :: Int -> Int -> ChType -> IO ()
     wMove,
-    bkgrndSet,      -- :: Attr -> Pair -> IO ()
-    erase,          -- :: IO ()
-    wclear,         -- :: Window -> IO ()
-    clrToEol,       -- :: IO ()
+    bkgrndSet,     -- :: Attr -> Pair -> IO ()
+    erase,         -- :: IO ()
+    wclear,        -- :: Window -> IO ()
+    clrToEol,      -- :: IO ()
     wClrToEol,
     beep,
     waddch,
+    waddchnstr,    -- :: Window -> CString -> CInt -> IO CInt
 
     -- * Output Options
     clearOk,
@@ -183,7 +185,6 @@ module UI.HSCurses.Curses (
 #endif
 
 import UI.HSCurses.CWString       ( withLCStringLen )
-import UI.HSCurses.MonadException
 import UI.HSCurses.Logging
 
 import Prelude hiding           ( pi )
@@ -1024,8 +1025,7 @@ foreign import ccall unsafe getch :: IO CInt
 --foreign import ccall unsafe reset_prog_mode :: IO CInt
 foreign import ccall unsafe flushinp :: IO CInt
 
-foreign import ccall unsafe "HSCurses.h noqiflush"
-    noqiflush :: IO ()
+foreign import ccall unsafe "HSCurses.h noqiflush" noqiflush :: IO ()
 
 foreign import ccall unsafe "HSCurses.h beep" c_beep :: IO CInt
 foreign import ccall unsafe "HSCurses.h flash" c_flash :: IO CInt
@@ -1234,7 +1234,7 @@ getCh =
                 do debug "getCh: getting data via getch"
                    getch -- won't block!
        case v of
-         (cERR) -> -- NO CODE IN THIS LINE
+         (#const ERR) -> -- NO CODE IN THIS LINE
              do e <- getErrno
                 if e `elem` [eAGAIN, eINTR]
                    then do debug "Curses.getCh returned eAGAIN or eINTR"
