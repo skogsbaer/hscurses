@@ -57,9 +57,10 @@ module UI.HSCurses.Curses (
     refresh,            -- :: IO ()
     update,
     resizeTerminal,
-
+    timeout,
+            -- :: Int -> IO ()
     -- * Navigation
-    move,           -- :: Int -> Int -> IO ()
+    move,               -- :: Int -> Int -> IO ()
     getYX,
 
     -- * Input
@@ -74,9 +75,10 @@ module UI.HSCurses.Curses (
     noDelay,            -- :: Window -> Bool -> IO ()
 
     -- * Output
-    wAddStr,
+    wAddStr,       -- :: Window -> String -> IO ()
     addLn,         -- :: IO ()
     mvWAddStr,
+    mvAddCh,       -- :: Int -> Int -> ChType -> IO ()
     wMove,
     bkgrndSet,      -- :: Attr -> Pair -> IO ()
     erase,          -- :: IO ()
@@ -144,6 +146,13 @@ module UI.HSCurses.Curses (
 
     -- * Keys
     Key(..),
+    cERR,
+    cKEY_UP,
+    cKEY_DOWN,
+    cKEY_LEFT,
+    cKEY_RIGHT,
+    cTRUE,
+--    cACS_BLOCK,
 
     -- * Lines
     vline,
@@ -158,8 +167,11 @@ module UI.HSCurses.Curses (
     -- * Misc
     cursesTest,
     throwIfErr, throwIfErr_,
+    errI,       -- :: IO CInt -> IO ()
     flushinp,
-    recognize
+    recognize,
+    ChType,
+    NBool
 
   ) where
 
@@ -227,7 +239,7 @@ fi = fromIntegral
 throwIfErr :: Num a => String -> IO a -> IO a
 --throwIfErr name act = do
 --    res <- act
---    if res == (#const ERR)
+--    if res == (cERR)
 --        then ioError (userError ("Curses: "++name++" failed"))
 --        else return res
 throwIfErr s = throwIf (== (#const ERR)) (\a -> "Curses[" ++ show a ++ "]:"  ++ s)
@@ -235,10 +247,19 @@ throwIfErr s = throwIf (== (#const ERR)) (\a -> "Curses[" ++ show a ++ "]:"  ++ 
 throwIfErr_ :: Num a => String -> IO a -> IO ()
 throwIfErr_ name act = void $ throwIfErr name act
 
+errI :: IO CInt -> IO ()
+errI f = do r <- f
+            if r == cERR then do _ <- endwin
+                                 error "curses returned an error"
+             else return ()
+
 ------------------------------------------------------------------------
 
 type WindowTag = ()
 type Window = Ptr WindowTag
+type ChType = #type chtype
+type NBool = #type bool
+
 
 --
 -- | The standard screen
@@ -442,8 +463,13 @@ foreign import ccall unsafe "HSCurses.h refresh"
 update :: IO ()
 update = throwIfErr_ "update" update_c
 
-foreign import ccall unsafe "HSCurses.h doupdate"
-    update_c :: IO CInt
+foreign import ccall unsafe "HSCurses.h doupdate" update_c :: IO CInt
+
+foreign import ccall unsafe "static curses.h timeout" timeout_c :: CInt -> IO ()
+
+-- | Set a delay in milliseconds.
+timeout :: Int -> IO ()
+timeout = timeout_c . fromIntegral
 
 ------------------------------------------------------------------------
 
@@ -567,8 +593,7 @@ colorContent (Color c) =
 foreign import ccall unsafe
     color_content :: CShort -> Ptr CShort -> Ptr CShort -> Ptr CShort -> IO CInt
 
-foreign import ccall unsafe "HSCurses.h hs_curses_color_pair"
-    colorPair :: Pair -> (#type chtype)
+foreign import ccall unsafe "HSCurses.h hs_curses_color_pair" colorPair :: Pair -> ChType
 #def inline chtype hs_curses_color_pair (HsInt pair) {return COLOR_PAIR (pair);}
 
 -------------
@@ -724,6 +749,9 @@ attrBold = (#const A_BOLD)
 mvWAddStr :: Window -> Int -> Int -> String -> IO ()
 mvWAddStr w y x str = wMove w y x >> wAddStr w str
 
+mvAddCh :: Int -> Int -> ChType -> IO ()
+mvAddCh l m n = mvaddch_c (fromIntegral l) (fromIntegral m) (fromIntegral n)
+
 addLn :: IO ()
 addLn = wAddStr stdScr "\n"
 
@@ -758,7 +786,7 @@ foreign import ccall unsafe
     waddnwstr :: Window -> CWString -> CInt -> IO CInt
 
 foreign import ccall unsafe
-    waddch :: Window -> (#type chtype) -> IO CInt
+    waddch :: Window -> ChType -> IO CInt
 
 wAddStr :: Window -> String -> IO ()
 wAddStr win str = do
@@ -800,10 +828,12 @@ foreign import ccall threadsafe
     waddnstr :: Window -> CString -> CInt -> IO CInt
 
 foreign import ccall threadsafe
-    waddch :: Window -> (#type chtype) -> IO CInt
+    waddch :: Window -> ChType -> IO CInt
 
 foreign import ccall threadsafe
     waddchnstr :: Window -> CString -> CInt -> IO CInt
+
+foreign import ccall threadsafe "static curses.h mvaddch" mvaddch_c :: CInt -> CInt -> ChType -> IO ()
 
 #endif
 
@@ -834,7 +864,7 @@ bkgrndSet (Attr a) p = bkgdset $
     #translate_attr UNDERLINE
     colorPair p
 
-foreign import ccall unsafe bkgdset :: (#type chtype) -> IO ()
+foreign import ccall unsafe bkgdset :: ChType -> IO ()
 
 erase :: IO ()
 erase = throwIfErr_ "erase" $ werase_c  stdScr
@@ -1137,6 +1167,22 @@ keyResizeCode = Just (#const KEY_RESIZE)
 keyResizeCode = Nothing
 #endif
 
+cERR :: CInt
+cERR = #const ERR
+
+cKEY_UP, cKEY_DOWN, cKEY_LEFT, cKEY_RIGHT :: ChType
+cKEY_UP = #const KEY_UP
+cKEY_DOWN = #const KEY_DOWN
+cKEY_LEFT = #const KEY_LEFT
+cKEY_RIGHT = #const KEY_RIGHT
+
+-- cACS_BLOCK :: ChType
+-- cACS_BLOCK = #const ACS_BLOCK
+
+cTRUE :: NBool
+cTRUE = #const TRUE
+
+
 -- ---------------------------------------------------------------------
 -- get char
 --
@@ -1188,7 +1234,7 @@ getCh =
                 do debug "getCh: getting data via getch"
                    getch -- won't block!
        case v of
-         (#const ERR) -> -- NO CODE IN THIS LINE
+         (cERR) -> -- NO CODE IN THIS LINE
              do e <- getErrno
                 if e `elem` [eAGAIN, eINTR]
                    then do debug "Curses.getCh returned eAGAIN or eINTR"
@@ -1346,7 +1392,7 @@ sterling = chr 0x00A3
    #else
 -}
 
-recognize :: Char -> IO a -> ((#type chtype) -> IO a) -> IO a
+recognize :: Char -> IO a -> (ChType -> IO a) -> IO a
 recognize _ch noConvert _convert = noConvert -- Handle the most common case first.
 
 
