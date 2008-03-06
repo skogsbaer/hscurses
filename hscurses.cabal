@@ -45,4 +45,4 @@ Extra-source-files:
 
 Extensions:       CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving, ScopedTypeVariables, ExistentialQuantification
 Include-dirs:     cbits .
-Ghc-options:      -funbox-strict-fields -Wall
+Ghc-options:      -funbox-strict-fields -Wall -fvia-c
