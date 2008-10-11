@@ -1,5 +1,5 @@
 Name:           hscurses
-Version:        1.3
+Version:        1.3.0.1
 License:        LGPL
 License-file:   LICENSE
 Author:         John Meacham <john at repetae dot net>
@@ -23,7 +23,7 @@ Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
 
 Build-depends:  base >= 1.0 && < 4, unix >= 1.0, mtl >= 1.0, old-time, old-locale
 Build-Type:     Simple
-Tested-with:    GHC==6.8.2, GHC==6.6.1
+Tested-with:    GHC==6.10, GHC==6.8.3
 
 Exposed-modules:
     UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
