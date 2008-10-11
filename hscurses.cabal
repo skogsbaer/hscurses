@@ -19,7 +19,7 @@ Description:
     application's display on character-cell terminals. Additionally,
     it contains some basic widgets such as a text input widget and
     a table widget.
-Homepage:       http://www.informatik.uni-freiburg.de/~wehr/haskell/
+Homepage:       http://www.informatik.uni-freiburg.de/~wehr/software/haskell/
 
 Build-depends:  base >= 1.0 && < 4, unix >= 1.0, mtl >= 1.0, old-time, old-locale
 Build-Type:     Simple
