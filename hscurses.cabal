@@ -37,6 +37,7 @@ Includes:
 Data-files:
     README, TODO, example/contacts2, example/Setup.hs, example/ContactManager.hs,
     example/cm.cabal, example/contacts
+extra-libraries: ncurses
 Extra-source-files:
     UI/HSCurses/Curses.hsc,
     UI/HSCurses/CursesHelper.hs, UI/HSCurses/CWString.hsc, UI/HSCurses/Widgets.hs,
@@ -45,4 +46,4 @@ Extra-source-files:
 
 Extensions:       CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving, ScopedTypeVariables, ExistentialQuantification
 Include-dirs:     cbits .
-Ghc-options:      -funbox-strict-fields -Wall -fvia-c
+Ghc-options:      -funbox-strict-fields -Wall

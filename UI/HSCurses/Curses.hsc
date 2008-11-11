@@ -595,7 +595,6 @@ foreign import ccall unsafe
     color_content :: CShort -> Ptr CShort -> Ptr CShort -> Ptr CShort -> IO CInt
 
 foreign import ccall unsafe "HSCurses.h hs_curses_color_pair" colorPair :: Pair -> ChType
-#def chtype hs_curses_color_pair (HsInt pair) {return COLOR_PAIR (pair);}
 
 -------------
 -- Attributes

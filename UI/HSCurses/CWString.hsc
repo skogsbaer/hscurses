@@ -226,7 +226,6 @@ wcsrtombs wcs (cs,len) =
                     return x
                 e -> error $ "HSCurses.CWString.wcsrtombs: impossible case: "++show e
 
-#def HsInt hs_get_mb_cur_max () { return MB_CUR_MAX; }
 foreign import ccall unsafe hs_get_mb_cur_max :: IO Int
 
 mb_cur_max :: Int
