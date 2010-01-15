@@ -177,7 +177,6 @@ module UI.HSCurses.Curses (
 
   ) where
 
-#include <ghcconfig.h>
 #include <HSCurses.h>
 
 #if HAVE_SIGNAL_H
@@ -746,6 +745,14 @@ attrBold = (#const A_BOLD)
 
 ------------------------------------------------------------------------
 
+foreign import ccall threadsafe
+    waddch :: Window -> ChType -> IO CInt
+
+foreign import ccall threadsafe
+    waddchnstr :: Window -> CString -> CInt -> IO CInt
+
+foreign import ccall threadsafe "static curses.h mvaddch" mvaddch_c :: CInt -> CInt -> ChType -> IO ()
+
 mvWAddStr :: Window -> Int -> Int -> String -> IO ()
 mvWAddStr w y x str = wMove w y x >> wAddStr w str
 
@@ -785,9 +792,6 @@ normalise s = map f . filter (/= '\r') s
 foreign import ccall unsafe
     waddnwstr :: Window -> CWString -> CInt -> IO CInt
 
-foreign import ccall unsafe
-    waddch :: Window -> ChType -> IO CInt
-
 wAddStr :: Window -> String -> IO ()
 wAddStr win str = do
     let
@@ -826,14 +830,6 @@ wAddStr win s  = throwIfErr_ ("waddnstr: <" ++ s ++ ">") $
 
 foreign import ccall threadsafe
     waddnstr :: Window -> CString -> CInt -> IO CInt
-
-foreign import ccall threadsafe
-    waddch :: Window -> ChType -> IO CInt
-
-foreign import ccall threadsafe
-    waddchnstr :: Window -> CString -> CInt -> IO CInt
-
-foreign import ccall threadsafe "static curses.h mvaddch" mvaddch_c :: CInt -> CInt -> ChType -> IO ()
 
 #endif
 

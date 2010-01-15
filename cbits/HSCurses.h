@@ -1,13 +1,18 @@
 #ifndef HSCURSES_H
 #define HSCURSES_H
 
-#ifndef CONFIG_INCLUDED
-#define CONFIG_INCLUDED
+#ifndef GHC_CONFIG_INCLUDED
+#define GHC_CONFIG_INCLUDED
 #undef PACKAGE_NAME
 #undef PACKAGE_STRING
 #undef PACKAGE_TARNAME
 #undef PACKAGE_VERSION
-# include "ghcconfig.h"
+#include "ghcconfig.h"
+#endif
+
+#ifndef CONFIG_INCLUDED
+#define CONFIG_INCLUDED
+#include "config.h"
 #endif
 
 #if HAVE_NCURSESW_NCURSES_H

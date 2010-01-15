@@ -54,3 +54,8 @@
 ^tests/widget-test/edit-test$
 ^tests/widget-test/table-test$
 ^tests/widget-test/text-test$
+^dist/
+^dist$
+^hscurses.buildinfo$
+^config.log$
+^config.status$
