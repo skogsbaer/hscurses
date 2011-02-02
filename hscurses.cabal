@@ -21,7 +21,8 @@ Description:
     a table widget.
 Homepage:       http://www.stefanwehr.de/software/
 
-Build-depends:  base >= 1.0 && < 4, unix >= 1.0, mtl >= 1.0, old-time, old-locale
+Build-depends:  base == 4.*, unix == 2.4.*, mtl,
+                old-time == 1.0.*, old-locale == 1.0.*
 Build-Type:     Configure
 Tested-with:    GHC==6.12.1, GHC==7.0.1
 
