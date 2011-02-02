@@ -22,7 +22,7 @@ Homepage:       http://www.informatik.uni-freiburg.de/~wehr/software/haskell/
 
 Build-depends:  base >= 1.0 && < 4, unix >= 1.0, mtl >= 1.0, old-time, old-locale
 Build-Type:     Configure
-Tested-with:    GHC==6.10, GHC==6.8.3
+Tested-with:    GHC==6.12.1, GHC==7.0.1
 
 Exposed-modules:
     UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,

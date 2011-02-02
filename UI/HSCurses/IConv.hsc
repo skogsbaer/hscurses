@@ -110,7 +110,7 @@ iconv_ str ic =
     withCStringLen str $ do_iconv peekCStringLen ic
 
 -- between 8-bit encodings only
-iconv :: String -> String -> String -> Either Exception String
+iconv :: Exception e => String -> String -> String -> Either e String
 iconv to from str =
     unsafePerformIO $ try $ with_iconv to from (iconv_ str)
 
@@ -166,7 +166,7 @@ to_unicode_ from str =
      with_iconv cuni_charset from $
       \ic -> withCStringLen str $ do_iconv peek_cuni ic
 
-to_unicode :: String -> String -> Either Exception String
+to_unicode :: Exception e => String -> String -> Either e String
 to_unicode from str =
     unsafePerformIO $ try $ to_unicode_ from str
 
@@ -175,7 +175,7 @@ from_unicode_ to str =
      with_iconv to cuni_charset $
       \ic -> with_cuni str $ do_iconv peekCStringLen ic
 
-from_unicode :: String -> String -> Either Exception String
+from_unicode :: Exception e => String -> String -> Either e String
 from_unicode from str =
     unsafePerformIO $ try $ from_unicode_ from str
 

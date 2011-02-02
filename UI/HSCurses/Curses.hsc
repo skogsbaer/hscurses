@@ -191,7 +191,7 @@ import Data.Char
 import Data.List
 import Data.Ix                  ( Ix )
 
-import Control.Monad
+import Control.Monad ( when, liftM )
 import Control.Monad.Trans
 import Control.Concurrent
 import Control.Concurrent.Chan
