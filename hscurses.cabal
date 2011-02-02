@@ -19,7 +19,7 @@ Description:
     application's display on character-cell terminals. Additionally,
     it contains some basic widgets such as a text input widget and
     a table widget.
-Homepage:       http://www.stefanwehr.de/software/
+Homepage:       https://github.com/skogsbaer/hscurses
 Cabal-version: >= 1.6
 Build-Type:     Configure
 Tested-with:    GHC==6.12.1, GHC==7.0.1
