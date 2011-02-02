@@ -20,32 +20,30 @@ Description:
     it contains some basic widgets such as a text input widget and
     a table widget.
 Homepage:       http://www.stefanwehr.de/software/
-
-Build-depends:  base == 4.*, unix == 2.4.*, mtl,
-                old-time == 1.0.*, old-locale == 1.0.*
+Cabal-version: >= 1.6
 Build-Type:     Configure
 Tested-with:    GHC==6.12.1, GHC==7.0.1
-
-Exposed-modules:
-    UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
-    UI.HSCurses.MonadException, UI.HSCurses.Logging
-Other-modules:
-    UI.HSCurses.CWString, UI.HSCurses.IConv
-C-sources:
-    cbits/HSCursesUtils.c
-Includes:
-    HSCurses.h, HSCursesUtils.h
 Data-files:
     README, TODO, ChangeLog,
     example/contacts2, example/Setup.hs, example/ContactManager.hs,
-    example/cm.cabal, example/contacts
-Extra-source-files:
-    UI/HSCurses/Curses.hsc,
-    UI/HSCurses/CursesHelper.hs, UI/HSCurses/CWString.hsc, UI/HSCurses/Widgets.hs,
-    UI/HSCurses/MonadException.hs, UI/HSCurses/Logging.hs, UI/HSCurses/IConv.hsc,
-    cbits/config.h.in, cbits/HSCursesUtils.h, cbits/HSCurses.h,
-    configure.ac, configure
+    example/cm.cabal, example/contacts, cbits/config.h.in
+    configure, configure.ac, hscurses.buildinfo.in,
+    cbits/HSCurses.h, cbits/HSCursesUtils.h
 
-Extensions:       CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving, ScopedTypeVariables, ExistentialQuantification
-Include-dirs:     cbits .
-Ghc-options:      -funbox-strict-fields -Wall
+Library
+  Build-depends:  base == 4.*, unix == 2.4.*, mtl,
+                  old-time == 1.0.*, old-locale == 1.0.*
+  Exposed-modules:
+      UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
+      UI.HSCurses.MonadException, UI.HSCurses.Logging
+  Other-modules:
+      UI.HSCurses.CWString, UI.HSCurses.IConv
+  C-sources:
+      cbits/HSCursesUtils.c
+  Includes:
+      HSCurses.h, HSCursesUtils.h
+  Extensions:
+      CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving,
+      ScopedTypeVariables, ExistentialQuantification
+  Include-dirs:     cbits .
+  Ghc-options:      -funbox-strict-fields -Wall
