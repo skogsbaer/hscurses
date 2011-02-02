@@ -3,7 +3,7 @@
 
 -- Copyright (c) 2002-2004 John Meacham (john at repetae dot net)
 -- Copyright (c) 2004 Don Stewart - http://www.cse.unsw.edu.au/~dons
--- Copyright (c) 2005 Stefan Wehr - http://www.stefanwehr.de
+-- Copyright (c) 2005-2011 Stefan Wehr - http://www.stefanwehr.de
 --
 -- This library is free software; you can redistribute it and/or
 -- modify it under the terms of the GNU Lesser General Public

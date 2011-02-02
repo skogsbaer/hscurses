@@ -2,7 +2,7 @@
 {-# OPTIONS -#include HSCursesUtils.h -#include <signal.h> #-}
 
 --
--- Copyright (C) 2005 Stefan Wehr
+-- Copyright (C) 2005-2011 Stefan Wehr
 --
 -- Derived from: yi/Curses/UI.hs
 --      Copyright (C) 2004 Don Stewart - http://www.cse.unsw.edu.au/~dons

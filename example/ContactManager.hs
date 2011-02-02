@@ -1,4 +1,4 @@
--- Copyright (c) 2005 Stefan Wehr (http://www.stefanwehr.de)
+-- Copyright (c) 2005-2011 Stefan Wehr (http://www.stefanwehr.de)
 --
 -- Permission is hereby granted, free of charge, to any person obtaining a
 -- copy of this software and associated documentation files (the
