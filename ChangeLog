@@ -1,0 +1,6 @@
+1.4.0.0 (2011-02-02)
+  - support for GHC 7
+  - dropped support for GHC 6.10
+  - re-added support for unicode
+  - use new exception API
+  - proper version constraints in .cabal file

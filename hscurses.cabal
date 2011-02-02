@@ -34,7 +34,8 @@ C-sources:
 Includes:
     HSCurses.h, HSCursesUtils.h
 Data-files:
-    README, TODO, example/contacts2, example/Setup.hs, example/ContactManager.hs,
+    README, TODO, ChangeLog,
+    example/contacts2, example/Setup.hs, example/ContactManager.hs,
     example/cm.cabal, example/contacts
 Extra-source-files:
     UI/HSCurses/Curses.hsc,
