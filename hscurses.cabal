@@ -5,11 +5,12 @@ License-file:   LICENSE
 Author:         John Meacham <john at repetae dot net>
                 Tuomo Valkonen <tuomov at iki.fi>
                 Don Stewart <http://www.cse.unsw.edu.au/~dons>
+                Stefan Wehr <http://www.stefanwehr.de>
 Copyright:      Stefan Wehr 2004 - 2011
                 Don Stewart 2004
                 Tuomo Valkonen 2004
                 John Meacham 2002-2004
-Maintainer:     Stefan Wehr <http://www.informatik.uni-freiburg.de/~wehr/>
+Maintainer:     Stefan Wehr <http://www.stefanwehr.de>
 Stability:      Stable
 Category:       User-interface
 Synopsis:       NCurses bindings for Haskell
@@ -18,7 +19,7 @@ Description:
     application's display on character-cell terminals. Additionally,
     it contains some basic widgets such as a text input widget and
     a table widget.
-Homepage:       http://www.informatik.uni-freiburg.de/~wehr/software/haskell/
+Homepage:       http://www.stefanwehr.de/software/
 
 Build-depends:  base >= 1.0 && < 4, unix >= 1.0, mtl >= 1.0, old-time, old-locale
 Build-Type:     Configure
