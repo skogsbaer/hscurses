@@ -745,13 +745,13 @@ attrBold = (#const A_BOLD)
 
 ------------------------------------------------------------------------
 
-foreign import ccall threadsafe
+foreign import ccall safe
     waddch :: Window -> ChType -> IO CInt
 
-foreign import ccall threadsafe
+foreign import ccall safe
     waddchnstr :: Window -> CString -> CInt -> IO CInt
 
-foreign import ccall threadsafe "static curses.h mvaddch" mvaddch_c :: CInt -> CInt -> ChType -> IO ()
+foreign import ccall safe "static curses.h mvaddch" mvaddch_c :: CInt -> CInt -> ChType -> IO ()
 
 mvWAddStr :: Window -> Int -> Int -> String -> IO ()
 mvWAddStr w y x str = wMove w y x >> wAddStr w str
@@ -828,12 +828,12 @@ wAddStr _   [] = return ()
 wAddStr win s  = throwIfErr_ ("waddnstr: <" ++ s ++ ">") $
     withLCStringLen (s) (\(ws,len) -> waddnstr win ws (fi len))
 
-foreign import ccall threadsafe
+foreign import ccall safe
     waddnstr :: Window -> CString -> CInt -> IO CInt
 
 #endif
 
-foreign import ccall threadsafe
+foreign import ccall safe
     vline  :: Char -> Int -> IO ()
 
 ------------------------------------------------------------------------
