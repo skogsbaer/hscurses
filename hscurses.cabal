@@ -30,6 +30,10 @@ Data-files:
     configure, configure.ac, hscurses.buildinfo.in,
     cbits/HSCurses.h, cbits/HSCursesUtils.h
 
+Source-Repository head
+  Type:           git
+  Location:       git://github.com/skogsbaer/hscurses.git
+
 Library
   Build-depends:  base == 4.*, mtl,
                   old-time == 1.0.*, old-locale == 1.0.*
