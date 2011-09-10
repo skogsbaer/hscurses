@@ -19,3 +19,10 @@ HsInt hs_get_mb_cur_max()
 {
     return MB_CUR_MAX;
 }
+
+#if defined(HAVE_LIBPDCURSES) || defined (HAVE_LIBPDCURSESW)
+int hscurses_nomacro_getch(void)
+{
+    return getch();
+}
+#endif

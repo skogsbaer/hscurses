@@ -200,7 +200,10 @@ import Foreign
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.C.Error
+
+#ifndef mingw32_HOST_OS
 import System.Posix.Signals
+#endif
 
 #if __GLASGOW_HASKELL__ < 603
 import Data.Bits
@@ -226,10 +229,12 @@ resetParams = do
     intrFlush True
     leaveOk False
     keypad stdScr True
+#ifdef NCURSES_EXT_FUNCS
     defineKey (#const KEY_UP) "\x1b[1;2A"
     defineKey (#const KEY_DOWN) "\x1b[1;2B"
     defineKey (#const KEY_SLEFT) "\x1b[1;2D"
     defineKey (#const KEY_SRIGHT) "\x1b[1;2C"
+#endif
 
 ------------------------------------------------------------------------
 
@@ -420,11 +425,13 @@ defaultForeground = Color (-1)
 
 ------------------------------------------------------------------------
 
+#ifdef NCURSES_EXT_FUNCS
 defineKey :: CInt -> String -> IO ()
 defineKey k s =  withCString s (\s' -> define_key s' k) >> return ()
 
 foreign import ccall unsafe "HSCurses.h define_key"
     define_key :: Ptr CChar -> CInt -> IO ()
+#endif
 
 --
 -- | >  The program must call endwin for each terminal being used before
@@ -645,7 +652,11 @@ newtype Attr = Attr (#type attr_t) deriving (Eq,Storable,Bits, Num, Show)
 -- | Normal display (no highlight)
 --
 attr0 :: Attr
+#ifdef WA_NORMAL
 attr0 = Attr (#const WA_NORMAL)
+#else
+attr0 = Attr (#const A_NORMAL)
+#endif
 
 isAltCharset, isBlink, isBold, isDim, isHorizontal, isInvis, isLeft,
     isLow, isProtect, isReverse, isRight, isStandout, isTop,
@@ -784,7 +795,7 @@ normalise s = map f . filter (/= '\r') s
 
 ------------------------------------------------------------------------
 
-#if defined(HAVE_WCHAR_H) && defined(HAVE_LIBNCURSESW)
+#if defined(HAVE_WCHAR_H) && (defined(HAVE_LIBNCURSESW) || defined(HAVE_LIBPDCURSESW))
 
 --wAddStr :: Window -> String -> IO ()
 --wAddStr w str = throwIfErr_ ("waddnwstr: " ++ show str) $ withCWStringLen (normalise str) (\(ws,len) -> waddnwstr w ws (fi len))
@@ -1014,7 +1025,12 @@ foreign import ccall unsafe wclrtoeol :: Window -> IO CInt
 -- | >      The getch, wgetch, mvgetch and mvwgetch, routines read a
 --   >      character  from the window.
 --
-foreign import ccall unsafe getch :: IO CInt
+
+#if defined(HAVE_LIBPDCURSES) || defined (HAVE_LIBPDCURSESW)
+foreign import ccall unsafe "HSCurses.h hscurses_nomacro_getch" getch :: IO CInt
+#else
+foreign import ccall unsafe "HSCurses.h getch" getch :: IO CInt
+#endif
 
 --foreign import ccall unsafe def_prog_mode :: IO CInt
 --foreign import ccall unsafe reset_prog_mode :: IO CInt
@@ -1255,6 +1271,11 @@ resizeTerminal _ _ = return ()
 -- | The SIGWINCH signal is sent whenever the terminal size changes.
 -- This signal is not available on all platforms, so it is a |Maybe| value.
 --
+
+#ifdef mingw32_HOST_OS
+type Signal = CInt
+#endif
+
 cursesSigWinch :: Maybe Signal
 #ifdef SIGWINCH
 cursesSigWinch = Just (#const SIGWINCH)
@@ -1330,7 +1351,11 @@ besToMouseMask bes = foldl' (.|.) 0 (map cb bes) where
     cb (ButtonClicked 4) = (#const BUTTON4_CLICKED)
     cb ButtonShift = (#const BUTTON_SHIFT)
     cb ButtonAlt = (#const BUTTON_ALT)
+#ifdef BUTTON_CTRL
     cb ButtonControl = (#const BUTTON_CTRL)
+#else
+    cb ButtonControl = (#const BUTTON_CONTROL)
+#endif
     cb _ = 0
 
 

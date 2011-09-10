@@ -20,9 +20,11 @@ AC_ARG_WITH(compiler,
 #
 # The shell variables should be added to, e.g., $LIBS
 #
-AC_CHECK_LIB(curses,  addnstr)
-AC_CHECK_LIB(ncurses, addnstr)
-AC_CHECK_LIB(ncursesw,waddnwstr)
+AC_CHECK_LIB(curses,    addnstr)
+AC_CHECK_LIB(ncurses,   addnstr)
+AC_CHECK_LIB(ncursesw,  waddnwstr)
+AC_CHECK_LIB(pdcurses,  addnstr)
+AC_CHECK_LIB(pdcursesw, waddnwstr)
 
 AC_CHECK_LIB(iconv, iconv)
 AC_CHECK_LIB(iconv, libiconv)
@@ -46,6 +48,10 @@ if (echo "$LIBS" | grep ncursesw) >/dev/null 2>&1 ; then
     CURSES=ncursesw
 elif (echo "$LIBS" | grep ncurses) >/dev/null 2>&1 ; then
     CURSES=ncurses
+elif (echo "$LIBS" | grep pdcursesw) >/dev/null 2>&1 ; then
+    CURSES=pdcursesw
+elif (echo "$LIBS" | grep pdcurses) >/dev/null 2>&1 ; then
+    CURSES=pdcurses
 else
     CURSES=curses
 fi

@@ -11,4 +11,8 @@ extern chtype hs_curses_color_pair(HsInt pair );
 
 extern HsInt hs_get_mb_cur_max();
 
+#if defined(HAVE_LIBPDCURSES) || defined (HAVE_LIBPDCURSESW)
+extern int hscurses_nomacro_getch(void);
+#endif
+
 #endif  // HSCURSESUTILS_H

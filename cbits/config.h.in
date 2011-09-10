@@ -24,6 +24,12 @@
 /* Define to 1 if you have the `ncursesw' library (-lncursesw). */
 #undef HAVE_LIBNCURSESW
 
+/* Define to 1 if you have the `pdcurses' library (-lpdcurses). */
+#undef HAVE_LIBPDCURSES
+
+/* Define to 1 if you have the `pdcursesw' library (-lpdcursesw). */
+#undef HAVE_LIBPDCURSESW
+
 /* Define to 1 if you have the <limits.h> header file. */
 #undef HAVE_LIMITS_H
 

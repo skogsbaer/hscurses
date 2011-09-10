@@ -31,8 +31,10 @@ Data-files:
     cbits/HSCurses.h, cbits/HSCursesUtils.h
 
 Library
-  Build-depends:  base == 4.*, unix >= 2.4 && < 2.6, mtl,
+  Build-depends:  base == 4.*, mtl,
                   old-time == 1.0.*, old-locale == 1.0.*
+  if !os(windows)
+    Build-depends: unix >= 2.4 && < 2.6
   Exposed-modules:
       UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
       UI.HSCurses.MonadException, UI.HSCurses.Logging

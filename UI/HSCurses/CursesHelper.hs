@@ -71,7 +71,10 @@ import Data.Char
 import Data.Maybe
 import Data.List
 import Control.Monad.Trans
+
+#ifndef mingw32_HOST_OS
 import System.Posix.Signals
+#endif
 
 --
 --
@@ -89,17 +92,21 @@ start = do
     Curses.resetParams
     Curses.keypad Curses.stdScr True    -- grab the keyboard
     case (Curses.cursesSigWinch, Curses.keyResizeCode) of
+#ifndef mingw32_HOST_OS
       (Just sig, Just key) ->
           do installHandler sig (Catch $ sigwinch sig key) Nothing
              return ()
+#endif
       _ -> debug ("cannot install SIGWINCH handler: signal=" ++
                   show Curses.cursesSigWinch ++ ", KEY_RESIZE=" ++
                   show Curses.keyResizeCode)
+#ifndef mingw32_HOST_OS
     where sigwinch sig key =
               do debug "SIGWINCH signal received"
                  Curses.ungetCh key
                  installHandler sig (Catch $ sigwinch sig key) Nothing
                  return ()
+#endif
 
 
 
@@ -117,7 +124,11 @@ end = do Curses.endWin
 -- | Suspend the program.
 --
 suspend :: IO ()
+#ifndef mingw32_HOST_OS
 suspend = raiseSignal sigTSTP
+#else
+suspend = return ()
+#endif
 
 --
 -- | @getKey refresh@ reads a key.
