@@ -1,0 +1,8 @@
+dist/
+cbits/config.h
+config.log
+config.status
+hscurses.buildinfo
+*.o
+*.hi
+cabal-dev
