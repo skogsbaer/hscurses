@@ -7,10 +7,11 @@ terminals. hscurses also provides some basic widgets implemented on
 top of the ncurses binding, such as a text input widget and a table
 widget.
 
-The hscurses library has been reported to work on Linux x86 using GHC 6.8.2.
+The hscurses library has been reported to work on Linux x86 using GHC
+6.12.1, 7.0.3 and 7.2.1.
 
-Building and installing the hscurses library with GHC 6.8
----------------------------------------------------------
+Building and installing the hscurses library with GHC
+-----------------------------------------------------
 
 Requirements:
 
@@ -36,13 +37,24 @@ Just add the flag `-package hscurses' to the compiler flags. At the
 moment, user documentation is only available through Haddock API
 documentation.
 
+Windows support:
+----------------
+
+Windows support relies on pdcurses (http://pdcurses.sourceforge.net/),
+which is already packaged for MinGW
+(http://sourceforge.net/projects/mingw/files/MinGW/PDCurses/PDCurses-3.4-1/)
+and can be installed with mingw-get.
+
+Thanks to José Romildo Malaquias (malaquias@gmail.com) for porting
+hscurses to the windows platform!
+
 Copyright:
 ----------
 
    John Meacham <john @ repetae . net>, 2002-2004.
    Tuomo Valkonen <tuomov @ iki.fi>, 2004.
    Don Stewart <http://www.cse.unsw.edu.au/~dons>, 2004.
-   Stefan Wehr <http://www.stefanwehr.de>, 2004-2005.
+   Stefan Wehr <http://www.stefanwehr.de>, 2004-2011.
 
 History:
 --------
