@@ -1,4 +1,4 @@
-dist/
+dist
 cbits/config.h
 config.log
 config.status
