@@ -234,6 +234,11 @@ resetParams = do
     defineKey (#const KEY_DOWN) "\x1b[1;2B"
     defineKey (#const KEY_SLEFT) "\x1b[1;2D"
     defineKey (#const KEY_SRIGHT) "\x1b[1;2C"
+    defineKey (#const KEY_B2) "\x1b[E"  -- xterm seems to emit B2, not BEG
+    defineKey (#const KEY_END) "\x1b[F"
+    defineKey (#const KEY_END) "\x1b[4~"
+    defineKey (#const KEY_HOME) "\x1b[H"
+    defineKey (#const KEY_HOME) "\x1b[1~"
 #endif
 
 ------------------------------------------------------------------------
