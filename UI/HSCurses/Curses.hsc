@@ -246,7 +246,7 @@ resetParams = do
 fi :: (Integral a, Num b) => a -> b
 fi = fromIntegral
 
-throwIfErr :: Num a => String -> IO a -> IO a
+throwIfErr :: (Eq a, Show a, Num a) => String -> IO a -> IO a
 --throwIfErr name act = do
 --    res <- act
 --    if res == (cERR)
@@ -254,7 +254,7 @@ throwIfErr :: Num a => String -> IO a -> IO a
 --        else return res
 throwIfErr s = throwIf (== (#const ERR)) (\a -> "Curses[" ++ show a ++ "]:"  ++ s)
 
-throwIfErr_ :: Num a => String -> IO a -> IO ()
+throwIfErr_ :: (Eq a, Show a, Num a) => String -> IO a -> IO ()
 throwIfErr_ name act = void $ throwIfErr name act
 
 errI :: IO CInt -> IO ()
