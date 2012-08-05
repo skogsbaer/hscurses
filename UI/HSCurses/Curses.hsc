@@ -51,7 +51,7 @@ module UI.HSCurses.Curses (
     -- * Windows and Pads
     Window,             -- data Window deriving Eq
     touchWin,
-    newPad, pRefresh, delWin, newWin,
+    newPad, pRefresh, delWin, newWin, wRefresh,
 
     -- * Refresh Routines
     refresh,            -- :: IO ()
@@ -468,6 +468,16 @@ refresh = throwIfErr_ "refresh" refresh_c
 
 foreign import ccall unsafe "HSCurses.h refresh"
     refresh_c :: IO CInt
+
+--
+-- | wRefresh refreshes the specified window, copying the data
+-- | from the virtual screen to the physical screen.
+--
+wRefresh :: Window -> IO ()
+wRefresh w = throwIfErr_ "wrefresh" $ wrefresh_c w
+
+foreign import ccall unsafe "HSCurses.h wrefresh"
+    wrefresh_c :: Window -> IO CInt
 
 --
 -- | Do an actual update. Used after endWin on linux to restore the terminal
