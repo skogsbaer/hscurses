@@ -50,8 +50,10 @@ module UI.HSCurses.Curses (
 
     -- * Windows and Pads
     Window,             -- data Window deriving Eq
+    Border,             -- data Border
     touchWin,
-    newPad, pRefresh, delWin, newWin,
+    newPad, pRefresh, delWin, newWin, wRefresh, wBorder, defaultBorder,
+
 
     -- * Refresh Routines
     refresh,            -- :: IO ()
@@ -468,6 +470,16 @@ refresh = throwIfErr_ "refresh" refresh_c
 
 foreign import ccall unsafe "HSCurses.h refresh"
     refresh_c :: IO CInt
+
+--
+-- | wRefresh refreshes the specified window, copying the data
+-- | from the virtual screen to the physical screen.
+--
+wRefresh :: Window -> IO ()
+wRefresh w = throwIfErr_ "wrefresh" $ wrefresh_c w
+
+foreign import ccall unsafe "HSCurses.h wrefresh"
+    wrefresh_c :: Window -> IO CInt
 
 --
 -- | Do an actual update. Used after endWin on linux to restore the terminal
@@ -1005,6 +1017,34 @@ pRefresh pad pminrow pmincol sminrow smincol smaxrow smaxcol =
 delWin :: Window -> IO ()
 delWin w = throwIfErr_ "delwin" $ delwin w
 
+data Border = Border {
+      ls :: Char
+    , rs :: Char
+    , ts :: Char
+    , bs :: Char
+    , tl :: Char
+    , tr :: Char
+    , bl :: Char
+    , br :: Char
+}
+
+defaultBorder = Border '\0' '\0' '\0' '\0' '\0' '\0' '\0' '\0'
+
+--
+-- | >    Draw a border around the edges of a window. defaultBorder is
+--   >    a record  representing all 0 parameters to wrecord.
+--
+wBorder :: Window -> Border -> IO ()
+wBorder w (Border ls rs ts bs tl tr bl br) = throwIfErr_ "wborder" $
+                                             wborder w ls' rs' ts' bs' tl' tr' bl' br'
+    where ls' = castCharToCChar ls
+          rs' = castCharToCChar rs
+          ts' = castCharToCChar ts
+          bs' = castCharToCChar bs
+          tl' = castCharToCChar tl
+          tr' = castCharToCChar tr
+          bl' = castCharToCChar br
+          br' = castCharToCChar br
 foreign import ccall unsafe
     prefresh :: Window -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO CInt
 
@@ -1013,6 +1053,9 @@ foreign import ccall unsafe
 
 foreign import ccall unsafe
     delwin :: Window -> IO CInt
+
+foreign import ccall unsafe
+    wborder :: Window -> CChar -> CChar -> CChar -> CChar -> CChar -> CChar -> CChar -> CChar -> IO CInt
 
 newWin :: Int -> Int -> Int -> Int -> IO Window
 newWin nlines ncolumn begin_y begin_x = throwIfNull "newwin" $

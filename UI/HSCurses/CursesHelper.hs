@@ -52,8 +52,8 @@ module UI.HSCurses.CursesHelper (
 
         -- * Style
         Style(..), CursesStyle, mkCursesStyle, changeCursesStyle,
-        setStyle, resetStyle, convertStyles,
-        defaultStyle, defaultCursesStyle, withStyle,
+        setStyle, wSetStyle, resetStyle, wResetStyle, convertStyles,
+        defaultStyle, defaultCursesStyle, withStyle, wWithStyle,
 
         -- * Keys
         displayKey,
@@ -382,25 +382,34 @@ defaultCursesStyle = CursesStyle Curses.attr0 (Curses.Pair 0)
 -- | Reset the screen to normal values
 --
 resetStyle :: IO ()
-resetStyle = setStyle defaultCursesStyle
+resetStyle = wResetStyle Curses.stdScr
+
+wResetStyle :: Curses.Window -> IO ()
+wResetStyle = flip wSetStyle defaultCursesStyle
 
 --
 -- | Manipulate the current style of the standard screen
 --
 setStyle :: CursesStyle -> IO ()
-setStyle (CursesStyle a p) = Curses.wAttrSet Curses.stdScr (a, p)
-setStyle (ColorlessCursesStyle a) =
-    do (_, p) <- Curses.wAttrGet Curses.stdScr
-       Curses.wAttrSet Curses.stdScr (a, p)
+setStyle = wSetStyle Curses.stdScr
+
+wSetStyle :: Curses.Window -> CursesStyle -> IO ()
+wSetStyle window (CursesStyle a p) = Curses.wAttrSet window (a, p)
+wSetStyle window (ColorlessCursesStyle a) =
+    do (_, p) <- Curses.wAttrGet window
+       Curses.wAttrSet window (a, p)
 
 withStyle :: MonadExcIO m => CursesStyle -> m a -> m a
-withStyle style action =
+withStyle = wWithStyle Curses.stdScr
+
+wWithStyle :: MonadExcIO m => Curses.Window -> CursesStyle -> m a -> m a
+wWithStyle window style action =
     bracketM
-        (liftIO $ do old <- Curses.wAttrGet Curses.stdScr    -- before
-                     setStyle style
+        (liftIO $ do old <- Curses.wAttrGet window    -- before
+                     wSetStyle window style
                      return old)
-        (\old -> liftIO $ Curses.wAttrSet Curses.stdScr old) -- after
-        (\_ -> action)                                       -- do this
+        (\old -> liftIO $ Curses.wAttrSet window old) -- after
+        (\_ -> action)                                -- do this
 
 --
 -- | Converts a list of human-readable styles into the corresponding
