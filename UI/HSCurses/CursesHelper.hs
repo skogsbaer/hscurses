@@ -1,5 +1,4 @@
 {-# LANGUAGE CPP #-}
-{-# OPTIONS -#include HSCursesUtils.h -#include <signal.h> #-}
 
 --
 -- Copyright (C) 2005-2011 Stefan Wehr
@@ -69,7 +68,6 @@ import qualified UI.HSCurses.Curses as Curses
 
 import Data.Char
 import Data.Maybe
-import Data.List
 import Control.Monad.Trans
 
 #ifndef mingw32_HOST_OS

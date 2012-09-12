@@ -50,7 +50,7 @@ module UI.HSCurses.Curses (
 
     -- * Windows and Pads
     Window,             -- data Window deriving Eq
-    Border,             -- data Border
+    Border(..),         -- data Border
     touchWin,
     newPad, pRefresh, delWin, newWin, wRefresh, wBorder, defaultBorder,
 
@@ -193,12 +193,13 @@ import Data.Char
 import Data.List
 import Data.Ix                  ( Ix )
 
-import Control.Monad ( when, liftM )
+import System.IO.Unsafe ( unsafePerformIO )
+
+import Control.Monad ( when, liftM, void )
 import Control.Monad.Trans
 import Control.Concurrent
-import Control.Concurrent.Chan
 
-import Foreign
+import Foreign hiding ( unsafePerformIO, void )
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.C.Error
@@ -1028,6 +1029,7 @@ data Border = Border {
     , br :: Char
 }
 
+defaultBorder :: Border
 defaultBorder = Border '\0' '\0' '\0' '\0' '\0' '\0' '\0' '\0'
 
 --
@@ -1043,7 +1045,7 @@ wBorder w (Border ls rs ts bs tl tr bl br) = throwIfErr_ "wborder" $
           bs' = castCharToCChar bs
           tl' = castCharToCChar tl
           tr' = castCharToCChar tr
-          bl' = castCharToCChar br
+          bl' = castCharToCChar bl
           br' = castCharToCChar br
 foreign import ccall unsafe
     prefresh :: Window -> CInt -> CInt -> CInt -> CInt -> CInt -> CInt -> IO CInt

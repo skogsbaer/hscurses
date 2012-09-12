@@ -39,9 +39,10 @@ module UI.HSCurses.IConv {-(
 
 import UI.HSCurses.CWString          ( peekUTF8StringLen, withUTF8StringLen )
 
-import Foreign
+import System.IO.Unsafe ( unsafePerformIO )
+
+import Foreign hiding ( unsafePerformIO )
 import Foreign.C
-import Foreign.C.String
 import Control.Exception    ( Exception, try, bracket )
 
 type IConv = Ptr () --(#type iconv_t)

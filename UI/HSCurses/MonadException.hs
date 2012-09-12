@@ -17,10 +17,12 @@
 
 module UI.HSCurses.MonadException where
 
+#if !MIN_VERSION_base(4,6,0)
 import Prelude hiding (catch)
+#endif
+
 import Control.Exception
 import Control.Monad.State
-import Data.Dynamic
 
 class Monad m => MonadExc m where
     catchM      :: Exception e => m a -> (e -> m a) -> m a

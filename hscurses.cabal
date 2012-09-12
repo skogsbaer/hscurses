@@ -1,5 +1,5 @@
 Name:           hscurses
-Version:        1.4.1.1
+Version:        1.4.1.2
 License:        LGPL
 License-file:   LICENSE
 Author:         John Meacham <john at repetae dot net>
@@ -22,7 +22,7 @@ Description:
 Homepage:       https://github.com/skogsbaer/hscurses
 Cabal-version: >= 1.6
 Build-Type:     Configure
-Tested-with:    GHC==6.12.1, GHC==7.0.1, GHC==7.2.1
+Tested-with:    GHC==7.0.4, GHC==7.2.1, GHC==7.4.2, GHC==7.6.1
 Data-files:
     README, TODO, ChangeLog,
     example/contacts2, example/Setup.hs, example/ContactManager.hs,
@@ -38,7 +38,7 @@ Library
   Build-depends:  base == 4.*, mtl,
                   old-time < 1.2, old-locale == 1.0.*
   if !os(windows)
-    Build-depends: unix >= 2.4 && < 2.6
+    Build-depends: unix >= 2.4 && < 2.7
   Exposed-modules:
       UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
       UI.HSCurses.MonadException, UI.HSCurses.Logging
@@ -52,4 +52,4 @@ Library
       CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving,
       ScopedTypeVariables, ExistentialQuantification
   Include-dirs:     cbits .
-  Ghc-options:      -funbox-strict-fields -Wall
+  Ghc-options:      -funbox-strict-fields -Wall -fno-warn-unused-do-bind -fno-warn-name-shadowing
