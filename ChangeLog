@@ -1,3 +1,8 @@
+1.4.1.2 (2012-09-12)
+  - support for GHC 7.6
+
+1.4.1.1 ?
+
 1.4.1.0 (2011-09-11)
   - support for GHC 7.2 (thanks to thoughtpolice)
   - support for windows (thanks to José Romildo Malaquias)
