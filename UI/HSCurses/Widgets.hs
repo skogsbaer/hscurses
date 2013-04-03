@@ -799,9 +799,9 @@ tableWidgetGoDown :: Size -> TableWidget -> TableWidget
 tableWidgetGoDown =  tableWidgetMove DirDown
 
 tableWidgetMove :: Direction
-                                               -> (Int, Int)
-                                               -> TableWidget
-                                               -> TableWidget
+                -> (Int, Int)
+                -> TableWidget
+                -> TableWidget
 tableWidgetMove dir sz tbw =
     let pos = tbw_pos tbw
         opts = tbw_options tbw
@@ -814,9 +814,9 @@ tableWidgetMove dir sz tbw =
                              tableWidgetMakeVisible (tbw {tbw_pos=newP}) sz y
 
 tableWidgetMakeVisible :: TableWidget
-                                                      -> (Int, Int)
-                                                      -> Int
-                                                      -> TableWidget
+                       -> (Int, Int)
+                       -> Int
+                       -> TableWidget
 tableWidgetMakeVisible tbw sz@(_,_) y =
     let info = tableWidgetDisplayInfo sz tbw
         firstVis = tbwdisp_firstVis info
@@ -850,7 +850,7 @@ findNextActiveCell opts nrows (y,x) dir =
                     Just z -> Just (y, z)
         vert f = case f rows y cols x of
                    Nothing -> Nothing
-                   Just z -> Just (y, z)
+                   Just z -> Just (z, x)
         res = case dir of
                 DirLeft-> horiz goLeft
                 DirRight -> horiz goRight
