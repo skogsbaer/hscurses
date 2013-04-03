@@ -55,4 +55,9 @@
 #undef wattr_get
 #endif
 
+// Accessing macros from Haskell is problematic, this is a wrapper:
+void getmaxyx_fun(WINDOW* win, int* y, int* x) {
+  getmaxyx(win,(*y),(*x));
+}
+
 #endif  // HSCURSES_H

@@ -52,7 +52,7 @@ module UI.HSCurses.Curses (
     Window,             -- data Window deriving Eq
     Border(..),         -- data Border
     touchWin,
-    newPad, pRefresh, delWin, newWin, wRefresh, wBorder, defaultBorder,
+    newPad, pRefresh, delWin, newWin, wRefresh, wnoutRefresh, wBorder, defaultBorder,
 
 
     -- * Refresh Routines
@@ -273,7 +273,7 @@ type Window = Ptr WindowTag
 type ChType = #type chtype
 type NBool = #type bool
 
-
+{-# NOINLINE stdScr #-}
 --
 -- | The standard screen
 --
@@ -452,16 +452,26 @@ foreign import ccall unsafe "HSCurses.h endwin" endwin :: IO CInt
 ------------------------------------------------------------------------
 
 --
--- | get the dimensions of the screen
+-- | get the dimensions of the screen (lines,cols)
 --
 scrSize :: IO (Int, Int)
+-- Note, per the documentation:
+--    http://invisible-island.net/ncurses/ncurses-intro.html#caution
+-- It is not recommended to peek at the LINES and COLS global variables.  This code
+-- was previously doing exactly that, but now it is fixed to use getmaxyx.
+--   -Ryan Newton [2013.03.31]  
 scrSize = do
-    lnes <- peek linesPtr
-    cols <- peek colsPtr
-    return (fromIntegral lnes, fromIntegral cols)
-
-foreign import ccall "HSCurses.h &LINES" linesPtr :: Ptr CInt
-foreign import ccall "HSCurses.h &COLS"  colsPtr  :: Ptr CInt
+    yfp <- mallocForeignPtr 
+    xfp <- mallocForeignPtr 
+    withForeignPtr yfp $ \yp -> 
+     withForeignPtr xfp $ \xp -> do
+       getMaxYX stdScr yp xp
+       y <- peek yp
+       x <- peek xp
+       return (fromIntegral y, fromIntegral x)
+    
+foreign import ccall "HSCurses.h getmaxyx_fun" getMaxYX
+    :: Window -> Ptr CInt -> Ptr CInt -> IO ()
 
 --
 -- | refresh curses windows and lines. curs_refresh(3)
@@ -481,6 +491,15 @@ wRefresh w = throwIfErr_ "wrefresh" $ wrefresh_c w
 
 foreign import ccall unsafe "HSCurses.h wrefresh"
     wrefresh_c :: Window -> IO CInt
+
+-- | Stage an update to a window, but don't actually do the refresh until update is
+-- called.  This allows multiple windows to be updated together more smoothly.
+--
+wnoutRefresh :: Window -> IO ()
+wnoutRefresh w = throwIfErr_ "wnoutrefresh" $ wnoutrefresh_c w
+
+foreign import ccall safe "HSCurses.h wnoutrefresh"
+  wnoutrefresh_c :: Window -> IO CInt
 
 --
 -- | Do an actual update. Used after endWin on linux to restore the terminal
