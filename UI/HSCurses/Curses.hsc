@@ -52,7 +52,7 @@ module UI.HSCurses.Curses (
     Window,             -- data Window deriving Eq
     Border(..),         -- data Border
     touchWin,
-    newPad, pRefresh, delWin, newWin, wRefresh, wBorder, defaultBorder,
+    newPad, pRefresh, delWin, newWin, wRefresh, wnoutRefresh, wBorder, defaultBorder,
 
 
     -- * Refresh Routines
@@ -491,6 +491,15 @@ wRefresh w = throwIfErr_ "wrefresh" $ wrefresh_c w
 
 foreign import ccall unsafe "HSCurses.h wrefresh"
     wrefresh_c :: Window -> IO CInt
+
+-- | Stage an update to a window, but don't actually do the refresh until update is
+-- called.  This allows multiple windows to be updated together more smoothly.
+--
+wnoutRefresh :: Window -> IO ()
+wnoutRefresh w = throwIfErr_ "wnoutrefresh" $ wnoutrefresh_c w
+
+foreign import ccall safe "HSCurses.h wnoutrefresh"
+  wnoutrefresh_c :: Window -> IO CInt
 
 --
 -- | Do an actual update. Used after endWin on linux to restore the terminal
