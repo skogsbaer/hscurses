@@ -86,10 +86,12 @@ module UI.HSCurses.Curses (
     bkgrndSet,     -- :: Attr -> Pair -> IO ()
     erase,         -- :: IO ()
     wclear,        -- :: Window -> IO ()
+    werase,
     clrToEol,      -- :: IO ()
     wClrToEol,
     beep,
     waddch,
+    winsch,
     waddchnstr,    -- :: Window -> CString -> CInt -> IO CInt
 
     -- * Output Options
@@ -793,9 +795,15 @@ attrBold = (#const A_BOLD)
 
 ------------------------------------------------------------------------
 
+-- | Raw NCurses routine.
 foreign import ccall safe
     waddch :: Window -> ChType -> IO CInt
 
+-- | Raw NCurses routine.
+foreign import ccall safe
+    winsch :: Window -> ChType -> IO CInt
+
+-- | Raw NCurses routine.
 foreign import ccall safe
     waddchnstr :: Window -> CString -> CInt -> IO CInt
 
@@ -910,10 +918,16 @@ bkgrndSet (Attr a) p = bkgdset $
 
 foreign import ccall unsafe bkgdset :: ChType -> IO ()
 
+-- | Copy blanks to every position in the screen.
 erase :: IO ()
 erase = throwIfErr_ "erase" $ werase_c  stdScr
 foreign import ccall unsafe "werase" werase_c :: Window -> IO CInt
 
+-- | Copy blanks to every position in a window.
+werase :: Window -> IO ()
+werase w = throwIfErr_ "werase" $ werase_c w
+
+-- | Copy blanks to a window and set clearOk for that window.
 wclear :: Window -> IO ()
 wclear w = throwIfErr_ "wclear" $ wclear_c  w
 foreign import ccall unsafe "wclear" wclear_c :: Window -> IO CInt
