@@ -1,4 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE RankNTypes #-}
 -- Copyright (c) 2005-2011 Stefan Wehr - http://www.stefanwehr.de
 --
 -- This library is free software; you can redistribute it and/or
@@ -26,8 +27,7 @@ import Control.Monad.State
 
 class Monad m => MonadExc m where
     catchM      :: Exception e => m a -> (e -> m a) -> m a
-    blockM      :: m a -> m a
-    unblockM    :: m a -> m a
+    maskM       :: ((forall x . m x -> m x) -> m a) -> m a
 
 
 class (MonadIO m, MonadExc m) => MonadExcIO m
@@ -72,14 +72,13 @@ bracketM :: MonadExc m =>
     -> (a -> m c)  -- ^ computation to run in-between
     -> m c         -- returns the value from the in-between computation
 bracketM before after thing =
-  blockM (do
+  maskM $ \unblockM -> do
     a <- before
     r <- catchM
        (unblockM (thing a))
        (\(e::SomeException) -> do { after a; throw e })
     after a
     return r
-  )
 
 bracketM_ :: MonadExc m => m a -> m b -> m c -> m c
 bracketM_ before after thing = bracketM before (const after) (const thing)
@@ -89,13 +88,12 @@ finally :: IO a -- ^ computation to run first
                 --   was raised)
     -> IO a     -- returns the value from the first computation
 a `finally` sequel =
-  blockM (do
+  maskM $ \unblockM -> do
     r <- catchM
          (unblockM a)
          (\(e::SomeException) -> do { sequel; throw e })
     sequel
     return r
-  )
 
 
 --
@@ -104,15 +102,13 @@ a `finally` sequel =
 
 instance MonadExc IO where
     catchM       = catch
-    blockM       = block
-    unblockM     = unblock
+    maskM        = mask
 
 instance MonadExcIO IO
 
 instance MonadExc m => MonadExc (StateT s m) where
     catchM   = catchState
-    blockM   = blockState
-    unblockM = unblockState
+    maskM    = maskState
 
 instance (MonadExc m, MonadIO m) => MonadExcIO (StateT s m)
 
@@ -129,9 +125,12 @@ catchState run handler =
     modifyState (\oldState -> runStateT run oldState `catchM`
                               (\e -> runStateT (handler e) oldState))
 
-blockState, unblockState :: (MonadExc m) => StateT s m a -> StateT s m a
-blockState run =
-    modifyState (\oldState -> blockM (runStateT run oldState))
-
-unblockState run =
-    modifyState (\oldState -> unblockM (runStateT run oldState))
+maskState :: (MonadExc m)
+          => ((forall x . StateT s m x -> StateT s m x) -> StateT s m a)
+          -> StateT s m a
+maskState fState =
+  modifyState $ \oldState ->
+    maskM $ \unblockM ->
+      runStateT
+        (fState $ \unblState -> modifyState $ unblockM . runStateT unblState)
+        oldState
