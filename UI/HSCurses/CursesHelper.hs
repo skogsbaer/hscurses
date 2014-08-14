@@ -67,7 +67,12 @@ import qualified UI.HSCurses.Curses as Curses
 
 import Data.Char
 import Data.Maybe
+#if MIN_VERSION_exceptions(0,6,0)
 import Control.Monad.Catch (MonadMask, bracket, bracket_)
+#else
+import Control.Monad.Catch (MonadCatch, bracket, bracket_)
+#define MonadMask MonadCatch
+#endif
 import Control.Monad.Trans
 
 #ifndef mingw32_HOST_OS

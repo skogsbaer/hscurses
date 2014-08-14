@@ -1,5 +1,4 @@
-{-# LANGUAGE ScopedTypeVariables, ExistentialQuantification #-}
--- glasgow-exts needed for existentials and multi-parameter type classes.
+{-# LANGUAGE ScopedTypeVariables, ExistentialQuantification, CPP #-}
 
 -- Copyright (c) 2005-2011 Stefan Wehr - http://www.stefanwehr.de
 --
@@ -20,6 +19,12 @@
 module UI.HSCurses.Widgets where
 
 import Control.Exception (assert)
+#if MIN_VERSION_exceptions(0,6,0)
+import Control.Monad.Catch (MonadMas)
+#else
+import Control.Monad.Catch (MonadCatch)
+#define MonadMask MonadCatch
+#endif
 import Control.Monad.Catch (MonadMask)
 import Control.Monad.Trans
 import Data.Char
