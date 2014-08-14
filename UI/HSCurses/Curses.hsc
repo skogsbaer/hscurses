@@ -201,7 +201,11 @@ import Control.Monad ( when, liftM, void )
 import Control.Monad.Trans
 import Control.Concurrent
 
+#if !MIN_VERSION_base(4,7,0)
 import Foreign hiding ( unsafePerformIO, void )
+#else
+import Foreign hiding ( void )
+#endif
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.C.Error
@@ -1489,11 +1493,6 @@ pi       = chr 0x03C0
 nEqual   = chr 0x2260
 sterling = chr 0x00A3
 
-{-
--- haddock doesn't like these commented out with --
-   #if defined(__STDC_ISO_10646__)  && defined(HAVE_WADDNWSTR)
-   #else
--}
 
 recognize :: Char -> IO a -> (ChType -> IO a) -> IO a
 recognize _ch noConvert _convert = noConvert -- Handle the most common case first.

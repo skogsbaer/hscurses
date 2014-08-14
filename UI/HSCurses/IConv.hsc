@@ -41,7 +41,12 @@ import UI.HSCurses.CWString          ( peekUTF8StringLen, withUTF8StringLen )
 
 import System.IO.Unsafe ( unsafePerformIO )
 
+#if !MIN_VERSION_base(4,7,0)
 import Foreign hiding ( unsafePerformIO )
+#else
+import Foreign
+#endif
+
 import Foreign.C
 import Control.Exception    ( Exception, try, bracket )
 

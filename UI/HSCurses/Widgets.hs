@@ -1,5 +1,4 @@
-{-# LANGUAGE ScopedTypeVariables, ExistentialQuantification #-}
--- glasgow-exts needed for existentials and multi-parameter type classes.
+{-# LANGUAGE ScopedTypeVariables, ExistentialQuantification, CPP #-}
 
 -- Copyright (c) 2005-2011 Stefan Wehr - http://www.stefanwehr.de
 --
@@ -20,13 +19,19 @@
 module UI.HSCurses.Widgets where
 
 import Control.Exception (assert)
+#if MIN_VERSION_exceptions(0,6,0)
+import Control.Monad.Catch (MonadMas)
+#else
+import Control.Monad.Catch (MonadCatch)
+#define MonadMask MonadCatch
+#endif
+import Control.Monad.Catch (MonadMask)
 import Control.Monad.Trans
 import Data.Char
 import Data.List
 import Data.Maybe
 
 import UI.HSCurses.Logging
-import UI.HSCurses.MonadException
 import qualified UI.HSCurses.Curses as Curses
 import qualified UI.HSCurses.CursesHelper as CursesH
 
@@ -68,7 +73,8 @@ class Widget a where
     minSize   :: a -> Size
 
 class Widget a => ActiveWidget a where
-    activate  :: MonadExcIO m => m () -> Pos -> Size -> a -> m (a, String)
+    activate  :: (MonadIO m, MonadMask m) => m () -> Pos -> Size -> a ->
+                 m (a, String)
 
 type KeyHandler a = Pos -> Size -> a -> IO (Cont a)
 
@@ -307,7 +313,7 @@ drawEditWidget (y, x) (_, width) hint ew =
        CursesH.drawLine width (drop (ew_xoffset ew) $ ew_content ew)
        Curses.refresh
 
-activateEditWidget :: MonadExcIO m => m () -> Pos -> Size
+activateEditWidget :: (MonadIO m, MonadMask m) => m () -> Pos -> Size
                    -> EditWidget -> m (EditWidget, String)
 activateEditWidget refresh pos@(y, x) sz@(_, width) ew =
     CursesH.withCursor Curses.CursorVisible $ processKey ew
@@ -555,7 +561,7 @@ instance Widget TableCell where
     minSize (TableCell w) = minSize w
     minSize (ActiveTableCell w) = minSize w
 
-_activateTableCell :: MonadExcIO m => m () -> Pos -> Size
+_activateTableCell :: (MonadIO m, MonadMask m) => m () -> Pos -> Size
                    -> TableCell -> m (TableCell, String)
 _activateTableCell _ _ _ (TableCell _) =
     error "_activateTableCell: cannot activate non-active cell!"
@@ -759,7 +765,7 @@ tableWidgetScrollUp sz@(h,_) tbw =
              Just (y,x) ->
                  newTbw { tbw_pos = Just (min newLastVis y, x) }
 
-tableWidgetActivateCurrent :: MonadExcIO m => m () -> Pos -> Size
+tableWidgetActivateCurrent :: (MonadIO m, MonadMask m) => m () -> Pos -> Size
                            -> DrawingHint -> TableWidget
                            -> m (TableWidget, Maybe String)
 tableWidgetActivateCurrent refresh (y, x) sz _ tbw =

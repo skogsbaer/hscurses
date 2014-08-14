@@ -417,6 +417,7 @@ redraw w =
 
 eventloop w =
     do k <- CursesH.getKey (resize mkMainWidget)
+       debug ("Got key " ++ show k)
        case k of
          Curses.KeyChar 'q' -> return ()
          Curses.KeyChar 'd' -> process $ delete w
