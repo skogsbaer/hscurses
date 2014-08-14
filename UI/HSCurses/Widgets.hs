@@ -20,12 +20,11 @@ module UI.HSCurses.Widgets where
 
 import Control.Exception (assert)
 #if MIN_VERSION_exceptions(0,6,0)
-import Control.Monad.Catch (MonadMas)
+import Control.Monad.Catch (MonadMask)
 #else
 import Control.Monad.Catch (MonadCatch)
 #define MonadMask MonadCatch
 #endif
-import Control.Monad.Catch (MonadMask)
 import Control.Monad.Trans
 import Data.Char
 import Data.List
