@@ -20,7 +20,9 @@ module UI.HSCurses.Logging (trace,debug) where
 
 import Control.Monad.Trans
 
-#ifdef __DEBUG__
+#define __DEBUG__ 0
+
+#if __DEBUG__
 
 import Data.IORef
 import System.IO
@@ -34,7 +36,7 @@ import System.Time
 trace :: String -> a -> a
 debug :: MonadIO m => String -> m ()
 
-#ifdef __DEBUG__
+#if __DEBUG__
 
 logFile :: Handle
 logFile = unsafePerformIO $ do h <- openFile ".hscurses.log" AppendMode
