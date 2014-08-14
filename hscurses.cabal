@@ -35,13 +35,13 @@ Source-Repository head
   Location:       git://github.com/skogsbaer/hscurses.git
 
 Library
-  Build-depends:  base == 4.*, mtl,
+  Build-depends:  base == 4.*, exceptions, mtl,
                   old-time < 1.2, old-locale == 1.0.*
   if !os(windows)
-    Build-depends: unix >= 2.4 && < 2.7
+    Build-depends: unix >= 2.4
   Exposed-modules:
       UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
-      UI.HSCurses.MonadException, UI.HSCurses.Logging
+      UI.HSCurses.Logging
   Other-modules:
       UI.HSCurses.CWString, UI.HSCurses.IConv
   C-sources:

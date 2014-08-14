@@ -63,11 +63,11 @@ module UI.HSCurses.CursesHelper (
 
 import UI.HSCurses.Curses hiding ( refresh, Window )
 import UI.HSCurses.Logging
-import UI.HSCurses.MonadException
 import qualified UI.HSCurses.Curses as Curses
 
 import Data.Char
 import Data.Maybe
+import Control.Monad.Catch (MonadMask, bracket, bracket_)
 import Control.Monad.Trans
 
 #ifndef mingw32_HOST_OS
@@ -397,12 +397,12 @@ wSetStyle window (ColorlessCursesStyle a) =
     do (_, p) <- Curses.wAttrGet window
        Curses.wAttrSet window (a, p)
 
-withStyle :: MonadExcIO m => CursesStyle -> m a -> m a
+withStyle :: (MonadIO m, MonadMask m) => CursesStyle -> m a -> m a
 withStyle = wWithStyle Curses.stdScr
 
-wWithStyle :: MonadExcIO m => Curses.Window -> CursesStyle -> m a -> m a
+wWithStyle :: (MonadIO m, MonadMask m) => Curses.Window -> CursesStyle -> m a -> m a
 wWithStyle window style action =
-    bracketM
+    bracket
         (liftIO $ do old <- Curses.wAttrGet window    -- before
                      wSetStyle window style
                      return old)
@@ -480,13 +480,13 @@ displayKey k = show k
 --
 -- | set the cursor, and do action
 --
-withCursor :: MonadExcIO m => CursorVisibility -> m a -> m a
+withCursor :: (MonadIO m, MonadMask m) => CursorVisibility -> m a -> m a
 withCursor nv action =
-    bracketM
+    bracket
         (liftIO $ Curses.cursSet nv)             -- before
         (\vis -> liftIO $ Curses.cursSet vis)    -- after
         (\_ -> action)                           -- do this
 
-withProgram :: MonadExcIO m => m a -> m a
+withProgram :: (MonadIO m, MonadMask m) => m a -> m a
 withProgram action = withCursor CursorVisible $
-    bracketM_ (liftIO endWin) (liftIO flushinp) action
+    bracket_ (liftIO endWin) (liftIO flushinp) action

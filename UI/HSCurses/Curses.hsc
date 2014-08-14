@@ -201,7 +201,11 @@ import Control.Monad ( when, liftM, void )
 import Control.Monad.Trans
 import Control.Concurrent
 
+#if !MIN_VERSION_base(4,7,0)
 import Foreign hiding ( unsafePerformIO, void )
+#else
+import Foreign hiding ( void )
+#endif
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.C.Error
