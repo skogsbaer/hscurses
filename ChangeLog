@@ -1,3 +1,11 @@
+1.4.2.0 (2015-02-12_
+  - support for werase and winsch (thanks to Ryan Newton)
+  - add wnoutrefresh for more efficient updates of multiple windows (Ryan Newton)
+  - use getmaxyx for scrSize,  remove non-recommended approach of reading
+    LINES and COLS global variables (Ryan Newton)
+  - fixed findNextActiveCell (Matthew Hague)
+  - support for GHC 7.8 (Miëtek Bak)
+
 1.4.1.2 (2012-09-12)
   - support for GHC 7.6
 
