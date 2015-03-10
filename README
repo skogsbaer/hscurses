@@ -48,6 +48,10 @@ and can be installed with mingw-get.
 Thanks to José Romildo Malaquias (malaquias@gmail.com) for porting
 hscurses to the windows platform!
 
+There is also a detailed installation instruction by Ilan Godik 
+(https://medium.com/@NightRa): 
+https://medium.com/@NightRa/installing-hscurses-on-windows-830532d3268a
+
 Copyright:
 ----------
 
