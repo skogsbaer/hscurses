@@ -35,7 +35,7 @@ Source-Repository head
   Location:       git://github.com/skogsbaer/hscurses.git
 
 Library
-  Build-depends:  base == 4.*, exceptions, mtl,
+  Build-depends:  base >=4.4 && <5, exceptions, mtl,
                   old-time < 1.2, old-locale == 1.0.*
   Extra-libraries: curses
   if !os(windows)
