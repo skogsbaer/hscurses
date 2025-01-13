@@ -20,19 +20,22 @@ Description:
     it contains some basic widgets such as a text input widget and
     a table widget.
 Homepage:       https://github.com/skogsbaer/hscurses
-Cabal-version: >= 1.6
+Cabal-version: >= 1.10
 Build-Type:     Configure
-Tested-with:    GHC==7.6.1, GHC==7.8
+Tested-with:    GHC==7.6.1, GHC==7.8, GHC==9.10.1
 Data-files:
-    README, TODO, ChangeLog,
-    example/contacts2, example/Setup.hs, example/ContactManager.hs,
-    example/cm.cabal, example/contacts, cbits/config.h.in
+    README, TODO, ChangeLog, cbits/config.h.in,
     configure, configure.ac, hscurses.buildinfo.in,
     cbits/HSCurses.h, cbits/HSCursesUtils.h
 
 Source-Repository head
   Type:           git
-  Location:       git://github.com/skogsbaer/hscurses.git
+  Location:       https://github.com/skogsbaer/hscurses
+
+Flag examples
+  Description:    Build test and example binaries
+  Default:        False
+  Manual:         True
 
 Library
   Build-depends:  base == 4.*, exceptions, mtl,
@@ -49,8 +52,54 @@ Library
       cbits/HSCursesUtils.c
   Includes:
       HSCurses.h, HSCursesUtils.h
-  Extensions:
+  Default-extensions:
       CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving,
       ScopedTypeVariables, ExistentialQuantification
   Include-dirs:     cbits .
   Ghc-options:      -funbox-strict-fields -Wall -fno-warn-unused-do-bind -fno-warn-name-shadowing
+  Default-language: Haskell98
+
+Executable contact-manager
+  If flag(examples)
+    Build-depends: base>3, hscurses, mtl, pretty
+  Else
+    Buildable: False
+  Hs-source-dirs:   example
+  Default-language: Haskell2010
+  Main-is:          ContactManager.hs
+
+Executable key-test
+  If flag(examples)
+    Build-depends: base>3, hscurses
+  Else
+    Buildable: False
+  Hs-source-dirs:   tests/key-test
+  Default-language: Haskell2010
+  Main-is:          KeyTest.hs
+
+Executable widget-test-text
+  If flag(examples)
+    Build-depends: base>3, hscurses
+  Else
+    Buildable: False
+  Hs-source-dirs:   tests/widget-test
+  Default-language: Haskell2010
+  Main-is:          TextTest.hs
+
+Executable widget-test-table
+  If flag(examples)
+    Build-depends: base>3, hscurses
+  Else
+    Buildable: False
+  Hs-source-dirs:   tests/widget-test
+  Default-language: Haskell2010
+  Main-is:          TableTest.hs
+
+Executable widget-test-edit
+  If flag(examples)
+    Build-depends: base>3, hscurses
+  Else
+    Buildable: False
+  Hs-source-dirs:   tests/widget-test
+  Default-language: Haskell2010
+  Main-is:          EditTest.hs

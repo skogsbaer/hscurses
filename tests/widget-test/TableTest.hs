@@ -27,7 +27,7 @@ row5 sty = map (TableCell . newTextWidget defaultTWOptions) ["5", "fuenf"]
 
 rows sty = [row1 sty, row2 sty, row3 sty, row4 sty, row5 sty]
 
-tableWidget sty = newTableWidget (TBWOptions (Just 1) [0,2] (10,10)) (rows sty)
+tableWidget sty = newTableWidget (TBWOptions (Just 1) None [0,2] (10,10)) (rows sty)
 
 tableSize = (2, 50)
 tablePos = (1,0)
@@ -75,5 +75,4 @@ main =
        drawTextWidget (0, 0) (1, 60) DHFocus
                           (newTextWidget defaultTWOptions text)
        loop (tableWidget cstyles) (newTextWidget defaultTWOptions "")
-       return ()
     `finally` CursesH.end
