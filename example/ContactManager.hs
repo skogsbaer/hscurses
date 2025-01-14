@@ -31,6 +31,8 @@ TODO:
 * add
 -}
 
+import Prelude hiding ((<>))
+
 import Control.Exception
 import Control.Monad.State
 import Data.List ( sort )

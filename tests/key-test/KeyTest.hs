@@ -1,6 +1,7 @@
 import qualified UI.HSCurses.Curses as Curses
 import qualified UI.HSCurses.CursesHelper as CursesH
 
+import Control.Monad (forever)
 import Data.Char
 import System.Exit
 import Control.Exception
@@ -12,20 +13,6 @@ draw s =
        Curses.refresh
 
 done = return ()
-
-forever x = do x
-               forever x
-
-controlCharsNonWs = [-- %x00-08
-                     '\NUL', '\SOH', '\STX', '\ETX', '\EOT', '\ENQ', '\ACK',
-                     '\BEL', '\BS',
-                     -- %x0A-1F
-                     '\LF', '\VT', '\FF', '\CR',
-                     '\SO', '\SI', '\DLE', '\DC1', '\DC2', '\DC3', '\DC4',
-                     '\NAK', '\SYN', '\ETB', '\CAN', '\EM', '\SUB', '\ESC',
-                     '\FS', '\GS', '\RS', '\US',
-                     -- %x7F
-                     '\DEL']
 
 main :: IO ()
 main =
