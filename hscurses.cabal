@@ -57,7 +57,7 @@ Library
       ScopedTypeVariables, ExistentialQuantification
   Include-dirs:     cbits .
   Ghc-options:      -funbox-strict-fields -Wall -fno-warn-unused-do-bind -fno-warn-name-shadowing
-  Default-language: Haskell98
+  Default-language: Haskell2010
 
 Executable contact-manager
   If flag(examples)
