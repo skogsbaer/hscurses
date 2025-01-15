@@ -23,7 +23,7 @@
 -- | Iconv binding
 
 #if HAVE_ICONV_H
-# include <iconv.h>
+#include <iconv.h>
 #endif
 
 module UI.HSCurses.IConv {-(
@@ -61,10 +61,10 @@ throw_if_not_2_big s r_ = do
     if r == fromIntegral (-1 :: Int) then do
         errno <- getErrno
         if errno /= e2BIG then
-	    throwErrno s
-	  else
-	    return r
-      else
+            throwErrno s
+        else
+            return r
+    else
         return r
 
 iconv_open :: String -> String -> IO IConv
@@ -72,8 +72,8 @@ iconv_open to from =
     withCString to $
         \cto -> withCString from $
             \cfrom -> do
-	        throwErrnoIf err_ptr "iconv_open"
-		    $ c_iconv_open cto cfrom
+          throwErrnoIf err_ptr "iconv_open"
+        $ c_iconv_open cto cfrom
 
 
 iconv_close :: IConv -> IO ()
@@ -93,17 +93,17 @@ do_iconv get_string_fn ic (inbuf, inbuf_bytes) =
       poke (inbytesleft_ptr :: Ptr CSize) (fromIntegral inbuf_bytes)
       poke inbuf_ptr inbuf
       let loop acc = do
-          poke (outbytesleft_ptr :: Ptr CSize) (fromIntegral outbuf_size)
-          poke outbuf_ptr outbuf
-          ret <- throw_if_not_2_big "c_iconv" $
-              c_iconv ic inbuf_ptr inbytesleft_ptr
-                         outbuf_ptr outbytesleft_ptr
-          left <- peek outbytesleft_ptr
-          res <- get_string_fn (castPtr outbuf, outbuf_size - fromIntegral left)
-          if ret == fromIntegral (-1 :: Int) then
-              loop (acc++res)
-            else
-              return (acc++res)
+              poke (outbytesleft_ptr :: Ptr CSize) (fromIntegral outbuf_size)
+              poke outbuf_ptr outbuf
+              ret <- throw_if_not_2_big "c_iconv" $
+                  c_iconv ic inbuf_ptr inbytesleft_ptr
+                             outbuf_ptr outbytesleft_ptr
+              left <- peek outbytesleft_ptr
+              res <- get_string_fn (castPtr outbuf, outbuf_size - fromIntegral left)
+              if ret == fromIntegral (-1 :: Int) then
+                  loop (acc++res)
+                else
+                  return (acc++res)
       loop []
 
 
