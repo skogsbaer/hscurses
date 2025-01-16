@@ -439,7 +439,7 @@ convertStyles styleList =
           mergeNothing (Just _:crest) (p:prest) = Just p
                                                   : mergeNothing crest prest
           mergeNothing (Nothing:crest) ps = Nothing : mergeNothing crest ps
-          mergeNothing [] [] = []
+          mergeNothing _ _ = []
           toCursesStyle cursesAttrs Nothing =
               ColorlessCursesStyle cursesAttrs
           toCursesStyle cursesAttrs (Just cursesPair) =
