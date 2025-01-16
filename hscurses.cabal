@@ -20,9 +20,15 @@ Description:
     it contains some basic widgets such as a text input widget and
     a table widget.
 Homepage:       https://github.com/skogsbaer/hscurses
-Cabal-version: >= 1.10
+Cabal-version:  >= 1.10
 Build-Type:     Configure
-Tested-with:    GHC==7.6.1, GHC==7.8, GHC==9.10.1
+Tested-with:    GHC==7.6.1
+              , GHC==7.8
+              , GHC==9.4.8
+              , GHC==9.6.6
+              , GHC==9.8.4
+              , GHC==9.10.1
+              , GHC==9.12.1
 Data-files:
     README, TODO, ChangeLog, cbits/config.h.in,
     configure, configure.ac, hscurses.buildinfo.in,
