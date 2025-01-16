@@ -1,0 +1,20 @@
+on: [push]
+name: build
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        ghc: ['9.4', '9.6', '9.8', '9.10', '9.12']
+        os: [ubuntu-latest]
+    name: GHC ${{ matrix.ghc }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: 'latest'
+          cabal-update: true
+      - run: cabal build -f examples
+      - run: cabal haddock all --disable-documentation
