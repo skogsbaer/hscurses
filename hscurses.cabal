@@ -43,6 +43,11 @@ Flag examples
   Default:        False
   Manual:         True
 
+Flag debug
+  Description:    Compile with logging/tracing functions
+  Default:        False
+  Manual:         True
+
 Library
   Build-depends:  base == 4.*
                 , exceptions < 0.11
@@ -51,6 +56,8 @@ Library
   Extra-libraries: curses
   If !os(windows)
     Build-depends: unix < 2.9
+  If flag(debug)
+    Cpp-options: -DDEBUG=1
   Exposed-modules:
       UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
       UI.HSCurses.Logging
