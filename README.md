@@ -63,6 +63,15 @@ through Haddock API documentation.
 For basic usage check out the code in the [example](./example) and
 [./tests](tests) directories.
 
+### Debug logging
+
+`hscurses` ships with very basic logging functionality. The default behavior is
+not to compile with support for this, but you can use the Cabal flag `debug` to
+manually enable this. Logs will be written to `.hscurses.logs` in the directory
+you're running the `cabal` command from. Example:
+
+    cabal run -f examples -f debug contact-manager -- example/contacts
+
 ## Windows support
 
 Windows support relies on [pdcurses](http://pdcurses.sourceforge.net/), which is
