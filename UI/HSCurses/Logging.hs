@@ -24,11 +24,9 @@ import Control.Monad.Trans
 
 #if __DEBUG__
 
-import Data.IORef
 import System.IO
 import System.IO.Unsafe (unsafePerformIO)
-import System.Locale
-import System.Time
+import qualified Data.Time as Time
 
 #endif
 
@@ -45,33 +43,25 @@ logFile = unsafePerformIO $ do h <- openFile ".hscurses.log" AppendMode
 {-# NOINLINE logFile #-}
 
 formatTime :: IO String
-formatTime =
-    do let fmt = "%Y-%m-%d %H:%M:%S"
-       clockT <- getClockTime
-       calTime <- toCalendarTime clockT
-       let maxSdecLen = 5
-           sdec' = show $ ctPicosec calTime
-           sdec = if length sdec' > maxSdecLen
-                     then take maxSdecLen sdec'
-                     else sdec'
-       return (formatCalendarTime defaultTimeLocale fmt calTime
-               ++ ":" ++ sdec)
+formatTime = do
+  let fmt = "%Y-%m-%d %H:%M:%S%03Q"
+  now <- Time.getZonedTime
+  return $ Time.formatTime Time.defaultTimeLocale fmt now
 
-trace s x =
-    unsafePerformIO $ do debug s
-                         return x
-
-debug s = liftIO $ debug_ logFile s
-
+debug_ :: Handle -> String -> IO ()
 debug_ f s =
     do ts <- formatTime
        hPutStrLn f ("[" ++ ts ++ "] " ++ s)
        hFlush f
 
+trace s x =
+    unsafePerformIO $ do debug s
+                         return x
+debug s = liftIO $ debug_ logFile s
+
 #else
 
 trace _ x = x
-
 debug _ = return ()
 
 #endif

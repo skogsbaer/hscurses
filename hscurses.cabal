@@ -44,11 +44,13 @@ Flag examples
   Manual:         True
 
 Library
-  Build-depends:  base == 4.*, exceptions, mtl,
-                  old-time < 1.2, old-locale == 1.0.*
+  Build-depends:  base == 4.*
+                , exceptions < 0.11
+                , mtl < 2.4
+                , time < 1.13
   Extra-libraries: curses
-  if !os(windows)
-    Build-depends: unix >= 2.4
+  If !os(windows)
+    Build-depends: unix < 2.9
   Exposed-modules:
       UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
       UI.HSCurses.Logging
