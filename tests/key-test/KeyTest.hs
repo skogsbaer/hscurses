@@ -1,4 +1,4 @@
-import qualified UI.HSCurses.Curses as Curses
+import UI.HSCurses.Curses
 import qualified UI.HSCurses.CursesHelper as CursesH
 
 import Control.Monad (forever)
@@ -7,22 +7,26 @@ import System.Exit
 import Control.Exception
 
 draw s =
-    do (h, w) <- Curses.scrSize
+    do (h, w) <- scrSize
        CursesH.gotoTop
        CursesH.drawLine w s
-       Curses.refresh
+       refresh
 
 done = return ()
 
 main :: IO ()
-main =
-    do CursesH.start
-       draw ""
-       forever (do c <- CursesH.getKey done
-                   case c of
-                     Curses.KeyChar 'q' -> exitWith ExitSuccess
-                     x -> draw ("Last key: " ++ CursesH.displayKey x
-                                ++ " (" ++ show x ++ ")")
-
-               )
-    `finally` CursesH.end
+main = finally
+  (do
+    CursesH.start
+    draw "Press any key, click the mouse, or use the mouse wheel"
+    withAllMouseEvents $ do
+      forever $ do
+        c <- CursesH.getKey done
+        case c of
+          KeyChar 'q' -> exitWith ExitSuccess
+          KeyMouse -> do
+            draw "mouse\n"
+            me <- getMouse
+            draw (show me)
+          x -> draw ("Last key: " ++ CursesH.displayKey x ++ " (" ++ show x ++ ")"))
+  CursesH.end
