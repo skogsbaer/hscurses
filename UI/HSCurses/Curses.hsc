@@ -187,13 +187,16 @@ module UI.HSCurses.Curses (
 # include <signal.h>
 #endif
 
-import UI.HSCurses.CWString       ( withLCStringLen )
 import UI.HSCurses.Logging
 
 import Prelude hiding           ( pi )
 import Data.Char
-import Data.List
 import Data.Ix                  ( Ix )
+
+-- foldl' was put into Prelude in base 4.20
+#if !MIN_VERSION_base(4,20,0)
+import Data.List ( foldl' )
+#endif
 
 import System.IO.Unsafe ( unsafePerformIO )
 

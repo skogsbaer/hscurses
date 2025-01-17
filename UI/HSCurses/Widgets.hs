@@ -28,6 +28,8 @@ import Control.Monad.Catch (MonadCatch)
 import Control.Monad.Trans
 import Data.Char
 import Data.List
+import Data.List.NonEmpty (NonEmpty((:|)))
+import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 
 import UI.HSCurses.Logging
@@ -652,13 +654,14 @@ tableWidgetDisplayInfo (height, width) tbw =
         widths' = minSpaces getWidth (transpose $ tbw_rows tbw)
         (widths, rightMargin) =
             if sum widths' > width
-               then error ("table to wide: width=" ++ show (sum widths') ++
+               then error ("table too wide: width=" ++ show (sum widths') ++
                            ", available width=" ++ show width)
                else case tbwopt_fillCol $ tbw_options tbw of
                       Just i | i >= 0 && i < ncols
                                  -> (take i widths' ++
-                                     let rest = drop i widths'
-                                     in (head rest + width - sum widths') : tail rest
+                                     case drop i widths' of
+                                       [] -> error "rest unexpectedly empty"
+                                       (w:ws) -> (w + width - sum widths') : ws
                                     , Nothing)
                       _ -> let diff = width - sum widths'
                                msz = (height, diff)
@@ -695,9 +698,10 @@ tableWidgetDisplayInfo (height, width) tbw =
         applyToFirst _ [] = []
         applyToFirst f (x:xs) = f x : xs
         applyToLast _ [] = []
-        applyToLast f l =
-            let (h, t) = (head $ reverse l, tail $ reverse l)
-                in reverse $ f h : t
+        applyToLast f (x:xs) =
+            let rev = NonEmpty.reverse $ x :| xs
+                (h, t) = (NonEmpty.head rev, NonEmpty.tail rev)
+            in reverse $ f h : t
 
 getCellInfo :: Pos -> Size -> TableWidget -> (Int,Int) -> (Pos, Size)
 getCellInfo (y,x) sz tbw (row, col) =
@@ -729,6 +733,7 @@ drawTableWidget (y, x) sz hint tbw =
           drawRows (r:rs) (h:hs) widths yoffset rowIndex hint' =
             do drawCols r h widths yoffset 0 (rowIndex, 0) hint'
                drawRows rs hs widths (yoffset + h) (rowIndex + 1) hint'
+          drawRows _ _ _ _ _ _ = return ()
           drawCols :: Row -> Int -> [Int] -> Int -> Int -> (Int, Int)
                    -> DrawingHint -> IO ()
           drawCols [] _ _ _ _ _ _ = return ()
@@ -740,6 +745,7 @@ drawTableWidget (y, x) sz hint tbw =
             in do draw (y+yoffset, x+xoffset) (h,w) hint'' c
                   drawCols cs h ws yoffset (xoffset + w)
                            (rowIndex, colIndex+1) hint'
+          drawCols _ _ _ _ _ _ _ = return ()
 
 
 tableWidgetScrollDown :: Size -> TableWidget -> TableWidget
@@ -952,5 +958,8 @@ align a w f l =
 
 deleteAt :: Int -> [a] -> [a]
 deleteAt n l = if n >= 0 && n < length l
-                  then let (a,b) = splitAt n l in a ++ (tail b)
+                  then let (a,b) = splitAt n l in
+                         case b of
+                           [] -> error "deleteAt: impossible"
+                           (_:rest) -> a ++ rest
                   else error ("deleteAt: illegal index: " ++ show n)

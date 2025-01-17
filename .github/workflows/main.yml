@@ -16,5 +16,5 @@ jobs:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: 'latest'
           cabal-update: true
-      - run: cabal build -f examples
+      - run: cabal build --project-file=cabal.project.ci -f examples
       - run: cabal haddock all --disable-documentation

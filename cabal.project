@@ -1,0 +1,5 @@
+packages: .
+
+package hscurses
+    ghc-options: -Werror=incomplete-patterns
+                 -Werror=missing-fields
