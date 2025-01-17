@@ -1,5 +1,5 @@
+{-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE ForeignFunctionInterface, GeneralizedNewtypeDeriving #-}
--- glaexts needed for newtype deriving
 
 -- Copyright (c) 2002-2004 John Meacham (john at repetae dot net)
 -- Copyright (c) 2004 Don Stewart - http://www.cse.unsw.edu.au/~dons
@@ -146,7 +146,9 @@ module UI.HSCurses.Curses (
     wAttrSet, wAttrGet,
 
     -- * Mouse Routines
+    getMouse,
     withMouseEventMask,
+    withAllMouseEvents,
     ButtonEvent(..),
     MouseEvent(..),
 
@@ -1401,26 +1403,68 @@ cursesTest = do
 -----------------
 
 data MouseEvent = MouseEvent {
-    mouseEventId :: Int,
-    mouseEventX :: Int,
-    mouseEventY :: Int,
-    mouseEventZ :: Int,
+    mouseEventId :: CInt,
+    mouseEventX :: CInt,
+    mouseEventY :: CInt,
+    mouseEventZ :: CInt,
     mouseEventButton :: [ButtonEvent]
-   } deriving(Show)
+   } deriving (Show)
 
-data ButtonEvent = ButtonPressed Int | ButtonReleased Int | ButtonClicked Int |
-    ButtonDoubleClicked Int | ButtonTripleClicked Int | ButtonShift | ButtonControl | ButtonAlt
-                deriving(Eq,Show)
+instance Storable MouseEvent where
+    sizeOf _ = (#size MEVENT)
+    alignment _ = (#alignment MEVENT)
+    peek ptr = do
+        id' <- (#peek MEVENT, id) ptr
+        x <- (#peek MEVENT, x) ptr
+        y <- (#peek MEVENT, y) ptr
+        z <- (#peek MEVENT, z) ptr
+        bstate :: (#type mmask_t) <- (#peek MEVENT, bstate) ptr
+        pure $! MouseEvent id' x y z (besFromMouseMask bstate)
+    poke ptr (MouseEvent id' x y z bstate) = do
+        (#poke MEVENT, id) ptr id'
+        (#poke MEVENT, x) ptr x
+        (#poke MEVENT, y) ptr y
+        (#poke MEVENT, z) ptr z
+        (#poke MEVENT, bstate) ptr (besToMouseMask bstate)
+
+foreign import ccall unsafe "HSCurses.h getmouse"
+    getmouse :: Ptr MouseEvent -> IO CInt
+
+getMouse :: MonadIO m => m (Maybe MouseEvent)
+getMouse = liftIO $ alloca $ \ptr -> do
+  res <- getmouse ptr
+  if res == (#const OK)
+      then Just <$> peek ptr
+      else pure Nothing
+
+data ButtonEvent
+    = ButtonPressed Int
+    | ButtonReleased Int
+    | ButtonClicked Int
+    | ButtonDoubleClicked Int
+    | ButtonTripleClicked Int
+    | ButtonShift
+    | ButtonControl
+    | ButtonAlt
+    deriving (Eq, Show)
 
 withMouseEventMask :: MonadIO m => [ButtonEvent] -> m a -> m a
+withAllMouseEvents :: MonadIO m => m a -> m a
 
 #ifdef KEY_MOUSE
 
 foreign import ccall unsafe "HSCurses.h mousemask"
     mousemask :: (#type mmask_t) -> Ptr (#type mmask_t) -> IO (#type mmask_t)
 
+-- TODO: bracket instead?
 withMouseEventMask bes action = do
     ov <- liftIO $ alloca (\a ->  mousemask (besToMouseMask bes) a >> peek a)
+    r <- action
+    liftIO $ mousemask ov nullPtr
+    return r
+
+withAllMouseEvents action = do
+    ov <- liftIO $ alloca (\a ->  mousemask (#const ALL_MOUSE_EVENTS) a >> peek a)
     r <- action
     liftIO $ mousemask ov nullPtr
     return r
@@ -1439,6 +1483,21 @@ besToMouseMask bes = foldl' (.|.) 0 (map cb bes) where
     cb (ButtonClicked 2) = (#const BUTTON2_CLICKED)
     cb (ButtonClicked 3) = (#const BUTTON3_CLICKED)
     cb (ButtonClicked 4) = (#const BUTTON4_CLICKED)
+    cb (ButtonDoubleClicked 1) = (#const BUTTON1_DOUBLE_CLICKED)
+    cb (ButtonDoubleClicked 2) = (#const BUTTON2_DOUBLE_CLICKED)
+    cb (ButtonDoubleClicked 3) = (#const BUTTON3_DOUBLE_CLICKED)
+    cb (ButtonDoubleClicked 4) = (#const BUTTON4_DOUBLE_CLICKED)
+    cb (ButtonTripleClicked 1) = (#const BUTTON1_TRIPLE_CLICKED)
+    cb (ButtonTripleClicked 2) = (#const BUTTON2_TRIPLE_CLICKED)
+    cb (ButtonTripleClicked 3) = (#const BUTTON3_TRIPLE_CLICKED)
+    cb (ButtonTripleClicked 4) = (#const BUTTON4_TRIPLE_CLICKED)
+#if NCURSES_MOUSE_VERSION > 1
+    cb (ButtonPressed 5) = (#const BUTTON5_PRESSED)
+    cb (ButtonReleased 5) = (#const BUTTON5_RELEASED)
+    cb (ButtonClicked 5) = (#const BUTTON5_CLICKED)
+    cb (ButtonDoubleClicked 5) = (#const BUTTON5_DOUBLE_CLICKED)
+    cb (ButtonTripleClicked 5) = (#const BUTTON5_TRIPLE_CLICKED)
+#endif
     cb ButtonShift = (#const BUTTON_SHIFT)
     cb ButtonAlt = (#const BUTTON_ALT)
 #ifdef BUTTON_CTRL
@@ -1448,9 +1507,54 @@ besToMouseMask bes = foldl' (.|.) 0 (map cb bes) where
 #endif
     cb _ = 0
 
+besFromMouseMask :: (#type mmask_t) -> [ButtonEvent]
+besFromMouseMask mmask =
+    foldl'
+        (\evts (c, evt) -> if mmask .&. c /= 0 then evt : evts else evts)
+        mempty
+        mappings
+  where
+    mappings =
+        [ ((#const BUTTON1_PRESSED), ButtonPressed 1)
+        , ((#const BUTTON2_PRESSED), ButtonPressed 2)
+        , ((#const BUTTON3_PRESSED), ButtonPressed 3)
+        , ((#const BUTTON4_PRESSED), ButtonPressed 4)
+        , ((#const BUTTON1_RELEASED), ButtonReleased 1)
+        , ((#const BUTTON2_RELEASED), ButtonReleased 2)
+        , ((#const BUTTON3_RELEASED), ButtonReleased 3)
+        , ((#const BUTTON4_RELEASED), ButtonReleased 4)
+        , ((#const BUTTON1_CLICKED), ButtonClicked 1)
+        , ((#const BUTTON2_CLICKED), ButtonClicked 2)
+        , ((#const BUTTON3_CLICKED), ButtonClicked 3)
+        , ((#const BUTTON4_CLICKED), ButtonClicked 4)
+        , ((#const BUTTON1_DOUBLE_CLICKED), ButtonDoubleClicked 1)
+        , ((#const BUTTON2_DOUBLE_CLICKED), ButtonDoubleClicked 2)
+        , ((#const BUTTON3_DOUBLE_CLICKED), ButtonDoubleClicked 3)
+        , ((#const BUTTON4_DOUBLE_CLICKED), ButtonDoubleClicked 4)
+        , ((#const BUTTON1_TRIPLE_CLICKED), ButtonTripleClicked 1)
+        , ((#const BUTTON2_TRIPLE_CLICKED), ButtonTripleClicked 2)
+        , ((#const BUTTON3_TRIPLE_CLICKED), ButtonTripleClicked 3)
+        , ((#const BUTTON4_TRIPLE_CLICKED), ButtonTripleClicked 4)
+#if NCURSES_MOUSE_VERSION > 1
+        , ((#const BUTTON5_PRESSED), ButtonPressed 5)
+        , ((#const BUTTON5_RELEASED), ButtonReleased 5)
+        , ((#const BUTTON5_CLICKED), ButtonClicked 5)
+        , ((#const BUTTON5_DOUBLE_CLICKED), ButtonDoubleClicked 5)
+        , ((#const BUTTON5_TRIPLE_CLICKED), ButtonTripleClicked 5)
+#endif
+        , ((#const BUTTON_SHIFT), ButtonShift)
+        , ((#const BUTTON_ALT), ButtonAlt)
+#ifdef BUTTON_CTRL
+        , ((#const BUTTON_CTRL), ButtonControl)
+#else
+        , ((#const BUTTON_CONTROL), ButtonControl)
+#endif
+        ]
 
 #else
+
 withMouseEventMask _ a = a
+withAllMouseEvents = id
 
 #endif
 
