@@ -47,8 +47,11 @@ module UI.HSCurses.Curses (
     resetParams,
     endWin,             -- :: IO ()
     scrSize,            -- :: IO (Int, Int)
+    newTerm,
+    delScreen,
 
-    -- * Windows and Pads
+    -- * Windows, screens and Pads
+    Screen,
     Window,             -- data Window deriving Eq
     Border(..),         -- data Border
     touchWin,
@@ -215,6 +218,8 @@ import Foreign.C.String
 import Foreign.C.Types
 import Foreign.C.Error
 
+import GHC.IO.FD ( FD(..) )
+
 #ifndef mingw32_HOST_OS
 import System.Posix.Signals
 #endif
@@ -311,6 +316,31 @@ foreign import ccall "static HSCurses.h &stdscr"
 initScr :: IO Window
 initScr = throwIfNull "initscr" initscr
 foreign import ccall unsafe "HSCurses.h initscr" initscr :: IO Window
+
+-- This seems like the easiest way to get a FILE (see: man FILE)
+-- from an FD
+type FILE = Ptr ()
+foreign import ccall unsafe "fdopen"
+    fdopen :: CInt -> CString -> IO FILE
+fdOpen :: FD -> String -> IO FILE
+fdOpen fd mode =
+    withCString mode $ \mode' -> do
+        fdopen (fdFD fd) mode'
+
+type Screen = Ptr ()
+
+newTerm :: String -> FD -> FD -> IO Screen
+newTerm typ out in' =
+    withCString typ $ \typ' -> do
+        fout <- fdOpen out "rw"
+        fin <- fdOpen in' "r"
+        throwIfNull "newterm" $ newterm typ' fout fin
+
+foreign import ccall unsafe "HSCurses.h newterm"
+    newterm :: CString -> FILE -> FILE -> IO Screen
+
+foreign import ccall unsafe "HSCurses.h delscreen"
+    delScreen :: Screen -> IO ()
 
 --
 -- | > The cbreak routine
