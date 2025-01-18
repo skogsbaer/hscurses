@@ -5,7 +5,7 @@ jobs:
   build:
     strategy:
       matrix:
-        ghc: ['9.4', '9.6', '9.8', '9.10', '9.12']
+        ghc: ['8.4', '8.6', '8.8', '8.10', '9.4', '9.6', '9.8', '9.10', '9.12']
         os: [ubuntu-latest]
     name: GHC ${{ matrix.ghc }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}

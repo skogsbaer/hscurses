@@ -1,0 +1,22 @@
+# Generated from web app, for more information, see: https://fourmolu.github.io/config/
+indentation: 4
+column-limit: none
+function-arrows: trailing
+comma-style: leading
+import-export-style: diff-friendly
+import-grouping: legacy
+indent-wheres: false
+record-brace-space: true
+newlines-between-decls: 1
+haddock-style: single-line
+haddock-style-module: null
+let-style: auto
+in-style: right-align
+single-constraint-parens: always
+single-deriving-parens: always
+sort-constraints: true
+sort-derived-classes: true
+sort-deriving-clauses: true
+trailing-section-operators: true
+unicode: never
+respectful: true
