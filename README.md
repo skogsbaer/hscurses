@@ -6,8 +6,8 @@ also provides some basic widgets implemented on top of the `ncurses` binding,
 such as a text input widget and a table widget.
 
 The `hscurses` library has been reported to work on Linux x86 using GHC 6.12.1,
-7.0.3, 7.2.1, and GHC major versions starting from GHC 9.4. See the GitHub
-actions for GHC versions that we test against.
+7.0.3, 7.2.1, and GHC major versions starting from GHC 8.4. See the GitHub
+actions for GHC versions that we actively test against.
 
 ## Building and installing the `hscurses` library with GHC (old)
 
