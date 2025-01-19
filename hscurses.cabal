@@ -102,7 +102,7 @@ library
     GeneralizedNewtypeDeriving
     ScopedTypeVariables
 
-  include-dirs:       cbits .
+  include-dirs:       cbits
   ghc-options:
     -funbox-strict-fields -Wall -fno-warn-unused-do-bind
     -fno-warn-name-shadowing
