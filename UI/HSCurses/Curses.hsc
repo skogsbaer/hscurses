@@ -257,6 +257,12 @@ module UI.HSCurses.Curses (
 
 import UI.HSCurses.Logging
 
+#if !(defined(HAVE_WCHAR_H) && (defined(HAVE_LIBNCURSESW) || defined(HAVE_LIBPDCURSESW)))
+-- FIXME: this is needed for CI builds on macOS; we can probably replace the
+-- whole CWString module with just the "new" function in Foreign.C.String
+import UI.HSCurses.CWString (withLCStringLen)
+#endif
+
 import Data.Char
 import Data.Ix (Ix)
 import Prelude hiding (pi)
