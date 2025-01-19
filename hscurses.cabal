@@ -112,10 +112,10 @@ library
 executable contact-manager
   if flag(examples)
     build-depends:
-        base      >=3.0
+        base      >=4.0 && <5
       , hscurses
-      , mtl
-      , pretty
+      , mtl       >=2.0 && <2.4
+      , pretty    >=1.0 && <1.2
 
   else
     buildable: False
@@ -127,7 +127,7 @@ executable contact-manager
 executable key-test
   if flag(examples)
     build-depends:
-        base      >=3.0
+        base      >=4.0 && <5
       , hscurses
 
   else
@@ -140,7 +140,7 @@ executable key-test
 executable widget-test-text
   if flag(examples)
     build-depends:
-        base      >=3.0
+        base      >=4.0 && <5
       , hscurses
 
   else
@@ -153,7 +153,7 @@ executable widget-test-text
 executable widget-test-table
   if flag(examples)
     build-depends:
-        base      >=3.0
+        base      >=4.0 && <5
       , hscurses
 
   else
@@ -166,7 +166,7 @@ executable widget-test-table
 executable widget-test-edit
   if flag(examples)
     build-depends:
-        base      >=3.0
+        base      >=4.0
       , hscurses
 
   else
