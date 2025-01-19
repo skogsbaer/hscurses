@@ -1,124 +1,177 @@
-Name:           hscurses
-Version:        1.4.2.0
-License:        LGPL
-License-file:   LICENSE
-Author:         John Meacham <john at repetae dot net>
-                Tuomo Valkonen <tuomov at iki.fi>
-                Don Stewart <http://www.cse.unsw.edu.au/~dons>
-                Stefan Wehr <http://www.stefanwehr.de>
-Copyright:      Stefan Wehr 2004 - 2011
-                Don Stewart 2004
-                Tuomo Valkonen 2004
-                John Meacham 2002-2004
-Maintainer:     Stefan Wehr <http://www.stefanwehr.de>
-Stability:      Stable
-Category:       User-interface
-Synopsis:       NCurses bindings for Haskell
-Description:
-    Binding to NCurses, a library of functions that manage an
-    application's display on character-cell terminals. Additionally,
-    it contains some basic widgets such as a text input widget and
-    a table widget.
-Homepage:       https://github.com/skogsbaer/hscurses
-Cabal-version:  >= 1.10
-Build-Type:     Configure
-Tested-with:    GHC == 7.6.1
-              , GHC == 7.8
-              , GHC == 8.4.4
-              , GHC == 8.6.5
-              , GHC == 8.8.4
-              , GHC == 8.10.7
-              , GHC == 9.4.8
-              , GHC == 9.6.6
-              , GHC == 9.8.4
-              , GHC == 9.10.1
-              , GHC == 9.12.1
-Data-files:
-    README, TODO, ChangeLog, cbits/config.h.in,
-    configure, configure.ac, hscurses.buildinfo.in,
-    cbits/HSCurses.h, cbits/HSCursesUtils.h
+name:          hscurses
+version:       1.4.2.0
+license:       LGPL
+license-file:  LICENSE
+author:
+  John Meacham <john at repetae dot net>
+  Tuomo Valkonen <tuomov at iki.fi>
+  Don Stewart <http://www.cse.unsw.edu.au/~dons>
+  Stefan Wehr <http://www.stefanwehr.de>
 
-Source-Repository head
-  Type:           git
-  Location:       https://github.com/skogsbaer/hscurses
+copyright:
+  Stefan Wehr 2004 - 2011
+  Don Stewart 2004
+  Tuomo Valkonen 2004
+  John Meacham 2002-2004
 
-Flag examples
-  Description:    Build test and example binaries
-  Default:        False
-  Manual:         True
+maintainer:    Stefan Wehr <http://www.stefanwehr.de>
+stability:     Stable
+category:      User-interface
+synopsis:      NCurses bindings for Haskell
+description:
+  Binding to NCurses, a library of functions that manage an
+  application's display on character-cell terminals. Additionally,
+  it contains some basic widgets such as a text input widget and
+  a table widget.
 
-Flag debug
-  Description:    Compile with logging/tracing functions
-  Default:        False
-  Manual:         True
+homepage:      https://github.com/skogsbaer/hscurses
+cabal-version: >=1.10
+build-type:    Configure
+tested-with:
+  GHC ==7.6.1
+   || ==7.8
+   || ==8.4.4
+   || ==8.6.5
+   || ==8.8.4
+   || ==8.10.7
+   || ==9.4.8
+   || ==9.6.6
+   || ==9.8.4
+   || ==9.10.1
+   || ==9.12.1
 
-Library
-  Build-depends:  base == 4.*
-                , exceptions < 0.11
-                , mtl < 2.4
-                , time < 1.13
-  Extra-libraries: curses
-  If !os(windows)
-    Build-depends: unix < 2.9
-  If flag(debug)
-    Cpp-options: -DDEBUG=1
-  Exposed-modules:
-      UI.HSCurses.Curses, UI.HSCurses.CursesHelper, UI.HSCurses.Widgets,
-      UI.HSCurses.Logging
-  Other-modules:
-      UI.HSCurses.CWString, UI.HSCurses.IConv
-  C-sources:
-      cbits/HSCursesUtils.c
-  Includes:
-      HSCurses.h, HSCursesUtils.h
-  Default-extensions:
-      CPP, ForeignFunctionInterface, GeneralizedNewtypeDeriving,
-      ScopedTypeVariables, ExistentialQuantification
-  Include-dirs:     cbits .
-  Ghc-options:      -funbox-strict-fields -Wall -fno-warn-unused-do-bind -fno-warn-name-shadowing
-  Default-language: Haskell2010
+data-files:
+  cbits/config.h.in
+  cbits/HSCurses.h
+  cbits/HSCursesUtils.h
+  ChangeLog
+  configure
+  configure.ac
+  hscurses.buildinfo.in
+  README
+  TODO
 
-Executable contact-manager
-  If flag(examples)
-    Build-depends: base>3, hscurses, mtl, pretty
-  Else
-    Buildable: False
-  Hs-source-dirs:   example
-  Default-language: Haskell2010
-  Main-is:          ContactManager.hs
+source-repository head
+  type:     git
+  location: https://github.com/skogsbaer/hscurses
 
-Executable key-test
-  If flag(examples)
-    Build-depends: base>3, hscurses
-  Else
-    Buildable: False
-  Hs-source-dirs:   tests/key-test
-  Default-language: Haskell2010
-  Main-is:          KeyTest.hs
+flag examples
+  description: Build test and example binaries
+  default:     False
+  manual:      True
 
-Executable widget-test-text
-  If flag(examples)
-    Build-depends: base>3, hscurses
-  Else
-    Buildable: False
-  Hs-source-dirs:   tests/widget-test
-  Default-language: Haskell2010
-  Main-is:          TextTest.hs
+flag debug
+  description: Compile with logging/tracing functions
+  default:     False
+  manual:      True
 
-Executable widget-test-table
-  If flag(examples)
-    Build-depends: base>3, hscurses
-  Else
-    Buildable: False
-  Hs-source-dirs:   tests/widget-test
-  Default-language: Haskell2010
-  Main-is:          TableTest.hs
+library
+  build-depends:
+      base        >=4   && <5
+    , exceptions  <0.11
+    , mtl         <2.4
+    , time        <1.13
 
-Executable widget-test-edit
-  If flag(examples)
-    Build-depends: base>3, hscurses
-  Else
-    Buildable: False
-  Hs-source-dirs:   tests/widget-test
-  Default-language: Haskell2010
-  Main-is:          EditTest.hs
+  extra-libraries:    curses
+
+  if !os(windows)
+    build-depends: unix <2.9
+
+  if flag(debug)
+    cpp-options: -DDEBUG=1
+
+  exposed-modules:
+    UI.HSCurses.Curses
+    UI.HSCurses.CursesHelper
+    UI.HSCurses.Logging
+    UI.HSCurses.Widgets
+
+  other-modules:
+    UI.HSCurses.CWString
+    UI.HSCurses.IConv
+
+  c-sources:          cbits/HSCursesUtils.c
+  includes:
+    HSCurses.h
+    HSCursesUtils.h
+
+  default-extensions:
+    CPP
+    ExistentialQuantification
+    ForeignFunctionInterface
+    GeneralizedNewtypeDeriving
+    ScopedTypeVariables
+
+  include-dirs:       cbits .
+  ghc-options:
+    -funbox-strict-fields -Wall -fno-warn-unused-do-bind
+    -fno-warn-name-shadowing
+
+  default-language:   Haskell2010
+
+executable contact-manager
+  if flag(examples)
+    build-depends:
+        base      >=3.0
+      , hscurses
+      , mtl
+      , pretty
+
+  else
+    buildable: False
+
+  hs-source-dirs:   example
+  default-language: Haskell2010
+  main-is:          ContactManager.hs
+
+executable key-test
+  if flag(examples)
+    build-depends:
+        base      >=3.0
+      , hscurses
+
+  else
+    buildable: False
+
+  hs-source-dirs:   tests/key-test
+  default-language: Haskell2010
+  main-is:          KeyTest.hs
+
+executable widget-test-text
+  if flag(examples)
+    build-depends:
+        base      >=3.0
+      , hscurses
+
+  else
+    buildable: False
+
+  hs-source-dirs:   tests/widget-test
+  default-language: Haskell2010
+  main-is:          TextTest.hs
+
+executable widget-test-table
+  if flag(examples)
+    build-depends:
+        base      >=3.0
+      , hscurses
+
+  else
+    buildable: False
+
+  hs-source-dirs:   tests/widget-test
+  default-language: Haskell2010
+  main-is:          TableTest.hs
+
+executable widget-test-edit
+  if flag(examples)
+    build-depends:
+        base      >=3.0
+      , hscurses
+
+  else
+    buildable: False
+
+  hs-source-dirs:   tests/widget-test
+  default-language: Haskell2010
+  main-is:          EditTest.hs

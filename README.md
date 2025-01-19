@@ -85,6 +85,13 @@ There is also a detailed installation instruction by
 [Ilan Godik](https://medium.com/@NightRa):
 https://medium.com/@NightRa/installing-hscurses-on-windows-830532d3268a
 
+## Development notes
+
+- We used [cabal-fmt](https://github.com/phadej/cabal-fmt) the cabal file(s).
+- To consolidate the code style a tiny bit, the Haskell code formatter
+  [fourmolu](https://fourmolu.github.io/) was used; see 
+  [its configuration](./fourmolu.yaml) for details.
+
 ## Copyright
 
     John Meacham <john @ repetae . net>, 2002-2004.
