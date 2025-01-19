@@ -9,26 +9,7 @@ The `hscurses` library has been reported to work on Linux x86 using GHC 6.12.1,
 7.0.3, 7.2.1, and GHC major versions starting from GHC 8.4. See the GitHub
 actions for GHC versions that we actively test against.
 
-## Building and installing the `hscurses` library with GHC (old)
-
-Requirements:
-
-- GNU `m4`
-- GHC >= 6.8
-- `ncurses` with headers
-
-Build and installation steps:
-
-    runhaskell Setup.hs configure
-    runhaskell Setup.hs build
-    runhaskell Setup.hs install
-
-In order to generate the API documentation, you need haddock
-(http://www.haskell.org/haddock). The command is then:
-
-    runhaskell Setup.hs haddock
-
-## Building the `hscurses` library with GHC and `cabal-install`
+## Building the `hscurses` library
 
 Requirements:
 
@@ -53,6 +34,25 @@ In order to generate the API documentation, you need
 [haddock](http://www.haskell.org/haddock). The command is then:
 
     cabal haddock
+
+## Building and installing the `hscurses` library (old)
+
+Requirements:
+
+- GNU `m4`
+- GHC >= 6.8
+- `ncurses` with headers
+
+Build and installation steps:
+
+    runhaskell Setup.hs configure
+    runhaskell Setup.hs build
+    runhaskell Setup.hs install
+
+In order to generate the API documentation, you need haddock
+(http://www.haskell.org/haddock). The command is then:
+
+    runhaskell Setup.hs haddock
 
 ## Using the `hscurses` library
 
