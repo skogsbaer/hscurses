@@ -1,32 +1,33 @@
-name:          hscurses
-version:       1.5.0.0
-license:       LGPL
-license-file:  LICENSE
+name:               hscurses
+version:            1.5.0.0
+license:            LGPL
+license-file:       LICENSE
 author:
   John Meacham <john at repetae dot net>
   Tuomo Valkonen <tuomov at iki.fi>
   Don Stewart <http://www.cse.unsw.edu.au/~dons>
   Stefan Wehr <http://www.stefanwehr.de>
 
+extra-source-files: ChangeLog
 copyright:
   Stefan Wehr 2004 - 2011
   Don Stewart 2004
   Tuomo Valkonen 2004
   John Meacham 2002-2004
 
-maintainer:    Stefan Wehr <http://www.stefanwehr.de>
-stability:     Stable
-category:      User-interface
-synopsis:      NCurses bindings for Haskell
+maintainer:         Stefan Wehr <http://www.stefanwehr.de>
+stability:          Stable
+category:           User-interface
+synopsis:           NCurses bindings for Haskell
 description:
   Binding to NCurses, a library of functions that manage an
   application's display on character-cell terminals. Additionally,
   it contains some basic widgets such as a text input widget and
   a table widget.
 
-homepage:      https://github.com/skogsbaer/hscurses
-cabal-version: >=1.10
-build-type:    Configure
+homepage:           https://github.com/skogsbaer/hscurses
+cabal-version:      >=1.10
+build-type:         Configure
 tested-with:
   GHC ==7.6.1
    || ==7.8
@@ -44,11 +45,10 @@ data-files:
   cbits/config.h.in
   cbits/HSCurses.h
   cbits/HSCursesUtils.h
-  ChangeLog
   configure
   configure.ac
   hscurses.buildinfo.in
-  README
+  README.md
   TODO
 
 source-repository head
