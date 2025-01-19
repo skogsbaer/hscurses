@@ -18,3 +18,16 @@ jobs:
           cabal-update: true
       - run: cabal build --project-file=cabal.project.ci -f examples
       - run: cabal haddock all --disable-documentation
+
+  macos-build:
+    name: GHC 9.10 / macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: haskell-actions/setup@v2
+        with:
+          ghc-version: '9.10'
+          cabal-version: 'latest'
+          cabal-update: true
+      - run: cabal build --project-file=cabal.project.ci -f examples
+      - run: cabal haddock all --disable-documentation
