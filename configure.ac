@@ -1,17 +1,17 @@
 # use autoreconf to generate configure script and cbits/config.h
 
 # sanity
-AC_INIT(UI/HSCurses/Curses.hsc)
+AC_INIT
+AC_CONFIG_SRCDIR([UI/HSCurses/Curses.hsc])
 
 # Prepare to generate the config.h.in file
 AC_CONFIG_HEADERS([cbits/config.h])
 
 # this is arbitrary
-AC_PREREQ([2.52])
+AC_PREREQ([2.72])
 
 AC_ARG_WITH(compiler,
-            [AC_HELP_STRING([--with-hc=ARG],
-                            [ignored])],
+            [AS_HELP_STRING([--with-hc=ARG],[ignored])],
             true, true)
 #
 # Curses. If you don't have wchar_t-aware ncurses (Debian package:

@@ -12,22 +12,22 @@
 /* Define to 1 if you have the <langinfo.h> header file. */
 #undef HAVE_LANGINFO_H
 
-/* Define to 1 if you have the `curses' library (-lcurses). */
+/* Define to 1 if you have the 'curses' library (-lcurses). */
 #undef HAVE_LIBCURSES
 
-/* Define to 1 if you have the `libiconv' function. */
+/* Define to 1 if you have the 'libiconv' function. */
 #undef HAVE_LIBICONV
 
-/* Define to 1 if you have the `ncurses' library (-lncurses). */
+/* Define to 1 if you have the 'ncurses' library (-lncurses). */
 #undef HAVE_LIBNCURSES
 
-/* Define to 1 if you have the `ncursesw' library (-lncursesw). */
+/* Define to 1 if you have the 'ncursesw' library (-lncursesw). */
 #undef HAVE_LIBNCURSESW
 
-/* Define to 1 if you have the `pdcurses' library (-lpdcurses). */
+/* Define to 1 if you have the 'pdcurses' library (-lpdcurses). */
 #undef HAVE_LIBPDCURSES
 
-/* Define to 1 if you have the `pdcursesw' library (-lpdcursesw). */
+/* Define to 1 if you have the 'pdcursesw' library (-lpdcursesw). */
 #undef HAVE_LIBPDCURSESW
 
 /* Define to 1 if you have the <limits.h> header file. */
@@ -35,9 +35,6 @@
 
 /* Define to 1 if you have the <locale.h> header file. */
 #undef HAVE_LOCALE_H
-
-/* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
 
 /* Define to 1 if you have the <ncursesw/ncurses.h> header file. */
 #undef HAVE_NCURSESW_NCURSES_H
@@ -50,6 +47,9 @@
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdio.h> header file. */
+#undef HAVE_STDIO_H
 
 /* Define to 1 if you have the <stdlib.h> header file. */
 #undef HAVE_STDLIB_H
@@ -90,8 +90,13 @@
 /* Define to the one symbol short name of this package. */
 #undef PACKAGE_TARNAME
 
+/* Define to the home page for this package. */
+#undef PACKAGE_URL
+
 /* Define to the version of this package. */
 #undef PACKAGE_VERSION
 
-/* Define to 1 if you have the ANSI C header files. */
+/* Define to 1 if all of the C89 standard headers exist (not just the ones
+   required in a freestanding environment). This macro is provided for
+   backward compatibility; new code need not use it. */
 #undef STDC_HEADERS
