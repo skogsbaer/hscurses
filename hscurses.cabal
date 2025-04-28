@@ -70,7 +70,7 @@ library
       base        >=4   && <5
     , exceptions  <0.11
     , mtl         <2.4
-    , time        <1.13
+    , time        <1.15
 
   extra-libraries:    ncurses
 
