@@ -47,6 +47,8 @@ data-files:
   cbits/HSCursesUtils.h
   configure
   configure.ac
+  example/contacts
+  example/contacts2
   hscurses.buildinfo.in
   README.md
   TODO
