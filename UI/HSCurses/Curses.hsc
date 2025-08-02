@@ -92,6 +92,7 @@ module UI.HSCurses.Curses (
     mvAddCh, -- :: Int -> Int -> ChType -> IO ()
     wMove,
     bkgrndSet, -- :: Attr -> Pair -> IO ()
+    wbkgrndSet, -- :: Window -> Attr -> Pair -> IO ()
     erase, -- :: IO ()
     wclear, -- :: Window -> IO ()
     werase,
@@ -939,6 +940,22 @@ bkgrndSet (Attr a) p = bkgdset $
     colorPair p
 
 foreign import ccall unsafe bkgdset :: ChType -> IO ()
+
+wbkgrndSet :: Window -> Attr -> Pair -> IO ()
+wbkgrndSet win (Attr a) p = wbkgdset win $
+    fromIntegral (ord ' ') .|.
+    #translate_attr ALTCHARSET
+    #translate_attr BLINK
+    #translate_attr BOLD
+    #translate_attr DIM
+    #translate_attr INVIS
+    #translate_attr PROTECT
+    #translate_attr REVERSE
+    #translate_attr STANDOUT
+    #translate_attr UNDERLINE
+    colorPair p
+
+foreign import ccall unsafe wbkgdset :: Window -> ChType -> IO ()
 
 -- | Copy blanks to every position in the screen.
 erase :: IO ()
