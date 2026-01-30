@@ -1254,7 +1254,7 @@ data Key
     | KeyResize
     | KeyMouse
     | KeyUnknown Int
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
 decodeKey :: CInt -> Key
 decodeKey key = case key of
@@ -1527,7 +1527,7 @@ data ButtonEvent
     | ButtonShift
     | ButtonControl
     | ButtonAlt
-    deriving (Eq, Show)
+    deriving (Eq, Ord, Show)
 
 withMouseEventMask :: (MonadIO m) => [ButtonEvent] -> m a -> m a
 withAllMouseEvents :: (MonadIO m) => m a -> m a
