@@ -60,4 +60,9 @@ void getmaxyx_fun(WINDOW* win, int* y, int* x) {
   getmaxyx(win,(*y),(*x));
 }
 
+// Accessing macros from Haskell is problematic, this is a wrapper:
+void getbegyx_fun(WINDOW* win, int* y, int* x) {
+  getbegyx(win,(*y),(*x));
+}
+
 #endif  // HSCURSES_H
