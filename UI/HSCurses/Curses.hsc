@@ -58,6 +58,11 @@ module UI.HSCurses.Curses (
     wnoutRefresh,
     wBorder,
     defaultBorder,
+    getMaxYX,
+    getBegYX,
+    mvWin,
+    overlay,
+    overwrite,
 
     -- Refresh routines
     refresh,
@@ -543,24 +548,64 @@ foreign import ccall unsafe "HSCurses.h endwin" endwin :: IO CInt
 
 -- | Get the dimensions of the screen (lines, cols).
 scrSize :: IO (Int, Int)
+scrSize = getMaxYX stdScr
+
+-- | Get the dimensions of a given window (lines, cols).
 -- Note, per the documentation:
 --    http://invisible-island.net/ncurses/ncurses-intro.html#caution
 -- It is not recommended to peek at the LINES and COLS global variables.  This code
 -- was previously doing exactly that, but now it is fixed to use getmaxyx.
 --   -Ryan Newton [2013.03.31]
-scrSize = do
+getMaxYX :: Window -> IO (Int, Int)
+getMaxYX w = do
     yfp <- mallocForeignPtr
     xfp <- mallocForeignPtr
     withForeignPtr yfp $ \yp ->
         withForeignPtr xfp $ \xp -> do
-            getMaxYX stdScr yp xp
+            getmaxyx_fun w yp xp
             y <- peek yp
             x <- peek xp
             return (fromIntegral y, fromIntegral x)
-    
+
 foreign import ccall "HSCurses.h getmaxyx_fun"
-    getMaxYX ::
+    getmaxyx_fun ::
         Window -> Ptr CInt -> Ptr CInt -> IO ()
+
+-- | Get the starting row and column position of a window
+getBegYX :: Window -> IO (Int, Int)
+getBegYX w = do
+    yfp <- mallocForeignPtr
+    xfp <- mallocForeignPtr
+    withForeignPtr yfp $ \yp ->
+        withForeignPtr xfp $ \xp -> do
+            getbegyx_fun w yp xp
+            y <- peek yp
+            x <- peek xp
+            return (fromIntegral y, fromIntegral x)
+
+foreign import ccall "HSCurses.h getbegyx_fun"
+    getbegyx_fun ::
+        Window -> Ptr CInt -> Ptr CInt -> IO ()
+
+-- | Move a window to a given top/left row/column
+mvWin :: Window -> Int -> Int -> IO ()
+mvWin w y x = mvwin w (fromIntegral y) (fromIntegral x)
+
+foreign import ccall unsafe "HSCurses.h mvwin" mvwin :: Window -> CInt -> CInt -> IO ()
+
+-- | Copy content of source window to destination window.
+-- Treats whitespace in source window as transparent.
+overlay :: Window -> Window -> IO ()
+overlay = c_overlay
+
+foreign import ccall unsafe "HSCurses.h overlay" c_overlay :: Window -> Window -> IO ()
+
+-- | Copy content of source window to destination window.
+-- Overwrites completely the covered section of the destination window
+overwrite :: Window -> Window -> IO ()
+overwrite = c_overwrite
+
+foreign import ccall unsafe "HSCurses.h overwrite" c_overwrite :: Window -> Window -> IO ()
 
 -- | Refresh curses windows and lines. curs_refresh(3)
 refresh :: IO ()
