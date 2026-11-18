@@ -29,17 +29,16 @@ homepage:           https://github.com/skogsbaer/hscurses
 cabal-version:      >=1.10
 build-type:         Configure
 tested-with:
-  GHC ==7.6.1
-   || ==7.8
-   || ==8.4.4
+  GHC ==8.4.4
    || ==8.6.5
    || ==8.8.4
    || ==8.10.7
    || ==9.4.8
    || ==9.6.6
    || ==9.8.4
-   || ==9.10.1
-   || ==9.12.1
+   || ==9.10.3
+   || ==9.12.4
+   || ==9.14.1
 
 data-files:
   cbits/config.h.in
@@ -72,7 +71,6 @@ library
       base        >=4   && <5
     , exceptions  <0.11
     , mtl         <2.4
-    , time        <1.15
 
   extra-libraries:    ncurses
 
@@ -81,6 +79,7 @@ library
 
   if flag(debug)
     cpp-options: -DDEBUG=1
+    build-depends: time <1.17
 
   exposed-modules:
     UI.HSCurses.Curses

@@ -5,12 +5,12 @@ jobs:
   build:
     strategy:
       matrix:
-        ghc: ['8.4', '8.6', '8.8', '8.10', '9.4', '9.6', '9.8', '9.10', '9.12']
+        ghc: ['8.4', '8.6', '8.8', '8.10', '9.4', '9.6', '9.8', '9.10', '9.12', '9.14']
         os: [ubuntu-latest]
     name: GHC ${{ matrix.ghc }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: haskell-actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc }}
@@ -20,13 +20,13 @@ jobs:
       - run: cabal haddock all --disable-documentation
 
   macos-build:
-    name: GHC 9.10 / macOS
+    name: GHC 9.14 / macOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: haskell-actions/setup@v2
         with:
-          ghc-version: '9.10'
+          ghc-version: '9.14'
           cabal-version: 'latest'
           cabal-update: true
       - run: cabal build --project-file=cabal.project.ci -f examples
