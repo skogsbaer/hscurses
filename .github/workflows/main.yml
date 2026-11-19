@@ -10,7 +10,7 @@ jobs:
     name: GHC ${{ matrix.ghc }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: haskell-actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc }}
@@ -23,7 +23,7 @@ jobs:
     name: GHC 9.14 / macOS
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: haskell-actions/setup@v2
         with:
           ghc-version: '9.14'
